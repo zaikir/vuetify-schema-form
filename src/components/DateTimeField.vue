@@ -49,6 +49,7 @@ export default {
         'gf-datetime-field': true
       },
       on: {
+        ...on,
         input: (val) => {
           this.currentValue = val && (val + this.timezoneString)
         }
@@ -73,7 +74,7 @@ export default {
           })
         }
       }, [
-        !this.$vuetify.breakpoint.xsOnly && createElement(VDatePicker, {
+        createElement(VDatePicker, {
           props: {
             noTitle: true,
             firstDayOfWeek: 1,
