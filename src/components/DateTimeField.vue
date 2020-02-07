@@ -12,7 +12,7 @@ export default {
   },
   data () {
     return {
-      currentValue: undefined
+      currentValue: null
     }
   },
   computed: {
@@ -21,7 +21,7 @@ export default {
     }
   },
   watch: {
-    value (val) {
+    value (val = null) {
       this.currentValue = val
     },
     currentValue (val) {
@@ -30,7 +30,7 @@ export default {
     }
   },
   mounted () {
-    this.currentValue = this.value
+    this.currentValue = this.value || null
   },
   render (createElement) {
     const createTextField = on => createElement(VTextField, {
@@ -51,7 +51,7 @@ export default {
       on: {
         ...on,
         input: (val) => {
-          this.currentValue = val && (val + this.timezoneString)
+          this.currentValue = (val && (val + this.timezoneString)) || null
         }
       }
     })
@@ -84,7 +84,8 @@ export default {
           },
           on: {
             input: (val) => {
-              this.currentValue = val && (val + 'T00:00:00' + this.timezoneString)
+              // console.log(this.currentValue)
+              this.currentValue = (val && (val + 'T00:00:00' + this.timezoneString)) || null
             }
           }
         })

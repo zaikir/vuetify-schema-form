@@ -11,7 +11,7 @@ export default {
     }
   },
   watch: {
-    value (val) {
+    value (val = null) {
       this.currentValue = val
     },
     currentValue (val) {
