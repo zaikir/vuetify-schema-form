@@ -22,11 +22,11 @@ export default {
   },
   watch: {
     value (val = null) {
-      this.currentValue = val
+      // this.currentValue = val
     },
     currentValue (val) {
-      this.$emit('input', val)
-      this.$emit('change', val)
+      // this.$emit('input', val)
+      // this.$emit('change', val)
     }
   },
   mounted () {
@@ -51,7 +51,7 @@ export default {
       on: {
         ...on,
         input: (val) => {
-          this.currentValue = (val && (val + this.timezoneString)) || null
+          // this.currentValue = (val && (val + this.timezoneString)) || null
         }
       }
     })
@@ -84,8 +84,10 @@ export default {
           },
           on: {
             input: (val) => {
+              if (!this.currentValue || !this.currentValue.startsWith(val)) {
+                this.currentValue = (val && (val + 'T00:00:00' + this.timezoneString)) || null
+              }
               // console.log(this.currentValue)
-              this.currentValue = (val && (val + 'T00:00:00' + this.timezoneString)) || null
             }
           }
         })
