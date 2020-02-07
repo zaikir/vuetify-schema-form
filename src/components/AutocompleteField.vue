@@ -1,11 +1,12 @@
 <script>
 import { VAutocomplete } from 'vuetify/lib/components'
+import { attrsToProps } from '../utils'
 
 export default {
   functional: true,
   render (createElement, context) {
     return createElement(VAutocomplete, {
-      ...context.data
+      ...attrsToProps(context.data)
     }, context.children)
   }
 }

@@ -1,13 +1,15 @@
 <script>
 import { VRadioGroup, VRadio } from 'vuetify/lib/components'
+import { attrsToProps } from '../utils'
 
 export default {
   functional: true,
   render (createElement, context) {
+    const data = attrsToProps(context.data)
     return createElement(VRadioGroup, {
-      ...context.data
+      ...data
     },
-    (context.data.props || {}).items.map((option, i) => createElement(VRadio, {
+    (data.props || {}).items.map((option, i) => createElement(VRadio, {
       props: {
         ...option
       },

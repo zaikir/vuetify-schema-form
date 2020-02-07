@@ -8,18 +8,16 @@ function buildElement (createElement, node, model, {
     onChange
   }))
 
+  const props = {
+    ...globalProps,
+    ...node.params.props,
+    ...node.params.__bindToModel && { value: model[node.params.__value] }
+  }
+
   return createElement(node.component, {
     ...node.params,
-    props: {
-      ...globalProps,
-      ...node.params.props,
-      ...node.params.__bindToModel && { value: model[node.params.__value] }
-    },
-    attrs: {
-      ...globalProps,
-      ...node.params.props,
-      ...node.params.__bindToModel && { value: model[node.params.__value] || null }
-    },
+    props,
+    attrs: props,
     class: {
       ...node.params.class,
       ...globalClasses

@@ -1,27 +1,29 @@
 <script>
 import { VTextField } from 'vuetify/lib/components'
+import { attrsToProps } from '../utils'
 
 export default {
   functional: true,
   render (createElement, context) {
+    const data = attrsToProps(context.data)
     return createElement(VTextField, {
-      ...context.data,
+      ...data,
       props: {
-        ...context.data.props,
+        ...data.props,
         type: 'number',
         step: 1,
         rules: [
-          ...context.data.props.rules || [],
+          ...data.props.rules || [],
           x => !x || parseInt(x, 10).toString() === x.toString() || 'Неверный формат' // To do: add localization support
         ]
       },
       on: {
-        ...context.data.on || {},
+        ...data.on || {},
         input (val) {
-          context.data.on.input && context.data.on.input(parseInt(val, 10))
+          data.on.input && data.on.input(parseInt(val, 10))
         },
         change (val) {
-          context.data.on.change && context.data.on.change(parseInt(val, 10))
+          data.on.change && data.on.change(parseInt(val, 10))
         }
       }
     }, context.children)
