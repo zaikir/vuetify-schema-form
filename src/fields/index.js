@@ -1,5 +1,5 @@
-import { VRow, VCol, VTextField } from 'vuetify/lib/components'
 import {
+  ColumnContainer, RowContainer, TextField,
   EmailField, PasswordField, SelectField, AutocompleteField,
   SwitchField, CheckBoxField, IntegerField, NumberField,
   RadioGroupField, TextareaField, PhoneField, DateField,
@@ -7,10 +7,10 @@ import {
 } from '../components'
 
 export default {
-  row: VRow,
-  col: VCol,
+  row: RowContainer,
+  col: ColumnContainer,
 
-  text: VTextField,
+  text: TextField,
   textArea: TextareaField,
   email: EmailField,
   phone: PhoneField,

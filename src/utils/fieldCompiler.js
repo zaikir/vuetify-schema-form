@@ -1,5 +1,6 @@
-import { VCol, VTextField } from 'vuetify/lib'
 import FieldsMap from '../fields'
+import ColumnContainer from '../components/ColumnContainer'
+import TextField from '../components/TextField'
 import defaultProps from '../fields/props'
 import defaultClasses from '../fields/classes'
 import deleteKeys from './deleteKeys'
@@ -15,7 +16,7 @@ function buildElement (field, merger, parent = {}, globalProps = {}) {
   const type = field.type || 'text'
 
   // eslint-disable-next-line import/namespace
-  const element = FieldsMap[type] || VTextField
+  const element = FieldsMap[type] || TextField
 
   const children = field.fields && field.fields.map(x => buildElement(x, __merger, field, globalProps))
 
@@ -41,7 +42,7 @@ function buildElement (field, merger, parent = {}, globalProps = {}) {
   const node = __merger(element, buildNodeParams(type), children)
   switch (parent.type) {
     case 'row': {
-      return __merger(VCol, buildNodeParams('col'), [node])
+      return __merger(ColumnContainer, buildNodeParams('col'), [node])
     }
     default: {
       return node

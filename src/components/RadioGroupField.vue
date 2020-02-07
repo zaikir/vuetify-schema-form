@@ -7,7 +7,11 @@ export default {
   render (createElement, context) {
     const data = attrsToProps(context.data)
     return createElement(VRadioGroup, {
-      ...data
+      ...data,
+      class: {
+        'mt-0': true,
+        ...data.class || {}
+      }
     },
     (data.props || {}).items.map((option, i) => createElement(VRadio, {
       props: {
