@@ -7,7 +7,7 @@ export default {
   },
   data () {
     return {
-      currentValue: null
+      currentValue: undefined
     }
   },
   watch: {
