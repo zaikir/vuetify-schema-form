@@ -22,11 +22,11 @@ export default {
   },
   watch: {
     value (val = null) {
-      // this.currentValue = val
+      this.currentValue = val
     },
     currentValue (val) {
-      // this.$emit('input', val)
-      // this.$emit('change', val)
+      this.$emit('input', val)
+      this.$emit('change', val)
     }
   },
   mounted () {
