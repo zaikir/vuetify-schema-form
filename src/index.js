@@ -50,7 +50,7 @@ export const createForm = ({ Form, fields } = {}) => {
       },
       reset () {
         if (this.$refs.editForm) {
-          this.$refs.editForm.reset()
+          this.clone = {}
           this.$refs.editForm.resetValidation()
         }
       }
