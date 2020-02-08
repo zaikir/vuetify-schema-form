@@ -50,8 +50,8 @@ export default {
       },
       on: {
         ...on,
-        input: (val) => {
-          // this.currentValue = (val && (val + this.timezoneString)) || null
+        change: (val) => {
+          this.currentValue = (val && (val + this.timezoneString))
         }
       }
     })
@@ -87,7 +87,6 @@ export default {
               if (!this.currentValue || !this.currentValue.startsWith(val)) {
                 this.currentValue = (val && (val + 'T00:00:00' + this.timezoneString)) || null
               }
-              // console.log(this.currentValue)
             }
           }
         })
