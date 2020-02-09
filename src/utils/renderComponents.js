@@ -26,7 +26,7 @@ function buildElement (createElement, node, model, {
       ...node.params.on,
       ...onInput && {
         input (event) {
-          if (event && !event.target) {
+          if (event !== undefined && (!event || !event.target)) {
             model[node.params.__value] = event
             onInput()
           }
@@ -34,7 +34,7 @@ function buildElement (createElement, node, model, {
       },
       ...onChange && {
         change (event) {
-          if (event && !event.target) {
+          if (event !== undefined && (!event || !event.target)) {
             model[node.params.__value] = event
             onChange()
           }

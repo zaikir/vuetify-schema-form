@@ -25,8 +25,9 @@ export default {
       this.currentValue = val
     },
     currentValue (val) {
-      this.$emit('input', val)
-      this.$emit('change', val)
+      const actualVal = val && val.length ? val : null
+      this.$emit('input', actualVal)
+      this.$emit('change', actualVal)
     }
   },
   mounted () {
