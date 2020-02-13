@@ -3,6 +3,7 @@ node_js:
   - "12.14"
 
 deploy:
+  edge: true
   provider: npm
   email: "$NPM_EMAIL"
   api_key: "$NPM_TOKEN"
