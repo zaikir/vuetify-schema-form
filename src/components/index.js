@@ -15,3 +15,4 @@ export { default as ApolloRemoteAutocomplete } from './ApolloRemoteAutocomplete.
 export { default as TextField } from './TextField.vue'
 export { default as ColumnContainer } from './ColumnContainer.vue'
 export { default as RowContainer } from './RowContainer.vue'
+export { default as HtmlField } from './HtmlField.vue'

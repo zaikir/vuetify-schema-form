@@ -3,7 +3,7 @@ import {
   EmailField, PasswordField, SelectField, AutocompleteField,
   SwitchField, CheckBoxField, IntegerField, NumberField,
   RadioGroupField, TextareaField, PhoneField, DateField,
-  DateTimeField, ApolloRemoteAutocomplete
+  DateTimeField, ApolloRemoteAutocomplete, HtmlField
 } from '../components'
 
 export default {
@@ -11,6 +11,7 @@ export default {
   col: ColumnContainer,
 
   text: TextField,
+  html: HtmlField,
   textArea: TextareaField,
   email: EmailField,
   phone: PhoneField,
