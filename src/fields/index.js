@@ -4,7 +4,7 @@ import {
   SwitchField, CheckBoxField, IntegerField, NumberField,
   RadioGroupField, TextareaField, PhoneField, DateField,
   DateTimeField, ApolloRemoteAutocomplete, HtmlField, FilesField,
-  FileField
+  FileField, SlugField
 } from '../components'
 
 export default {
@@ -19,6 +19,7 @@ export default {
   password: PasswordField,
   int: IntegerField,
   number: NumberField,
+  slug: SlugField,
 
   date: DateField,
   datetime: DateTimeField,

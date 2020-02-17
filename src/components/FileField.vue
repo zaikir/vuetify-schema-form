@@ -304,11 +304,6 @@ export default {
     color: #1976d2;
   }
 
-  .drag-and-drop-editor .v-sheet {
-    /* border: thin solid rgba(165, 165, 165, 0.671);
-    border-radius: 6px !important; */
-  }
-
  .drag-and-drop-editor .dz-preview,
  .drag-and-drop-editor .dz-processing,
  .drag-and-drop-editor .dz-image-preview,

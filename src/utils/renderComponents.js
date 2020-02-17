@@ -9,6 +9,7 @@ function buildElement (createElement, node, model, {
   }))
 
   const props = {
+    item: model,
     ...globalProps,
     ...node.params.props,
     ...node.params.__bindToModel && { value: model[node.params.__value] }
