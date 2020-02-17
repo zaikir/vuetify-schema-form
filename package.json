@@ -1,6 +1,6 @@
 {
   "name": "vuetify-schema-form",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A schema-based form generator component for Vue.js.",
   "main": "src/index.js",
   "scripts": {
@@ -48,6 +48,8 @@
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.1.0",
     "graphql-tag": "^2.10.3",
-    "moment-mini": "^2.22.1"
+    "moment-mini": "^2.22.1",
+    "nuxt-dropzone": "^1.0.4",
+    "vuedraggable": "^2.23.2"
   }
 }
