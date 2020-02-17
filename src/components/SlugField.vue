@@ -2,14 +2,12 @@
 import slugify from 'slugify'
 import { VTextField, VTooltip, VBtn, VIcon } from 'vuetify/lib/components'
 import { attrsToProps } from '../utils'
-import { SlugField } from '.'
 
 export default {
   functional: true,
   render (createElement, context) {
     const slugRule = x => !x || x === slugify(x) || 'Неверный формат'
 
-    console.log(slugRule)
     const data = attrsToProps(context.data)
     return createElement(VTextField, {
       ...data,
