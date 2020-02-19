@@ -226,6 +226,17 @@ export default {
   },
   mounted () {
     this.windowSize = { width: window.innerWidth, height: window.innerHeight }
+
+    if (window) {
+      window.addEventListener('dragover', function (e) {
+        e = e || event
+        e.preventDefault()
+      }, false)
+      window.addEventListener('drop', function (e) {
+        e = e || event
+        e.preventDefault()
+      }, false)
+    }
   },
   methods: {
     onWindowResized () {
