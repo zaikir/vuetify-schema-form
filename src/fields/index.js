@@ -4,7 +4,7 @@ import {
   SwitchField, CheckBoxField, IntegerField, NumberField,
   RadioGroupField, TextareaField, PhoneField, DateField,
   DateTimeField, ApolloRemoteAutocomplete, HtmlField, FilesField,
-  FileField, SlugField
+  FileField, SlugField, ArrayField
 } from '../components'
 
 export default {
@@ -31,6 +31,7 @@ export default {
   switch: SwitchField,
   bool: CheckBoxField,
   radio: RadioGroupField,
+  array: ArrayField,
 
   file: FileField,
   files: FilesField

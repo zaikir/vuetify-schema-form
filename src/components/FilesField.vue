@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters class="drag-and-drop-editor mb-2">
     <v-col cols="12" style="margin-bottom: 0px;">
-      <v-subheader :class="'subtitle-2 pl-0'" style="height: 24px;">
+      <v-subheader :class="'caption pl-0'" style="height: 24px;">
         {{ label }}
       </v-subheader>
     </v-col>

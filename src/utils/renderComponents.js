@@ -15,7 +15,7 @@ function buildElement (createElement, node, model, {
     ...node.params.__bindToModel && { value: model[node.params.__value] }
   }
 
-  return createElement(node.component, {
+  return (!props.if || props.if({ item: model })) && createElement(node.component, {
     ...node.params,
     props,
     attrs: props,
