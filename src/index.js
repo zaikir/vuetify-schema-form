@@ -87,7 +87,8 @@ export const createForm = ({ Form, fields } = {}) => {
           ...this.reactive && {
             onInput: () => this.$emit('input', this.clone),
             onChange: () => this.$emit('change', this.clone)
-          }
+          },
+          scopedSlots: this.$scopedSlots
         })
       ])
     }

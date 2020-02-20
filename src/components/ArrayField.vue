@@ -1,6 +1,5 @@
 <script>
 import { VBtn, VIcon, VTextField, VSubheader } from 'vuetify/lib/components'
-import fields from '../fields'
 
 export default {
   props: {
