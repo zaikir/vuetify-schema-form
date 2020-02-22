@@ -8,6 +8,10 @@ export default {
     const data = attrsToProps(context.data)
     return createElement(VCheckbox, {
       ...data,
+      props: {
+        ...data.props || [],
+        inputValue: data.props.value
+      },
       class: {
         'mt-0': true,
         ...data.class || {}
