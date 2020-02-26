@@ -10,7 +10,7 @@ export default (root, {
       type = defaultType, class: _class, style, fields = [], ...props
     } = element;
 
-    const { component, childResolver } = types[type];
+    const { component, childResolver, ...rest } = types[type];
 
     return parentChildResolver({
       component,
@@ -22,6 +22,7 @@ export default (root, {
       class: _class,
       style,
       children: fields.map((field) => buildNode(field, childResolver)),
+      ...rest,
     });
   }
 

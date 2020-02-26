@@ -1,10 +1,9 @@
 import {
   VRow, VCol, VTextField, VTextarea,
 } from 'vuetify/lib/components';
+import { NumberField, IntegerField } from './components';
 
 export default {
-  text: { component: VTextField },
-  textArea: { component: VTextarea },
   row: {
     component: VRow,
     childResolver: (child) => {
@@ -14,11 +13,12 @@ export default {
       const props = Object.assign({ cols: 12 }, ...keys.map((key) => ({ [key]: childProps[key] })));
 
       return {
-        component: VCol,
-        type: 'col',
-        props,
-        children: [child],
+        component: VCol, type: 'col', props, children: [child],
       };
     },
   },
+  text: { component: VTextField },
+  textArea: { component: VTextarea },
+  number: { component: NumberField, postProcess: (val) => parseFloat(val) },
+  int: { component: IntegerField, postProcess: (val) => parseInt(val, 10) },
 };

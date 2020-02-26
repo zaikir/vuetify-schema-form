@@ -5,7 +5,7 @@ export default (h, tree, item, context = {}, emitInput, scopedSlots, {
 } = {}) => {
   function renderNode(node) {
     const {
-      component, props, class: _class, style, children,
+      component, props, class: _class, style, children, postProcess,
     } = node;
 
     const totalContext = { item, ...context };
@@ -31,7 +31,10 @@ export default (h, tree, item, context = {}, emitInput, scopedSlots, {
           on: {
             change(event) {
               if (event !== undefined && (!event || !event.target)) {
-                emitInput({ ...item, [props.value]: event });
+                emitInput({
+                  ...item,
+                  [props.value]: postProcess ? postProcess(event) : event,
+                });
               }
             },
           },
