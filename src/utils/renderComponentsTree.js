@@ -1,6 +1,6 @@
 import defaultPropsResolver from '../defaultPropsResolver';
 
-export default (h, tree, {
+export default (h, tree, item, emitInput, {
   propsResolver = defaultPropsResolver,
 } = {}) => {
   function renderNode(node) {
@@ -10,10 +10,15 @@ export default (h, tree, {
 
     return h(component, {
       props: Object.assign({}, ...Object.entries(props)
-        .filter(([key]) => key !== 'value')
         .map(([key, value]) => {
+          if (key === 'value') {
+            return { value: item[value] };
+          }
+
           const resolver = propsResolver[key];
-          const actualValue = value; // ToDo: add function resolver
+          const actualValue = typeof value === 'function'
+            ? value({ item })
+            : value;
 
           return resolver
             ? { ...resolver(actualValue, props) }
@@ -21,6 +26,15 @@ export default (h, tree, {
         })),
       class: _class,
       style,
+      ...props.value && {
+        on: {
+          change(event) {
+            if (event !== undefined && (!event || !event.target)) {
+              emitInput({ ...item, [props.value]: event });
+            }
+          },
+        },
+      },
     }, children.map((child) => renderNode(child)));
   }
 
