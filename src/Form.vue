@@ -71,15 +71,13 @@ export default {
   },
   render(h) {
     const tree = buildComponentsTree(this.root, { defaultProps: this.defaultProps });
-    const renderedTree = renderComponentsTree(h, tree, this.clone,
-      (item) => this.$emit('input', item));
+    const renderedTree = renderComponentsTree(h, tree, this.clone, this.context,
+      (item) => this.$emit('input', item), this.$scopedSlots);
 
     return h(VForm,
       { props: { lazyValidation: true }, ref: 'editForm' },
       [
-        h(VContainer,
-          {},
-          [renderedTree]),
+        h(VContainer, {}, [renderedTree]),
       ]);
   },
 };
