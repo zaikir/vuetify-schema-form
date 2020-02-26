@@ -4,7 +4,7 @@ import {
 import {
   NumberField, IntegerField, PasswordField, PhoneField, EmailField,
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
-  RadioGroupField, DateField,
+  RadioGroupField, DateField, DateTimeField,
 } from './components';
 
 export default {
@@ -33,8 +33,6 @@ export default {
   switch: { component: SwitchField },
   checkbox: { component: CheckBoxField },
   radio: { component: RadioGroupField },
-  date: {
-    component: DateField,
-    postProcessProps: (props) => ({ props, attrs: props }),
-  },
+  date: { component: DateField, postProcessProps: (props) => ({ props, attrs: props }) },
+  datetime: { component: DateTimeField, postProcessProps: (props) => ({ props, attrs: props }) },
 };
