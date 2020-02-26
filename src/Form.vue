@@ -62,6 +62,19 @@ export default {
     },
   },
   methods: {
+    submit() {
+      if (!this.$refs.editForm.validate()) {
+        return;
+      }
+
+      this.$emit('submit', this.clone);
+    },
+    reset() {
+      if (this.$refs.editForm) {
+        this.initialize({});
+        this.$refs.editForm.resetValidation();
+      }
+    },
     initialize(initial) {
       this.clone = {
         ...Object.assign({}, ...this.objectFields.map((field) => ({ [field.value]: null }))),
