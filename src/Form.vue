@@ -32,9 +32,7 @@ export default {
     },
   },
   render(h) {
-    const root = !this.fields.length
-      ? this.fields
-      : { ...this.root, fields: this.fields };
+    const root = !this.fields.length ? this.fields : { ...this.root, fields: this.fields };
     const tree = buildComponentsTree(root, { defaultProps: this.defaultProps });
     const renderedTree = renderComponentsTree(h, tree);
 

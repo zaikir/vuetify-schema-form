@@ -1,9 +1,10 @@
-import { VRow, VCol, VTextField } from 'vuetify/lib/components';
+import {
+  VRow, VCol, VTextField, VTextarea,
+} from 'vuetify/lib/components';
 
 export default {
-  text: {
-    component: VTextField,
-  },
+  text: { component: VTextField },
+  textArea: { component: VTextarea },
   row: {
     component: VRow,
     childResolver: (child) => {
