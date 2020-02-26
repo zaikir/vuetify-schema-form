@@ -1,23 +1,18 @@
 <script>
 import { VSwitch } from 'vuetify/lib/components';
-import { attrsToProps } from '../utils';
 
 export default {
   functional: true,
   render(createElement, context) {
-    const data = attrsToProps(context.data);
     return createElement(VSwitch, {
-      ...data,
+      ...context.data,
+      props: {
+        ...context.data.props || {},
+        inputValue: context.data.props.value,
+      },
       class: {
         'mt-0': true,
-        ...data.class || {},
-      },
-      on: {
-        ...data.on || {},
-        change(val) {
-          data.on.change && data.on.change(!!val);
-          data.on.input && data.on.input(!!val);
-        },
+        ...context.data.class || {},
       },
     }, context.children);
   },

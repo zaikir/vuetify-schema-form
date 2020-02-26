@@ -3,7 +3,7 @@ import {
 } from 'vuetify/lib/components';
 import {
   NumberField, IntegerField, PasswordField, PhoneField, EmailField,
-  SelectField, AutocompleteField,
+  SelectField, AutocompleteField, SwitchField, CheckBoxField,
 } from './components';
 
 export default {
@@ -29,4 +29,6 @@ export default {
   email: { component: EmailField },
   select: { component: SelectField },
   autocomplete: { component: AutocompleteField },
+  switch: { component: SwitchField },
+  checkbox: { component: CheckBoxField },
 };
