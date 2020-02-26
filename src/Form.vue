@@ -90,7 +90,11 @@ export default {
     return h(VForm,
       { props: { lazyValidation: true }, ref: 'editForm' },
       [
-        h(VContainer, {}, [renderedTree]),
+        h(VContainer, {
+          props: {
+            gridListMd: true,
+          },
+        }, [renderedTree]),
       ]);
   },
 };

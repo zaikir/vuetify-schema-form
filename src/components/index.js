@@ -11,5 +11,3 @@ export { default as PhoneField } from './PhoneField.vue';
 export { default as DateField } from './DateField.vue';
 export { default as DateTimeField } from './DateTimeField.vue';
 export { default as ApolloRemoteAutocomplete } from './ApolloRemoteAutocomplete.vue';
-export { default as ColumnContainer } from './ColumnContainer.vue';
-export { default as RowContainer } from './RowContainer.vue';

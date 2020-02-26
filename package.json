@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "clone": "^2.1.2",
+    "email-validator": "^2.0.4",
     "graphql-tag": "^2.10.3",
     "moment-mini": "^2.22.1"
   }

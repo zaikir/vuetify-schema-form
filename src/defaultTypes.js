@@ -1,7 +1,10 @@
 import {
   VRow, VCol, VTextField, VTextarea,
 } from 'vuetify/lib/components';
-import { NumberField, IntegerField } from './components';
+import {
+  NumberField, IntegerField, PasswordField, PhoneField, EmailField,
+  SelectField, AutocompleteField,
+} from './components';
 
 export default {
   row: {
@@ -21,4 +24,9 @@ export default {
   textArea: { component: VTextarea },
   number: { component: NumberField, postProcess: (val) => parseFloat(val) },
   int: { component: IntegerField, postProcess: (val) => parseInt(val, 10) },
+  password: { component: PasswordField },
+  phone: { component: PhoneField },
+  email: { component: EmailField },
+  select: { component: SelectField },
+  autocomplete: { component: AutocompleteField },
 };
