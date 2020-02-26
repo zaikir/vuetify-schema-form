@@ -6,25 +6,28 @@ export default (h, tree, item, context = {}, emitInput, scopedSlots, {
   function renderNode(node) {
     const {
       component, props, class: _class, style, children, postProcess,
+      postProcessProps = (x) => ({ props: x }),
     } = node;
 
     const totalContext = { item, ...context };
+    const totalProps = Object.assign({}, ...Object.entries(props)
+      .map(([key, value]) => {
+        if (key === 'value') {
+          return { value: item[value] };
+        }
+
+        const resolver = propsResolver[key];
+        const actualValue = typeof value === 'function' ? value(totalContext) : value;
+
+        return resolver
+          ? { ...resolver(actualValue, props) }
+          : ({ [key]: actualValue });
+      }));
+
     return props.value && scopedSlots[`field.${props.value}`]
       ? scopedSlots[`field.${props.value}`](totalContext)
       : h(component, {
-        props: Object.assign({}, ...Object.entries(props)
-          .map(([key, value]) => {
-            if (key === 'value') {
-              return { value: item[value] };
-            }
-
-            const resolver = propsResolver[key];
-            const actualValue = typeof value === 'function' ? value(totalContext) : value;
-
-            return resolver
-              ? { ...resolver(actualValue, props) }
-              : ({ [key]: actualValue });
-          })),
+        ...postProcessProps(totalProps),
         class: _class,
         style,
         ...props.value && {
