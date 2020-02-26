@@ -6,7 +6,7 @@ export default (h, tree, item, context = {}, emitInput, scopedSlots, {
   function renderNode(node) {
     const {
       component, props, class: _class, style, children, postProcess,
-      postProcessProps = (x) => ({ props: x }),
+      postProcessProps = ({ props: _props }) => ({ props: _props }),
     } = node;
 
     const totalContext = { item, ...context };
@@ -27,7 +27,7 @@ export default (h, tree, item, context = {}, emitInput, scopedSlots, {
     return props.value && scopedSlots[`field.${props.value}`]
       ? scopedSlots[`field.${props.value}`](totalContext)
       : h(component, {
-        ...postProcessProps(totalProps),
+        ...postProcessProps({ props: totalProps, ...totalContext }),
         class: _class,
         style,
         ...props.value && {
