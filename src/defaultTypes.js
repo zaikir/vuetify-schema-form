@@ -5,6 +5,7 @@ import {
   NumberField, IntegerField, PasswordField, PhoneField, EmailField,
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
   RadioGroupField, DateField, DateTimeField, SlugField,
+  HtmlField,
 } from './components';
 
 export default {
@@ -41,4 +42,5 @@ export default {
     component: SlugField,
     postProcessProps: ({ props, item }) => ({ props: { ...props, item } }),
   },
+  html: { component: HtmlField },
 };

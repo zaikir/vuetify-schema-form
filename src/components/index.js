@@ -11,4 +11,5 @@ export { default as PhoneField } from './PhoneField.vue';
 export { default as DateField } from './DateField.vue';
 export { default as DateTimeField } from './DateTimeField.vue';
 export { default as SlugField } from './SlugField.vue';
+export { default as HtmlField } from './HtmlField.vue';
 export { default as ApolloRemoteAutocomplete } from './ApolloRemoteAutocomplete.vue';

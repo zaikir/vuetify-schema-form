@@ -10,54 +10,54 @@
 </template>
 
 <script>
-import Editor from '@tinymce/tinymce-vue'
+import Editor from '@tinymce/tinymce-vue';
 
 export default {
   components: {
-    Editor
+    Editor,
   },
   props: {
     value: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     label: {
       type: String,
       required: false,
-      default: null
+      default: null,
     },
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     height: {
       type: Number,
       required: false,
-      default: 600
+      default: 600,
     },
     language: {
       type: String,
       required: false,
-      default: 'ru'
+      default: 'ru',
     },
     uploadUrl: {
       type: String,
       required: false,
-      default: '/api/uploads'
+      default: '/api/uploads',
     },
     uploadFileHandler: {
       type: Function,
       required: false,
-      default: result => result.url
+      default: (result) => result.url,
     },
     disabled: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
       content: '',
       options: {
@@ -77,84 +77,85 @@ export default {
         content_css: [],
         images_upload_url: '/api/uploads',
         automatic_uploads: false,
-        file_picker_callback: (cb, value, meta) => {
-          const input = document.createElement('input')
-          input.setAttribute('type', 'file')
+        file_picker_callback: (cb) => {
+          const input = document.createElement('input');
+          input.setAttribute('type', 'file');
 
-          const that = this
-          input.onchange = function () {
-            const file = this.files[0]
+          const that = this;
+          input.onchange = () => {
+            const file = this.files[0];
 
-            const formData = new FormData()
-            formData.append('file', file, file.name)
+            const formData = new FormData();
+            formData.append('file', file, file.name);
 
-            const xhr = new XMLHttpRequest()
-            xhr.withCredentials = false
-            xhr.open('POST', that.uploadUrl)
+            const xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+            xhr.open('POST', that.uploadUrl);
 
             xhr.onload = () => {
               if (xhr.status !== 200) {
-                throw new Error('HTTP error')
+                throw new Error('HTTP error');
               }
 
               cb(that.uploadFileHandler(JSON.parse(xhr.responseText)), {
                 title: file.name,
                 text: file.name,
                 alt: file.name,
-                target: '_blank'
-              })
-            }
+                target: '_blank',
+              });
+            };
 
-            xhr.send(formData)
-          }
+            xhr.send(formData);
+          };
 
-          input.click()
+          input.click();
         },
         images_upload_handler: (blobInfo, success, failure) => {
-          const xhr = new XMLHttpRequest()
-          xhr.withCredentials = false
-          xhr.open('POST', this.uploadUrl)
+          const xhr = new XMLHttpRequest();
+          xhr.withCredentials = false;
+          xhr.open('POST', this.uploadUrl);
 
           xhr.onload = () => {
             if (xhr.status !== 200) {
-              failure('HTTP Error: ' + xhr.status)
-              return
+              failure(`HTTP Error: ${xhr.status}`);
+              return;
             }
 
-            success(this.uploadFileHandler(JSON.parse(xhr.responseText)))
-          }
+            success(this.uploadFileHandler(JSON.parse(xhr.responseText)));
+          };
 
-          const formData = new FormData()
-          formData.append('file', blobInfo.blob(), blobInfo.filename())
+          const formData = new FormData();
+          formData.append('file', blobInfo.blob(), blobInfo.filename());
 
-          xhr.send(formData)
+          xhr.send(formData);
         },
         image_caption: true,
         quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
         contextmenu: 'link image imagetools table',
-        height: this.height
-      }
-    }
+        height: this.height,
+      },
+    };
   },
   computed: {
-    rules () {
-      return []
-    }
+    rules() {
+      return [];
+    },
   },
   watch: {
-    content (val) {
-      this.$emit('input', val)
+    content(val) {
+      this.$emit('input', val);
+      this.$emit('change', val);
     },
-    value (val) {
+    value(val) {
       if (this.content !== val) {
-        this.content = val
+        this.content = val;
       }
-    }
+    },
   },
-  mounted () {
-    this.content = this.value
-  }
-}
+  mounted() {
+    this.content = this.value;
+  },
+};
 </script>
 <style>
 .html-editor {

@@ -42,6 +42,7 @@
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
+    "@tinymce/tinymce-vue": "^3.2.0",
     "clone": "^2.1.2",
     "email-validator": "^2.0.4",
     "graphql-tag": "^2.10.3",
