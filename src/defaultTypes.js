@@ -4,6 +4,7 @@ import {
 import {
   NumberField, IntegerField, PasswordField, PhoneField, EmailField,
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
+  RadioGroupField,
 } from './components';
 
 export default {
@@ -31,4 +32,5 @@ export default {
   autocomplete: { component: AutocompleteField },
   switch: { component: SwitchField },
   checkbox: { component: CheckBoxField },
+  radio: { component: RadioGroupField },
 };
