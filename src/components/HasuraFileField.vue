@@ -11,6 +11,7 @@
         :accepted-files="acceptedFiles"
         :additional-params="params"
         @uploaded="onUploaded"/>
+        <validation-message v-if="required" :value="(file || {}).id"/>
     </v-col>
     <v-col cols="12" style="margin-top: -14px;">
       <v-row v-if="file">
@@ -27,11 +28,13 @@ import moment from 'moment';
 import gql from 'graphql-tag';
 import DropzoneArea from './DropzoneArea.vue';
 import FileAvatar from './FileAvatar.vue';
+import ValidationMessage from './ValidationMessage.vue';
 
 export default {
   components: {
     DropzoneArea,
     FileAvatar,
+    ValidationMessage,
   },
   props: {
     value: {
@@ -56,10 +59,9 @@ export default {
       required: false,
       default: null,
     },
-    rules: {
-      type: Array,
-      required: false,
-      default: () => [],
+    required: {
+      type: Boolean,
+      default: false,
     },
     disabled: {
       type: Boolean,
