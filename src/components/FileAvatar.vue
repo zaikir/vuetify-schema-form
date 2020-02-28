@@ -2,7 +2,8 @@
   <v-hover v-slot:default="{ hover }">
     <v-card
       :class="'pa-1 file-card elevation-' + (!hover ? elevation : elevationOnHover)"
-      @click="openLink(file)">
+      @click="openLink(file)"
+      :ripple="false">
       <v-card-text>
         <div class="d-flex justify-center align-center" style="position:relative;">
           <v-img
@@ -39,7 +40,7 @@
           />
           <v-btn
             v-if="!disabled"
-            style="position:absolute; top:-24px; right:-24px;"
+            style="position:absolute; top:-22px; right:-22px;"
             icon
             small
             v-on="on"
