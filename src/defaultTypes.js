@@ -5,7 +5,7 @@ import {
   NumberField, IntegerField, PasswordField, PhoneField, EmailField,
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
   RadioGroupField, DateField, DateTimeField, SlugField,
-  HtmlField,
+  HtmlField, HasuraFileField, FilesField,
 } from './components';
 
 export default {
@@ -43,4 +43,6 @@ export default {
     postProcessProps: ({ props, item }) => ({ props: { ...props, item } }),
   },
   html: { component: HtmlField },
+  file: { component: HasuraFileField },
+  files: { component: FilesField },
 };

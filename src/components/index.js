@@ -12,4 +12,6 @@ export { default as DateField } from './DateField.vue';
 export { default as DateTimeField } from './DateTimeField.vue';
 export { default as SlugField } from './SlugField.vue';
 export { default as HtmlField } from './HtmlField.vue';
+export { default as HasuraFileField } from './HasuraFileField.vue';
+export { default as FilesField } from './FilesField.vue';
 export { default as ApolloRemoteAutocomplete } from './ApolloRemoteAutocomplete.vue';

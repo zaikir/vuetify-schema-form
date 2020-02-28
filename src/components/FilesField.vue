@@ -47,55 +47,7 @@
         @change="onReordered"
       >
         <v-col v-for="(file, i) in value.filter(x => !x.isRemoved)" :key="i" cols="auto">
-          <v-hover v-slot:default="{ hover }">
-            <v-card :class="'pa-1 file-card elevation-' + (!hover ? 1 : 6)" @click="openLink(file)" @click.middle="openLink(file, true)">
-              <v-img
-                v-if="isImage(file.type)"
-                :src="file.url"
-                class="white--text align-end"
-                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                width="150"
-                height="100"
-              />
-              <v-img
-                v-else-if="file.type === '.pdf'"
-                src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                class="white--text align-end"
-                width="150"
-                contain
-                height="100"
-              />
-              <v-img
-                v-else-if="file.type === '.doc' || file.type === '.docx'"
-                src="https://upload.wikimedia.org/wikipedia/commons/f/fb/.docx_icon.svg"
-                class="white--text align-end"
-                width="150"
-                contain
-                height="100"
-              />
-              <v-img
-                v-else
-                src="https://www.svgrepo.com/show/94277/blank-file.svg"
-                class="white--text align-end"
-                width="150"
-                contain
-                height="100"
-              />
-              <v-card-title class=" pt-2 pl-2 pr-1" style="max-width: 150px;">
-                <span class="subtitle-2">{{ file.name }}</span><br>
-                <!-- <span class="caption">{{ formatDate(file.created) }}</span> -->
-                <v-spacer />
-                <v-tooltip v-if="!disabled" bottom>
-                  <template #activator="{on}">
-                    <v-btn class="ml-auto" icon small v-on="on" @click.prevent.stop="processedItem=file; isConfirmationDialogOpened = true;">
-                      <v-icon>mdi-delete</v-icon>
-                    </v-btn>
-                  </template>
-                  Удалить
-                </v-tooltip>
-              </v-card-title>
-            </v-card>
-          </v-hover>
+          <file-avatar :file="file" :disabled="disabled"/>
         </v-col>
       </draggable>
     </v-col>
@@ -164,12 +116,14 @@
 import VueDropzone from 'nuxt-dropzone';
 import draggable from 'vuedraggable';
 import moment from 'moment';
-import ConfirmationDialog from './ConfirmationDialog';
+import ConfirmationDialog from './ConfirmationDialog.vue';
+import FileAvatar from './FileAvatar.vue';
 
 export default {
   components: {
     VueDropzone,
     ConfirmationDialog,
+    FileAvatar,
     draggable,
   },
   props: {
@@ -239,11 +193,9 @@ export default {
 
     if (window) {
       window.addEventListener('dragover', (e) => {
-        e = e || event;
         e.preventDefault();
       }, false);
       window.addEventListener('drop', (e) => {
-        e = e || event;
         e.preventDefault();
       }, false);
     }
@@ -289,7 +241,7 @@ export default {
     isImage(type) {
       return type === '.png' || type === '.jpg' || type === '.jpeg' || type === '.gif';
     },
-    startUploading(file, response) {
+    startUploading() {
       this.isLoading = true;
     },
     saveFile() {
@@ -352,12 +304,7 @@ export default {
    display: none;
  }
 
-  .v-card--reveal {
-    /* align-items: center;
-    bottom: 0;
-    justify-content: center;
-    opacity: .2;
-    position: absolute; */
+  .drag-and-drop-editor .v-card--reveal {
     width: 100%;
   }
 
