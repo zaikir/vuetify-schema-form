@@ -43,12 +43,11 @@
             style="position:absolute; top:-22px; right:-22px;"
             icon
             small
-            v-on="on"
             @click.prevent.stop="selectedFile=file; isConfirmationDialogOpened = true;">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </div>
-        <div class=" pt-2 pl-2 pr-1" style="max-width: 150px;">
+        <div class="pt-2 px-2" :style="`max-width: ${width}px;`">
           <span class="subtitle-2">{{ file.name }}</span>
         </div>
       </v-card-text>

@@ -1,11 +1,11 @@
 <template>
-  <v-text-field :value="(file || {}).id" class="validation-message" :rules="[x => !!x || 'Введите значение']"/>
+  <v-text-field :value="value" class="validation-message" :rules="[x => !!x || 'Введите значение']"/>
 </template>
 <script>
 export default {
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       default: null,
     },
   },

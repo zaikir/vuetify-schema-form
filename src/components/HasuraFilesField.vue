@@ -5,18 +5,18 @@
         {{ label }}
       </v-subheader>
     </v-col>
-    <v-col v-if="!file && !disabled" cols="12" style="margin-top: -2px;">
+    <v-col v-if="!disabled" cols="12" style="margin-top: -2px;">
       <dropzone-area
         :height="height"
         :accepted-files="acceptedFiles"
-        :additional-params="params"
+        :additional-params="{[foreignKey]:foreignKeyValue,...params}"
         @uploaded="onUploaded"/>
-        <validation-message v-if="required" :value="(file || {}).id"/>
+        <validation-message v-if="required" :value="files && files.length"/>
     </v-col>
     <v-col cols="12" style="margin-top: -14px;">
-      <v-row v-if="file">
-        <v-col cols="auto">
-          <file-avatar :file="file" @remove="removeFile" :disabled="disabled"/>
+      <v-row>
+        <v-col v-for="(file, i) in files.filter(x => !x.isRemoved)" :key="i" cols="auto">
+          <file-avatar :file="file" :disabled="disabled" @remove="removeFile"/>
         </v-col>
       </v-row>
     </v-col>
@@ -36,8 +36,17 @@ export default {
     ValidationMessage,
   },
   props: {
-    value: {
+    foreignKey: {
       type: String,
+      required: true,
+    },
+    foreignKeyType: {
+      type: String,
+      default: 'uuid!',
+    },
+    foreignKeyValue: {
+      type: null,
+      required: true,
     },
     source: {
       type: String,
@@ -73,34 +82,42 @@ export default {
     },
   },
   apollo: {
-    file: {
+    files: {
       query() {
-        return gql`query GetFile ($id: uuid!) { 
-          ${this.source} (where: { id: {_eq: $id} }, limit: 1 ) { 
+        return gql`query GetFiles ($foreignKeyValue: ${this.foreignKeyType}) { 
+          ${this.source} (where: { ${this.foreignKey}: {_eq: $foreignKeyValue} }, order_by: {sort: asc} ) { 
             id name type created_at url
           } 
         }`;
       },
       update(data) {
-        return data[this.source][0];
+        return data[this.source];
       },
       variables() {
-        return { id: this.value };
+        return { foreignKeyValue: this.foreignKeyValue };
       },
       skip() {
-        return !this.value;
+        return !this.foreignKeyValue;
       },
     },
   },
   data() {
     return {
-      file: null,
+      files: [],
     };
   },
   methods: {
-    onUploaded({ id }) {
-      this.$emit('change', id);
-      this.$emit('input', id);
+    async refreshQuery() {
+      // ToDo: optimize it
+      const apollo = this.$apollo.provider.defaultClient;
+      Object.keys(apollo.cache.data.data).forEach((key) => {
+        apollo.cache.data.delete(key);
+      });
+
+      await apollo.reFetchObservableQueries();
+    },
+    async onUploaded() {
+      await this.refreshQuery();
     },
     async removeFile(file) {
       await this.$apollo.mutate({
@@ -114,8 +131,7 @@ export default {
         },
       });
 
-      this.file = null;
-      this.$emit('input', null);
+      await this.refreshQuery();
     },
   },
 };

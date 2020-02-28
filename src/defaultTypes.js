@@ -5,7 +5,7 @@ import {
   NumberField, IntegerField, PasswordField, PhoneField, EmailField,
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
   RadioGroupField, DateField, DateTimeField, SlugField,
-  HtmlField, HasuraFileField, FilesField,
+  HtmlField, HasuraFileField, HasuraFilesField,
 } from './components';
 
 export default {
@@ -44,5 +44,5 @@ export default {
   },
   html: { component: HtmlField },
   file: { component: HasuraFileField },
-  files: { component: FilesField },
+  files: { component: HasuraFilesField },
 };
