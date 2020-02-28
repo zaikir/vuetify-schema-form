@@ -39,7 +39,7 @@
           />
           <v-btn
             v-if="!disabled"
-            style="position:absolute; top:-12px; right:-12px;"
+            style="position:absolute; top:-24px; right:-24px;"
             icon
             small
             v-on="on"

@@ -11,8 +11,8 @@
   >
     <div class="dropzone-custom-content" :style="`height: ${height}px;`">
       <template v-if="!isLoading">
-        <div style="display:flex;">
-          <v-icon class="icon mr-3" style="margin-top:-2px;">
+        <div class="d-flex align-center justify-center">
+          <v-icon large class="icon mr-4" style="margin-top:-2px;">
             mdi-cloud-upload-outline
           </v-icon>
           <h3 class="dropzone-custom-title">
@@ -72,7 +72,7 @@ export default {
   computed: {
     dropzoneOptions() {
       return {
-        dictDefaultMessage: 'Перетащите сюда файл', // ToDo: localization
+        dictDefaultMessage: 'Загрузить', // ToDo: localization
         url: this.url,
         thumbnailWidth: 150,
       };

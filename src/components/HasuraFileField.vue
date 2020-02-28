@@ -1,21 +1,21 @@
 <template>
   <v-row no-gutters class="drag-and-drop-editor mb-2">
-    <v-col cols="12" style="margin-bottom: 0px;">
+    <v-col cols="12" class="mb-0">
       <v-subheader :class="'subtitle-2 pl-0'" style="height: 30px;">
         {{ label }}
       </v-subheader>
     </v-col>
-    <v-col v-if="!value && !disabled" cols="12">
+    <v-col v-if="!file && !disabled" cols="12" style="margin-top: -2px;">
       <dropzone-area
         :height="height"
         :accepted-files="acceptedFiles"
         :additional-params="params"
         @uploaded="onUploaded"/>
     </v-col>
-    <v-col cols="12">
+    <v-col cols="12" style="margin-top: -14px;">
       <v-row v-if="file">
         <v-col cols="auto">
-          <file-avatar :file="file" />
+          <file-avatar :file="file" @remove="removeFile"/>
         </v-col>
       </v-row>
     </v-col>
@@ -40,14 +40,6 @@ export default {
     source: {
       type: String,
       default: 'File',
-    },
-    searchParams: {
-      type: Function,
-      default: (id) => ({
-        definitions: '$id: uuid!',
-        where: 'id: {_eq: $id}, isRemoved: {_eq: false}',
-        variables: { id },
-      }),
     },
     height: {
       type: Number,
@@ -78,20 +70,17 @@ export default {
   apollo: {
     file: {
       query() {
-        const { where, definitions } = this.searchParams(this.value);
-        return gql`query GetFile (${definitions}) { 
-          ${this.source} (where: { ${where} }, limit: 1 ) { 
+        return gql`query GetFile ($id: uuid!) { 
+          ${this.source} (where: { id: {_eq: $id} }, limit: 1 ) { 
             id name type created_at url
           } 
         }`;
       },
       update(data) {
-        console.log(data);
         return data[this.source][0];
       },
       variables() {
-        const { variables } = this.searchParams(this.value);
-        return variables;
+        return { id: this.value };
       },
       skip() {
         return !this.value;
@@ -122,10 +111,19 @@ export default {
       this.$emit('change', id);
       this.$emit('input', id);
     },
-    removeFile() {
-      this.processedItem.isRemoved = true;
-      this.isConfirmationDialogOpened = false;
+    async removeFile(file) {
+      await this.$apollo.mutate({
+        mutation: gql`mutation RemoveFile($id: uuid) {
+          update_File(where: {id: {_eq: $id}}, _set: {isRemoved: true}) {
+            affected_rows
+          }
+        }`,
+        variables: {
+          id: file.id,
+        },
+      });
 
+      this.file = null;
       this.$emit('input', null);
     },
     openLink(file, modal) {
