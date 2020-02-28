@@ -7,6 +7,7 @@ export default (h, tree, item, context = {}, emitInput, scopedSlots, {
     const {
       component, props, class: _class, style, children, postProcess,
       postProcessProps = ({ props: _props }) => ({ props: _props }),
+      methods = [],
     } = node;
 
     const totalContext = { item, ...context };
@@ -17,8 +18,8 @@ export default (h, tree, item, context = {}, emitInput, scopedSlots, {
         }
 
         const resolver = propsResolver[key];
-        const actualValue = typeof value === 'function' ? value(totalContext) : value;
 
+        const actualValue = typeof value === 'function' && !methods.includes(key) ? value(totalContext) : value;
         return resolver
           ? { ...resolver(actualValue, props) }
           : ({ [key]: actualValue });

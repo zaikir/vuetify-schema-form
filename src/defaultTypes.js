@@ -5,7 +5,7 @@ import {
   NumberField, IntegerField, PasswordField, PhoneField, EmailField,
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
   RadioGroupField, DateField, DateTimeField, SlugField,
-  HtmlField, HasuraFileField, HasuraFilesField,
+  HtmlField, HasuraFileField, HasuraFilesField, ApolloRemoteAutocomplete,
 } from './components';
 
 export default {
@@ -45,4 +45,8 @@ export default {
   html: { component: HtmlField },
   file: { component: HasuraFileField },
   files: { component: HasuraFilesField },
+  remote: {
+    component: ApolloRemoteAutocomplete,
+    methods: ['onResponse'],
+  },
 };

@@ -8,6 +8,26 @@ export default {
       type: String,
       required: true,
     },
+    itemValue: {
+      type: String,
+      default: 'value',
+    },
+    itemText: {
+      type: String,
+      default: 'text',
+    },
+    rules: {
+      type: Array,
+      default: () => [],
+    },
+    outlined: {
+      type: Boolean,
+      default: false,
+    },
+    onResponse: {
+      type: Function,
+      default: (items) => items,
+    },
   },
   data() {
     return {
@@ -46,8 +66,8 @@ export default {
   render(createElement) {
     return createElement(VAutocomplete, {
       props: {
-        ...this.$attrs,
-        items: this.items,
+        ...this.$props,
+        items: this.onResponse(this.items),
         loading: this.$apollo.loading,
       },
       on: {

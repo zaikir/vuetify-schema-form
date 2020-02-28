@@ -124,7 +124,6 @@ export default {
         return;
       }
 
-
       const buildUpdateFileMutation = (id) => `update${id}: update_${this.source}(where: {id: {_eq: $id${id}}}, _set: {sort: ${id}}) {
         affected_rows
       }`;
