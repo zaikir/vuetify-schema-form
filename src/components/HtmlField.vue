@@ -5,16 +5,19 @@
       {{ label }}
     </v-subheader>
     <editor v-if="!disabled" ref="editor" v-model="content" class="html-editor" :init="options" />
-    <div v-else class="html-editor" v-html="content" />
+    <div v-else class="html-editor" v-html="content"></div>
+    <validation-message v-if="required && isMounted" :value="content && content.replace(emptyString, '').length"/>
   </div>
 </template>
 
 <script>
 import Editor from '@tinymce/tinymce-vue';
+import ValidationMessage from './ValidationMessage.vue';
 
 export default {
   components: {
     Editor,
+    ValidationMessage,
   },
   props: {
     value: {
@@ -59,6 +62,15 @@ export default {
   },
   data() {
     return {
+      emptyString: `<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+</body>
+</html>`,
+      isMounted: false,
       content: '',
       options: {
         language: this.language,
@@ -154,6 +166,9 @@ export default {
   },
   mounted() {
     this.content = this.value;
+    setTimeout(() => {
+      this.isMounted = true;
+    }, 1000);
   },
 };
 </script>
