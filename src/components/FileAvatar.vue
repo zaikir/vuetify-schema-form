@@ -5,7 +5,7 @@
       @click="openLink(file)"
       :ripple="false">
       <v-card-text>
-        <div class="d-flex justify-center align-center" style="position:relative;">
+        <div v-if="!loading" class="d-flex justify-center align-center" style="position:relative;">
           <v-img
             v-if="fileType === 'image'"
             :src="file.url"
@@ -47,6 +47,13 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </div>
+        <v-progress-circular
+          v-else
+          :size="30"
+          :width="3"
+          color="primary"
+          indeterminate
+        />
         <div class="pt-2 px-2" :style="`max-width: ${width}px;`">
           <span class="subtitle-2">{{ file.name }}</span>
         </div>
@@ -69,6 +76,10 @@ export default {
       required: true,
     },
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
       type: Boolean,
       default: false,
     },

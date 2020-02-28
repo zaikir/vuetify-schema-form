@@ -14,17 +14,25 @@
         <validation-message v-if="required" :value="files && files.length"/>
     </v-col>
     <v-col cols="12" style="margin-top: -14px;">
-      <v-row>
-        <v-col v-for="(file, i) in files.filter(x => !x.isRemoved)" :key="i" cols="auto">
+      <draggable
+        :list="files"
+        group="files"
+        class="row"
+        :class="$vuetify.breakpoint.xsOnly ? 'd-flex justify-center' : ''"
+        :disabled="loading || disabled || $vuetify.breakpoint.smAndDown"
+        @change="onReordered"
+      >
+        <v-col v-for="(file, i) in files" :key="i" cols="auto">
           <file-avatar :file="file" :disabled="disabled" @remove="removeFile"/>
         </v-col>
-      </v-row>
+      </draggable>
     </v-col>
   </v-row>
 </template>
 <script>
 
 import gql from 'graphql-tag';
+import Draggable from 'vuedraggable';
 import DropzoneArea from './DropzoneArea.vue';
 import FileAvatar from './FileAvatar.vue';
 import ValidationMessage from './ValidationMessage.vue';
@@ -34,6 +42,7 @@ export default {
     DropzoneArea,
     FileAvatar,
     ValidationMessage,
+    Draggable,
   },
   props: {
     foreignKey: {
@@ -104,9 +113,32 @@ export default {
   data() {
     return {
       files: [],
+      loadingIds: [],
+      loading: false,
     };
   },
   methods: {
+    onReordered(event = {}) {
+      const { moved } = event;
+      if (!moved) {
+        return;
+      }
+
+
+      const buildUpdateFileMutation = (id) => `update${id}: update_${this.source}(where: {id: {_eq: $id${id}}}, _set: {sort: ${id}}) {
+        affected_rows
+      }`;
+
+      const definition = this.files.map((f, id) => `$id${id}: ${this.foreignKeyType}`).join(',');
+      this.$apollo.mutate({
+        mutation: gql`mutation RemoveFile(${definition}) {
+           ${this.files.reduce((acc, item, id) => acc + buildUpdateFileMutation(id), '')}
+        }`,
+        variables: Object.assign({}, ...this.files.map((f, id) => ({
+          [`id${id}`]: f.id,
+        }))),
+      });
+    },
     async refreshQuery() {
       // ToDo: optimize it
       const apollo = this.$apollo.provider.defaultClient;
