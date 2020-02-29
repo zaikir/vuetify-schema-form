@@ -29,7 +29,10 @@ export default {
   number: { component: NumberField, postProcess: (val) => parseFloat(val) },
   int: { component: IntegerField, postProcess: (val) => parseInt(val, 10) },
   password: { component: PasswordField },
-  phone: { component: PhoneField },
+  phone: {
+    component: PhoneField,
+    postProcessProps: ({ props }) => ({ props, attrs: props }),
+  },
   email: { component: EmailField },
   select: { component: SelectField },
   autocomplete: { component: AutocompleteField },

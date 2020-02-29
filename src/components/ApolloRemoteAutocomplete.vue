@@ -4,6 +4,10 @@ import gql from 'graphql-tag';
 
 export default {
   props: {
+    label: {
+      type: String,
+      default: null,
+    },
     query: {
       type: String,
       required: true,
