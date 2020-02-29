@@ -15,6 +15,7 @@ export default (h, tree, item, emitInput, {
 
     const totalContext = { item, ...context };
     const totalProps = Object.assign({}, ...Object.entries(props)
+      .filter(([key]) => !key.startsWith('@'))
       .map(([key, value]) => {
         if (key === 'value') {
           return { value: item[value] };
@@ -22,7 +23,7 @@ export default (h, tree, item, emitInput, {
 
         const resolver = propsResolver[key];
 
-        const actualValue = typeof value === 'function' && !methods.includes(key) && !key.startsWith('@')
+        const actualValue = typeof value === 'function' && !methods.includes(key)
           ? value(totalContext)
           : value;
 

@@ -1,12 +1,6 @@
-<template>
-  <v-text-field
-    v-model="currentValue"
-    v-bind="$attrs"
-  />
-</template>
-
 <script>
 import Cleave from 'cleave.js';
+import { VTextField } from 'vuetify/lib/components';
 
 export default {
   props: {
@@ -33,6 +27,21 @@ export default {
     });
 
     this.cleave.setRawValue(this.value);
+  },
+  render(h) {
+    return h(VTextField, {
+      props: {
+        ...this.$attrs,
+        value: this.currentValue,
+      },
+      on: {
+        ...this.$listeners,
+        input: (val) => {
+          this.currentValue = val;
+        },
+      },
+      // on: this.$listeners,
+    });
   },
   methods: {
     onValueChanged({ target }) {
