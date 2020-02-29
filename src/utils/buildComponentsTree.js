@@ -4,6 +4,7 @@ export default (root, {
   types = defaultTypes,
   defaultType = 'text',
   defaultProps = {},
+  defaultClasses = {},
 } = {}) => {
   function buildNode(element, parentChildResolver = (x) => x) {
     const {
@@ -19,7 +20,10 @@ export default (root, {
         ...defaultProps,
         ...props,
       },
-      class: _class,
+      class: {
+        _class,
+        ...defaultClasses,
+      },
       style,
       children: fields.map((field) => buildNode(field, childResolver)),
       ...rest,

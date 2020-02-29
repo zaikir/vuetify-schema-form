@@ -30,6 +30,12 @@ export default {
         dense: true,
       }),
     },
+    defaultClasses: {
+      type: Object,
+      default: () => ({
+        // 'my-1': true,
+      }),
+    },
     context: {
       type: Object,
       default: () => ({}),
@@ -83,9 +89,14 @@ export default {
     },
   },
   render(h) {
-    const tree = buildComponentsTree(this.root, { defaultProps: this.defaultProps });
-    const renderedTree = renderComponentsTree(h, tree, this.clone, this.context,
-      (item) => this.$emit('input', item), this.$scopedSlots);
+    const tree = buildComponentsTree(this.root, {
+      defaultProps: this.defaultProps, defaultClasses: this.defaultClasses,
+    });
+    const renderedTree = renderComponentsTree(h, tree, this.clone,
+      (item) => this.$emit('input', item), {
+        context: this.context,
+        scopedSlots: this.$scopedSlots,
+      });
 
     return h(VForm,
       { props: { lazyValidation: true }, ref: 'editForm' },

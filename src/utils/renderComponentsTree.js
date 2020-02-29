@@ -1,6 +1,9 @@
 import defaultPropsResolver from '../defaultPropsResolver';
 
-export default (h, tree, item, context = {}, emitInput, scopedSlots, {
+export default (h, tree, item, emitInput, {
+  context = {},
+  scopedSlots = {},
+  slots = {},
   propsResolver = defaultPropsResolver,
 } = {}) => {
   function renderNode(node) {
@@ -19,20 +22,27 @@ export default (h, tree, item, context = {}, emitInput, scopedSlots, {
 
         const resolver = propsResolver[key];
 
-        const actualValue = typeof value === 'function' && !methods.includes(key) ? value(totalContext) : value;
+        const actualValue = typeof value === 'function' && !methods.includes(key) && !key.startsWith('@')
+          ? value(totalContext)
+          : value;
+
         return resolver
           ? { ...resolver(actualValue, props) }
           : ({ [key]: actualValue });
       }));
 
+    const events = Object.keys(props).filter((prop) => prop.startsWith('@'));
     return props.value && scopedSlots[`field.${props.value}`]
       ? scopedSlots[`field.${props.value}`](totalContext)
       : h(component, {
         ...postProcessProps({ props: totalProps, ...totalContext }),
         class: _class,
         style,
-        ...props.value && {
-          on: {
+        on: {
+          ...Object.assign({}, ...events.map((event) => ({
+            [`${event.replace('@', '')}`]: props[event],
+          }))),
+          ...props.value !== undefined && {
             change(event) {
               if (event !== undefined && (!event || !event.target)) {
                 emitInput({
@@ -43,7 +53,10 @@ export default (h, tree, item, context = {}, emitInput, scopedSlots, {
             },
           },
         },
-      }, children.map((child) => renderNode(child)));
+      }, [
+        slots[`field.${props.value}`] && slots[`field.${props.value}`].map((func) => func()),
+        ...children.map((child) => renderNode(child)),
+      ]);
   }
 
   return renderNode(tree);

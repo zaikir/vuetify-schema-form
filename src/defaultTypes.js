@@ -6,6 +6,7 @@ import {
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
   RadioGroupField, DateField, DateTimeField, SlugField,
   HtmlField, HasuraFileField, HasuraFilesField, ApolloRemoteAutocomplete,
+  ArrayField,
 } from './components';
 
 export default {
@@ -21,6 +22,7 @@ export default {
         component: VCol, type: 'col', props, children: [child],
       };
     },
+    postProcessProps: ({ props, item }) => ({ props: { ...props, item } }),
   },
   text: { component: VTextField },
   textArea: { component: VTextarea },
@@ -49,4 +51,5 @@ export default {
     component: ApolloRemoteAutocomplete,
     methods: ['onResponse'],
   },
+  array: { component: ArrayField },
 };

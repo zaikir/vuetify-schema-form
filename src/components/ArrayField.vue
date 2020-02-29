@@ -1,9 +1,8 @@
 <script>
-import {
-  VBtn, VIcon, VTextField, VSubheader,
-} from 'vuetify/lib/components';
+import { buildComponentsTree, renderComponentsTree } from '../utils';
 
 export default {
+  functional: true,
   props: {
     value: {
       type: Array,
@@ -14,81 +13,48 @@ export default {
       default: 'text',
     },
   },
-  data() {
-    return {
-      input: null,
-    };
-  },
-  render(createElement) {
-    const items = this.value || [];
-    return createElement('div', {
-      class: 'd-flex flex-column',
-    },
-    [
-      createElement(VSubheader, { class: 'caption pl-0', style: 'height: 4px;' }, this.$attrs.label),
-      createElement(VTextField, {
-        props: {
-          ...this.$attrs,
-          label: undefined,
-          dense: true,
-          type: this.inputType,
-          placeholder: this.$attrs.placeholderNew || 'Введите значение',
-          value: this.input,
-        },
-        on: {
-          input: (val) => {
-            this.input = val;
-          },
-        },
-      }, [
-        createElement(VBtn, {
-          props: { icon: true },
-          slot: 'prepend-inner',
-          on: {
-            click: () => {
-              if (this.input && this.input.length) {
-                this.$emit('input', [this.input, ...items]);
-                this.$emit('change', [this.input, ...items]);
+  render(h, context) {
+    const { data } = context;
 
-                this.input = null;
-              }
-            },
-          },
-        }, [
-          createElement(VIcon, 'add'),
-        ]),
-      ]),
-      ...items.map((item, id) => createElement(VTextField, {
-        props: {
-          ...this.$attrs,
-          value: item,
-          dense: true,
-          type: this.inputType,
-          label: undefined,
+    const emit = (newVal) => {
+      if (data.on.change) { data.on.change(newVal); }
+      if (data.on.input) { data.on.input(newVal); }
+    };
+
+    if (!data.props.value || !data.props.value.length) {
+      emit([null]);
+    }
+
+    const items = data.props.value || [];
+    const root = {
+      type: 'row',
+      fields: items.map((item, i) => ({
+        ...data.props,
+        ...data.props.inputProps || {},
+        type: data.props.inputType,
+        value: i.toString(),
+        appendOuterIcon: i === 0 ? 'add' : 'remove',
+        label: i !== 0 ? `${data.props.label || ''} #${i + 1}` : `${data.props.label || ''}`,
+        '@click:append-outer': () => {
+          if (i === 0) {
+            emit([...items, null]);
+          } else {
+            emit(items.filter((x, id) => i !== id));
+          }
         },
-        on: {
-          input: (val) => {
-            const newItems = items.map((x, i) => (i === id ? val : x));
-            this.$emit('input', newItems);
-            this.$emit('change', newItems);
-          },
-        },
-      }, [
-        createElement(VBtn, {
-          props: { icon: true },
-          slot: 'prepend-inner',
-          on: {
-            click: () => {
-              const newItems = items.filter((x, i) => i !== id);
-              this.$emit('input', newItems);
-              this.$emit('change', newItems);
-            },
-          },
-        }, [
-          createElement(VIcon, 'remove'),
-        ]),
-      ])),
-    ]);
+      })),
+    };
+
+    const model = Object.assign({}, ...items.map((x, i) => ({ [i]: x })));
+
+    const tree = buildComponentsTree(root, { defaultProps: { dense: true } });
+    const renderedTree = renderComponentsTree(h, tree, model, (val) => {
+      emit(Object.values(val));
+    }, {
+      context: data.props.context,
+    });
+
+    return renderedTree;
   },
 };
 </script>
