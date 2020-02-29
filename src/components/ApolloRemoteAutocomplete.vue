@@ -1,67 +1,92 @@
 <script>
-import { VAutocomplete } from 'vuetify/lib/components'
-import gql from 'graphql-tag'
+import { VAutocomplete } from 'vuetify/lib/components';
+import gql from 'graphql-tag';
+
 export default {
   props: {
+    label: {
+      type: String,
+      default: null,
+    },
     query: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
+    itemValue: {
+      type: String,
+      default: 'value',
+    },
+    itemText: {
+      type: String,
+      default: 'text',
+    },
+    rules: {
+      type: Array,
+      default: () => [],
+    },
+    outlined: {
+      type: Boolean,
+      default: false,
+    },
+    onResponse: {
+      type: Function,
+      default: (items) => items,
+    },
   },
-  data () {
+  data() {
     return {
       items: [],
       search: '',
-      smartQuery: null
-    }
+      smartQuery: null,
+    };
   },
   watch: {
     query: {
-      handler () {
-        const query = gql(`query { ${this.query} }`)
-        const queryName = query.definitions[0].selectionSet.selections[0].name.value
+      handler() {
+        const query = gql(`query { ${this.query} }`);
+        const queryName = query.definitions[0].selectionSet.selections[0].name.value;
         this.$apollo.addSmartQuery('items', {
           query,
-          update (data) {
-            return data[queryName]
-          }
-        })
+          update(data) {
+            return data[queryName];
+          },
+        });
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
-    debounceSearch (newSearch) {
+    debounceSearch(newSearch) {
       if (this.timeout) {
-        clearTimeout(this.timeout)
-        this.timeout = null
+        clearTimeout(this.timeout);
+        this.timeout = null;
       }
 
       this.timeout = setTimeout(() => {
-        this.search = newSearch
-      }, 5000)
-    }
+        this.search = newSearch;
+      }, 5000);
+    },
   },
-  render (createElement) {
+  render(createElement) {
     return createElement(VAutocomplete, {
       props: {
-        ...this.$attrs,
-        items: this.items,
-        loading: this.$apollo.loading
+        ...this.$props,
+        items: this.onResponse(this.items),
+        loading: this.$apollo.loading,
       },
       on: {
         'update:search-input': (val) => {
-          this.debounceSearch(val)
+          this.debounceSearch(val);
         },
         input: (val) => {
-          this.$emit('input', val)
+          this.$emit('input', val);
         },
         change: (val) => {
-          this.$emit('change', val)
-        }
-      }
-    })
-  }
-}
+          this.$emit('change', val);
+        },
+      },
+    });
+  },
+};
 
 </script>

@@ -46,59 +46,59 @@ export default {
   props: {
     value: {
       type: Boolean,
-      required: true
+      required: true,
     },
     title: {
       type: String,
       required: false,
-      default: 'Внимание!'
+      default: 'Внимание!',
     },
     color: {
       type: String,
-      default: 'primary'
+      default: 'primary',
     },
     icon: {
       type: String,
-      default: 'warning'
+      default: 'mdi-alert',
     },
     text: {
       type: String,
-      default: 'Вы уверены?'
+      default: 'Вы уверены?',
     },
     confirmLabel: {
       type: String,
       required: false,
-      default: 'Да'
+      default: 'Да',
     },
     declineLabel: {
       type: String,
       required: false,
-      default: 'Нет'
-    }
+      default: 'Нет',
+    },
   },
-  data () {
+  data() {
     return {
-      valueCopy: false
-    }
+      valueCopy: false,
+    };
   },
   watch: {
-    value () {
-      this.valueCopy = this.value
+    value() {
+      this.valueCopy = this.value;
     },
-    valueCopy () {
-      this.$emit('input', this.valueCopy)
-    }
+    valueCopy() {
+      this.$emit('input', this.valueCopy);
+    },
   },
-  created () {
-    this.valueCopy = this.value
+  created() {
+    this.valueCopy = this.value;
   },
   methods: {
-    confirm () {
-      this.$emit('confirm')
+    confirm() {
+      this.$emit('confirm');
     },
-    decline () {
-      this.$emit('decline')
-    }
-  }
-}
+    decline() {
+      this.$emit('decline');
+    },
+  },
+};
 </script>

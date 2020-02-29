@@ -1,21 +1,30 @@
 <script>
-import { VTextField } from 'vuetify/lib/components'
-import { attrsToProps } from '../utils'
+import MaskedInput from './MaskedInput.vue';
 
 export default {
   functional: true,
-  render (createElement, context) {
-    const data = attrsToProps(context.data)
-    return createElement(VTextField, {
+  render(createElement, context) {
+    const { data } = context;
+    return createElement(MaskedInput, {
       ...data,
       props: {
-        ...data.props,
+        value: data.props.value,
+        mask: {
+          numericOnly: true,
+          blocks: [0, 3, 0, 3, 4],
+          delimiters: ['(', ')', ' ', '-'],
+        },
+      },
+      attrs: {
+        prefix: '+7',
+        placeholder: '(###) ###-##-##',
+        ...data.props || {},
+        type: 'tel',
         rules: [
           ...data.props.rules || [],
-          x => !x || x === x.replace(/[^0-9]*/g, '') || 'Неверный формат' // To do: add localization support
-        ]
-      }
-    }, context.children)
-  }
-}
+        ],
+      },
+    }, context.children);
+  },
+};
 </script>

@@ -1,3 +1,2 @@
-export { default as fieldCompiler } from './fieldCompiler'
-export { default as renderComponents } from './renderComponents'
-export { default as attrsToProps } from './attrsToProps'
+export { default as buildComponentsTree } from './buildComponentsTree';
+export { default as renderComponentsTree } from './renderComponentsTree';

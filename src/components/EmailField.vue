@@ -1,22 +1,21 @@
 <script>
-import { VTextField } from 'vuetify/lib/components'
-import EmailValidator from 'email-validator'
-import { attrsToProps } from '../utils'
+import { VTextField } from 'vuetify/lib/components';
+import EmailValidator from 'email-validator';
 
 export default {
   functional: true,
-  render (createElement, context) {
-    const data = attrsToProps(context.data)
+  render(createElement, context) {
+    const { data } = context;
     return createElement(VTextField, {
       ...data,
       props: {
-        ...data.props,
+        ...data.props || {},
         rules: [
           ...data.props.rules || [],
-          x => !x || EmailValidator.validate(x) || 'Неверный формат' // To do: add localization support
-        ]
-      }
-    }, context.children)
-  }
-}
+          (x) => !x || EmailValidator.validate(x) || 'Неверный формат', // ToDo: localization
+        ],
+      },
+    }, context.children);
+  },
+};
 </script>

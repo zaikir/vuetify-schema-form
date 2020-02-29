@@ -1,29 +1,20 @@
 <script>
-import { VCheckbox } from 'vuetify/lib/components'
-import { attrsToProps } from '../utils'
+import { VCheckbox } from 'vuetify/lib/components';
 
 export default {
   functional: true,
-  render (createElement, context) {
-    const data = attrsToProps(context.data)
+  render(createElement, context) {
     return createElement(VCheckbox, {
-      ...data,
+      ...context.data,
       props: {
-        ...data.props || [],
-        inputValue: data.props.value
+        ...context.data.props || {},
+        inputValue: context.data.props.value,
       },
       class: {
         'mt-0': true,
-        ...data.class || {}
+        ...context.data.class || {},
       },
-      on: {
-        ...data.on || {},
-        change (val) {
-          data.on.change && data.on.change(!!val)
-          data.on.input && data.on.input(!!val)
-        }
-      }
-    }, context.children)
-  }
-}
+    }, context.children);
+  },
+};
 </script>

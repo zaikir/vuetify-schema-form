@@ -1,68 +1,69 @@
 <script>
-import { VDatePicker, VMenu, VTextField } from 'vuetify/lib/components'
+import { VDatePicker, VMenu, VTextField } from 'vuetify/lib/components';
 
 export default {
   props: {
-    value: String
+    value: String,
   },
-  data () {
+  data() {
     return {
-      currentValue: undefined
-    }
+      currentValue: undefined,
+    };
   },
   watch: {
-    value (val = null) {
-      this.currentValue = val
+    value(val = null) {
+      this.currentValue = val;
     },
-    currentValue (val) {
-      const actualVal = val && val.length ? val : null
-      this.$emit('input', actualVal)
-      this.$emit('change', actualVal)
-    }
+    currentValue(val) {
+      const actualVal = val && val.length ? val : null;
+      this.$emit('input', actualVal);
+      this.$emit('change', actualVal);
+    },
   },
-  mounted () {
-    this.currentValue = this.value
+  mounted() {
+    this.currentValue = this.value;
   },
-  render (createElement) {
-    const createTextField = on => createElement(VTextField, {
+  render(createElement) {
+    console.log(this.value);
+    const createTextField = (on) => createElement(VTextField, {
       props: {
         ...this.$attrs,
-        value: this.currentValue
+        value: this.currentValue,
       },
       attrs: {
         max: '9999-12-31',
         maxlength: '4',
-        required: !!this.$attrs.required
+        required: !!this.$attrs.required,
+        type: 'date',
       },
       class: {
         ...this.class || {},
-        'gf-date-field': true
+        'vdk-date-field': true,
       },
       on: {
         ...on,
         input: (val) => {
-          this.currentValue = val
-        }
-      }
-    })
+          this.currentValue = val;
+        },
+      },
+    });
 
     if (!this.$vuetify.breakpoint.xsOnly) {
       return createElement(VMenu, {
         props: {
-          closeOnContentClick: false,
           transition: 'scale-transition',
           offsetY: true,
           minWidth: '290px',
           maxWidth: '290px',
           dense: true,
-          ...this.$attrs.menuProps || {}
+          ...this.$attrs.menuProps || {},
         },
         scopedSlots: {
           activator: ({ on }) => createTextField({
             ...on,
-            ...this.$listeners
-          })
-        }
+            ...this.$listeners,
+          }),
+        },
       }, [
         !this.$vuetify.breakpoint.xsOnly && createElement(VDatePicker, {
           props: {
@@ -70,25 +71,30 @@ export default {
             firstDayOfWeek: 1,
             dense: true,
             ...this.$attrs.datePickerProps || {},
-            value: this.currentValue
+            value: this.currentValue,
           },
           on: {
             input: (val) => {
-              this.currentValue = val
-            }
-          }
-        })
-      ])
-    } else {
-      return createTextField(this.$listeners)
+              this.currentValue = val;
+            },
+          },
+        }),
+      ]);
     }
-  }
-}
+    return createTextField(this.$listeners);
+  },
+};
 </script>
 <style>
-.gf-date-field input[type="date"]::-webkit-inner-spin-button,
-.gf-date-field input[type="date"]::-webkit-calendar-picker-indicator {
+.vdk-date-field input[type="date"]::-webkit-inner-spin-button,
+.vdk-date-field input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
 }
+
+.vdk-date-field.v-input--dense input {
+  padding-top: 3px !important;
+  padding-bottom: 1px !important;
+}
+
 </style>

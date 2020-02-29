@@ -47,55 +47,7 @@
         @change="onReordered"
       >
         <v-col v-for="(file, i) in value.filter(x => !x.isRemoved)" :key="i" cols="auto">
-          <v-hover v-slot:default="{ hover }">
-            <v-card :class="'pa-1 file-card elevation-' + (!hover ? 1 : 6)" @click="openLink(file)" @click.middle="openLink(file, true)">
-              <v-img
-                v-if="isImage(file.type)"
-                :src="file.url"
-                class="white--text align-end"
-                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                width="150"
-                height="100"
-              />
-              <v-img
-                v-else-if="file.type === '.pdf'"
-                src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                class="white--text align-end"
-                width="150"
-                contain
-                height="100"
-              />
-              <v-img
-                v-else-if="file.type === '.doc' || file.type === '.docx'"
-                src="https://upload.wikimedia.org/wikipedia/commons/f/fb/.docx_icon.svg"
-                class="white--text align-end"
-                width="150"
-                contain
-                height="100"
-              />
-              <v-img
-                v-else
-                src="https://www.svgrepo.com/show/94277/blank-file.svg"
-                class="white--text align-end"
-                width="150"
-                contain
-                height="100"
-              />
-              <v-card-title class=" pt-2 pl-2 pr-1" style="max-width: 150px;">
-                <span class="subtitle-2">{{ file.name }}</span><br>
-                <!-- <span class="caption">{{ formatDate(file.created) }}</span> -->
-                <v-spacer />
-                <v-tooltip v-if="!disabled" bottom>
-                  <template #activator="{on}">
-                    <v-btn class="ml-auto" icon small v-on="on" @click.prevent.stop="processedItem=file; isConfirmationDialogOpened = true;">
-                      <v-icon>mdi-delete</v-icon>
-                    </v-btn>
-                  </template>
-                  Удалить
-                </v-tooltip>
-              </v-card-title>
-            </v-card>
-          </v-hover>
+          <file-avatar :file="file" :disabled="disabled"/>
         </v-col>
       </draggable>
     </v-col>
@@ -161,59 +113,61 @@
 </template>
 <script>
 
-import VueDropzone from 'nuxt-dropzone'
-import draggable from 'vuedraggable'
-import moment from 'moment'
-import ConfirmationDialog from './ConfirmationDialog'
+import VueDropzone from 'nuxt-dropzone';
+import draggable from 'vuedraggable';
+import moment from 'moment';
+import ConfirmationDialog from './ConfirmationDialog.vue';
+import FileAvatar from './FileAvatar.vue';
 
 export default {
   components: {
     VueDropzone,
     ConfirmationDialog,
-    draggable
+    FileAvatar,
+    draggable,
   },
   props: {
     value: {
       type: Array,
       required: false,
-      default: () => []
+      default: () => [],
     },
     url: {
       type: String,
-      default: '/api/uploads'
+      default: '/api/uploads',
     },
     height: {
       type: Number,
       required: false,
-      default: 100
+      default: 100,
     },
     acceptedFiles: {
       type: String,
       required: false,
-      default: '*'
+      default: '*',
     },
     label: {
       type: String,
       required: false,
-      default: null
+      default: null,
     },
     rules: {
       type: Array,
       required: false,
-      default: () => []
+      default: () => [],
     },
     disabled: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
     },
     outlined: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
       isLoading: false,
       isConfirmationDialogOpened: false,
@@ -222,99 +176,97 @@ export default {
       newFileName: '',
       isFileModalOpened: false,
       windowSize: {},
-      queue: []
-    }
+      queue: [],
+    };
   },
   computed: {
-    dropzoneOptions () {
+    dropzoneOptions() {
       return {
         dictDefaultMessage: 'Перетащите сюда файл',
         url: this.url,
-        thumbnailWidth: 150
-      }
-    }
+        thumbnailWidth: 150,
+      };
+    },
   },
-  mounted () {
-    this.windowSize = { width: window.innerWidth, height: window.innerHeight }
+  mounted() {
+    this.windowSize = { width: window.innerWidth, height: window.innerHeight };
 
     if (window) {
-      window.addEventListener('dragover', function (e) {
-        e = e || event
-        e.preventDefault()
-      }, false)
-      window.addEventListener('drop', function (e) {
-        e = e || event
-        e.preventDefault()
-      }, false)
+      window.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      }, false);
+      window.addEventListener('drop', (e) => {
+        e.preventDefault();
+      }, false);
     }
   },
   methods: {
-    onWindowResized () {
-      this.windowSize = { width: window.innerWidth, height: window.innerHeight }
+    onWindowResized() {
+      this.windowSize = { width: window.innerWidth, height: window.innerHeight };
     },
-    formatDate (date) {
-      return date ? moment(date).format('DD.MM.YYYY') : ''
+    formatDate(date) {
+      return date ? moment(date).format('DD.MM.YYYY') : '';
     },
-    onReordered (event) {
-      const { moved } = event || {}
+    onReordered(event) {
+      const { moved } = event || {};
 
       if (moved) {
-        const oldItems = [...this.value]
-        const fromElement = oldItems.filter(x => !x.isRemoved)[moved.oldIndex]
-        const newElement = oldItems.filter(x => !x.isRemoved)[moved.newIndex]
-        const oldIndex = oldItems.indexOf(fromElement)
-        const newIndex = oldItems.indexOf(newElement)
+        const oldItems = [...this.value];
+        const fromElement = oldItems.filter((x) => !x.isRemoved)[moved.oldIndex];
+        const newElement = oldItems.filter((x) => !x.isRemoved)[moved.newIndex];
+        const oldIndex = oldItems.indexOf(fromElement);
+        const newIndex = oldItems.indexOf(newElement);
 
-        const temp = oldItems[oldIndex]
-        oldItems[oldIndex] = oldItems[newIndex]
-        oldItems[newIndex] = temp
+        const temp = oldItems[oldIndex];
+        oldItems[oldIndex] = oldItems[newIndex];
+        oldItems[newIndex] = temp;
 
-        this.$emit('input', oldItems)
+        this.$emit('input', oldItems);
       }
     },
-    removeFile () {
-      this.processedItem.isRemoved = true
-      this.isConfirmationDialogOpened = false
+    removeFile() {
+      this.processedItem.isRemoved = true;
+      this.isConfirmationDialogOpened = false;
 
-      this.$emit('input', [...this.value])
+      this.$emit('input', [...this.value]);
     },
-    openLink (file, modal) {
+    openLink(file, modal) {
       if (!modal) {
-        this.processedItem = file
-        this.isFileModalOpened = true
+        this.processedItem = file;
+        this.isFileModalOpened = true;
       } else {
-        window.open(file.url, '_blank')
+        window.open(file.url, '_blank');
       }
     },
-    isImage (type) {
-      return type === '.png' || type === '.jpg' || type === '.jpeg' || type === '.gif'
+    isImage(type) {
+      return type === '.png' || type === '.jpg' || type === '.jpeg' || type === '.gif';
     },
-    startUploading (file, response) {
-      this.isLoading = true
+    startUploading() {
+      this.isLoading = true;
     },
-    saveFile () {
+    saveFile() {
       if (!this.$refs.editFileForm.validate()) {
-        return
+        return;
       }
 
-      this.isLoading = false
+      this.isLoading = false;
       this.$emit('input', [...this.value, {
         ...this.response,
         name: this.newFileName,
-        created: moment().toDate()
-      }])
-      this.isEditDialogOpened = false
+        created: moment().toDate(),
+      }]);
+      this.isEditDialogOpened = false;
     },
-    successfullyUploaded (file, response) {
-      this.isLoading = false
+    successfullyUploaded(file, response) {
+      this.isLoading = false;
       this.$emit('input', [...this.value, {
         ...response,
         name: file.name,
-        created: moment().toDate()
-      }])
-    }
-  }
-}
+        created: moment().toDate(),
+      }]);
+    },
+  },
+};
 </script>
 <style>
   .dropzone-custom-content {
@@ -352,12 +304,7 @@ export default {
    display: none;
  }
 
-  .v-card--reveal {
-    /* align-items: center;
-    bottom: 0;
-    justify-content: center;
-    opacity: .2;
-    position: absolute; */
+  .drag-and-drop-editor .v-card--reveal {
     width: 100%;
   }
 

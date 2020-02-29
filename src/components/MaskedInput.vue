@@ -1,0 +1,67 @@
+<script>
+import Cleave from 'cleave.js';
+import { VTextField } from 'vuetify/lib/components';
+
+export default {
+  props: {
+    value: {
+      type: [String, Number],
+      required: false,
+      default: null,
+    },
+    mask: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      currentValue: this.value,
+      isChanged: false,
+    };
+  },
+  watch: {
+    value(val) {
+      this.cleave.setRawValue(val);
+    },
+  },
+  mounted() {
+    this.cleave = new Cleave(this.$el.querySelector('input'), {
+      ...this.mask,
+      onValueChanged: this.onValueChanged.bind(this),
+    });
+
+    this.cleave.setRawValue(this.value);
+  },
+  render(h) {
+    return h(VTextField, {
+      props: {
+        ...this.$attrs,
+        value: this.currentValue,
+      },
+      on: {
+        ...this.$listeners,
+        change: () => {},
+        input: (val) => {
+          this.currentValue = val;
+        },
+      },
+    });
+  },
+  methods: {
+    onValueChanged({ target }) {
+      this.$nextTick(() => {
+        if (target.value && target.value.length > 0) {
+          this.isChanged = true;
+        }
+
+        if (this.isChanged) {
+          this.currentValue = target.value;
+          this.$emit('input', target.rawValue);
+          this.$emit('change', target.rawValue);
+        }
+      });
+    },
+  },
+};
+</script>
