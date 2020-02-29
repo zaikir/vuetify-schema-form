@@ -36,6 +36,7 @@ export default {
       },
       on: {
         ...this.$listeners,
+        change: undefined,
         input: (val) => {
           this.currentValue = val;
         },
