@@ -20,6 +20,11 @@ export default {
       isChanged: false,
     };
   },
+  watch: {
+    value(val) {
+      this.cleave.setRawValue(val);
+    },
+  },
   mounted() {
     this.cleave = new Cleave(this.$el.querySelector('input'), {
       ...this.mask,
@@ -41,7 +46,6 @@ export default {
           this.currentValue = val;
         },
       },
-      // on: this.$listeners,
     });
   },
   methods: {
