@@ -91,13 +91,14 @@ export default {
     },
   },
   render(h) {
+    const params = Vue.$schemaForm || {};
     const options = {
       types,
       propsResolver,
-      ...Vue.$schemaForm,
-      defaultType: this.defaultType || Vue.$schemaForm.defaultType || 'text',
-      globalProps: this.globalProps || Vue.$schemaForm.globalProps || { dense: true },
-      globalClasses: this.globalClasses || Vue.$schemaForm.globalClasses || {},
+      ...params,
+      defaultType: this.defaultType || params.defaultType || 'text',
+      globalProps: this.globalProps || params.globalProps || { dense: true },
+      globalClasses: this.globalClasses || params.globalClasses || {},
     };
 
     const tree = buildComponentsTree(this.root, options);
