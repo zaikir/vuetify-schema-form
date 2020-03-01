@@ -47,7 +47,7 @@ export default {
 
     const model = Object.assign({}, ...items.map((x, i) => ({ [i]: x })));
 
-    const tree = buildComponentsTree(root, { defaultProps: { dense: true } });
+    const tree = buildComponentsTree(root, { globalProps: { dense: true } });
     const renderedTree = renderComponentsTree(h, tree, model, (val) => {
       emit(Object.values(val));
     }, {

@@ -1,10 +1,8 @@
-import defaultPropsResolver from '../defaultPropsResolver';
-
 export default (h, tree, item, emitInput, {
   context = {},
   scopedSlots = {},
   slots = {},
-  propsResolver = defaultPropsResolver,
+  propsResolver,
 } = {}) => {
   function renderNode(node) {
     const {

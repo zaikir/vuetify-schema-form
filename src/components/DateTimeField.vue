@@ -1,6 +1,6 @@
 <script>
 import { VDatePicker, VMenu, VTextField } from 'vuetify/lib/components';
-import moment from 'moment-mini';
+import moment from 'moment';
 
 export default {
   props: {

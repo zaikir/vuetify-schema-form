@@ -1,10 +1,8 @@
-import defaultTypes from '../defaultTypes';
-
 export default (root, {
-  types = defaultTypes,
-  defaultType = 'text',
-  defaultProps = {},
-  defaultClasses = {},
+  types,
+  defaultType,
+  globalProps,
+  globalClasses,
 } = {}) => {
   function buildNode(element, parentChildResolver = (x) => x) {
     const {
@@ -17,12 +15,12 @@ export default (root, {
       component,
       type,
       props: {
-        ...defaultProps,
+        ...globalProps,
         ...props,
       },
       class: {
         _class,
-        ...defaultClasses,
+        ...globalClasses,
       },
       style,
       children: fields.map((field) => buildNode(field, childResolver)),

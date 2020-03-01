@@ -1,6 +1,9 @@
 <script>
+import Vue from 'vue';
 import clone from 'clone';
 import { VForm, VContainer } from 'vuetify/lib/components';
+import types from './types';
+import propsResolver from './propsResolver';
 import { buildComponentsTree, renderComponentsTree } from './utils';
 
 function getFields(node) {
@@ -20,21 +23,19 @@ export default {
     },
     rootNode: {
       type: Object,
-      default: () => ({
-        type: 'row',
-      }),
+      default: null,
     },
-    defaultProps: {
-      type: Object,
-      default: () => ({
-        dense: true,
-      }),
+    defaultType: {
+      type: String,
+      default: null,
     },
-    defaultClasses: {
+    globalProps: {
       type: Object,
-      default: () => ({
-        // 'my-1': true,
-      }),
+      default: null,
+    },
+    globalClasses: {
+      type: Object,
+      default: null,
     },
     context: {
       type: Object,
@@ -48,7 +49,8 @@ export default {
   },
   computed: {
     root() {
-      return !this.fields.length ? this.fields : { ...this.rootNode, fields: this.fields };
+      const rootNode = this.rootNode || (Vue.$schemaForm && Vue.$schemaForm.rootNode) || { type: 'row' };
+      return !this.fields.length ? this.fields : { ...rootNode, fields: this.fields };
     },
     objectFields() {
       return getFields(this.root)
@@ -89,13 +91,21 @@ export default {
     },
   },
   render(h) {
-    const tree = buildComponentsTree(this.root, {
-      defaultProps: this.defaultProps, defaultClasses: this.defaultClasses,
-    });
+    const options = {
+      types,
+      propsResolver,
+      ...Vue.$schemaForm,
+      defaultType: this.defaultType || Vue.$schemaForm.defaultType || 'text',
+      globalProps: this.globalProps || Vue.$schemaForm.globalProps || { dense: true },
+      globalClasses: this.globalClasses || Vue.$schemaForm.globalClasses || {},
+    };
+
+    const tree = buildComponentsTree(this.root, options);
     const renderedTree = renderComponentsTree(h, tree, this.clone,
       (item) => this.$emit('input', item), {
         context: this.context,
         scopedSlots: this.$scopedSlots,
+        ...options,
       });
 
     return h(VForm,
