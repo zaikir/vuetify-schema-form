@@ -101,6 +101,7 @@ export default {
       globalClasses: this.globalClasses || params.globalClasses || {},
     };
 
+
     const tree = buildComponentsTree(this.root, options);
     const renderedTree = renderComponentsTree(h, tree, this.clone,
       (item) => this.$emit('input', item), {
