@@ -69,8 +69,11 @@ export default {
   },
   render(createElement) {
     return createElement(VAutocomplete, {
+      class: {
+        'vdk-autocomplete-field': true,
+      },
       props: {
-        ...this.$props,
+        ...this.$attrs,
         items: this.onResponse(this.items),
         loading: this.$apollo.loading,
       },
@@ -90,3 +93,8 @@ export default {
 };
 
 </script>
+<style>
+.vdk-autocomplete-field.v-input--dense .v-select__slot {
+  margin-top: -2px !important;
+}
+</style>

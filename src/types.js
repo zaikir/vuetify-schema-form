@@ -53,6 +53,7 @@ export default {
   remote: {
     component: ApolloRemoteAutocomplete,
     methods: ['onResponse'],
+    postProcessProps: ({ props }) => ({ props, attrs: props }),
   },
   array: { component: ArrayField },
 };
