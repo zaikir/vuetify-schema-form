@@ -55,5 +55,8 @@ export default {
     methods: ['onResponse'],
     postProcessProps: ({ props }) => ({ props, attrs: props }),
   },
-  array: { component: ArrayField },
+  array: {
+    component: ArrayField,
+    postProcessProps: ({ props, options }) => ({ props: { ...props, $options: options } }),
+  },
 };

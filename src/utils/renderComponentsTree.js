@@ -2,8 +2,9 @@ export default (h, tree, item, emitInput, {
   context = {},
   scopedSlots = {},
   slots = {},
-  propsResolver,
+  ...options
 } = {}) => {
+  const { propsResolver } = options;
   function renderNode(node) {
     const {
       component, props, class: _class, style, children, postProcess,
@@ -13,7 +14,7 @@ export default (h, tree, item, emitInput, {
 
     const totalContext = { item, ...context };
     const totalProps = Object.assign({}, ...Object.entries(props)
-      .filter(([key]) => !key.startsWith('@'))
+      .filter(([key]) => !key.startsWith('@') && !key.startsWith('$'))
       .map(([key, value]) => {
         if (key === 'value') {
           return { value: item[value] };
@@ -34,7 +35,7 @@ export default (h, tree, item, emitInput, {
     return props.value && scopedSlots[`field.${props.value}`]
       ? scopedSlots[`field.${props.value}`](totalContext)
       : h(component, {
-        ...postProcessProps({ props: totalProps, ...totalContext }),
+        ...postProcessProps({ props: totalProps, options, ...totalContext }),
         class: _class,
         style,
         on: {

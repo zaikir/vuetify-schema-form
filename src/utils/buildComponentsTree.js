@@ -14,10 +14,7 @@ export default (root, {
     return parentChildResolver({
       component,
       type,
-      props: {
-        ...globalProps,
-        ...props,
-      },
+      props: { ...globalProps, ...props },
       class: {
         _class,
         ...globalClasses,
