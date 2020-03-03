@@ -7,7 +7,7 @@ export default {
   },
   data() {
     return {
-      currentValue: undefined,
+      currentValue: null,
     };
   },
   watch: {
@@ -24,7 +24,6 @@ export default {
     this.currentValue = this.value;
   },
   render(createElement) {
-    console.log(this.value);
     const createTextField = (on) => createElement(VTextField, {
       props: {
         ...this.$attrs,
