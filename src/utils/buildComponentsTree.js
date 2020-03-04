@@ -6,7 +6,7 @@ export default (root, {
 } = {}) => {
   function buildNode(element, parentChildResolver = (x) => x) {
     const {
-      type = defaultType, class: _class, style, fields = [], ...props
+      type = defaultType, class: _class = {}, style, fields = [], ...props
     } = element;
 
     const { component, childResolver, ...rest } = types[type];
@@ -15,10 +15,7 @@ export default (root, {
       component,
       type,
       props: { ...globalProps, ...props },
-      class: {
-        _class,
-        ...globalClasses,
-      },
+      class: { ...globalClasses, ..._class },
       style,
       children: fields.map((field) => buildNode(field, childResolver)),
       ...rest,
