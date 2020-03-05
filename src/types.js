@@ -25,7 +25,10 @@ export default {
     postProcessProps: ({ props, item }) => ({ props: { ...props, item } }),
   },
   text: { component: VTextField },
-  mask: { component: MaskedInput },
+  mask: {
+    component: MaskedInput,
+    postProcessProps: ({ props }) => ({ props, attrs: props }),
+  },
   sheet: { component: VSheet },
   textArea: { component: VTextarea },
   number: { component: NumberField, postProcess: (val) => parseFloat(val) },
