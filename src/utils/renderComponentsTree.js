@@ -45,10 +45,9 @@ export default (h, tree, item, emitInput, {
           ...props.value !== undefined && {
             change(event) {
               if (event !== undefined && (!event || !event.target)) {
-                emitInput({
-                  ...item,
-                  [props.value]: postProcess ? postProcess(event) : event,
-                });
+                // eslint-disable-next-line no-param-reassign
+                item[props.value] = postProcess ? postProcess(event) : event;
+                emitInput(item);
               }
             },
           },
