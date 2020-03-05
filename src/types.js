@@ -1,5 +1,5 @@
 import {
-  VRow, VCol, VTextField, VTextarea,
+  VRow, VCol, VTextField, VTextarea, VSheet,
 } from 'vuetify/lib/components';
 import {
   NumberField, IntegerField, PasswordField, PhoneField, EmailField,
@@ -25,6 +25,7 @@ export default {
     postProcessProps: ({ props, item }) => ({ props: { ...props, item } }),
   },
   text: { component: VTextField },
+  sheet: { component: VSheet },
   textArea: { component: VTextarea },
   number: { component: NumberField, postProcess: (val) => parseFloat(val) },
   int: { component: IntegerField, postProcess: (val) => parseInt(val, 10) },
