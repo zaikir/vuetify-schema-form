@@ -8,6 +8,12 @@ export default {
       type: Array,
       default: () => [],
     },
+    containerProps: {
+      type: Object,
+      default: () => ({
+        noGutters: true,
+      }),
+    },
     inputType: {
       type: String,
       default: 'text',
@@ -28,6 +34,7 @@ export default {
     const items = data.props.value || [];
     const root = {
       type: 'row',
+      ...data.props.containerProps,
       fields: items.map((item, i) => ({
         ...data.props,
         ...data.props.inputProps || {},
