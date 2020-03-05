@@ -1,3 +1,4 @@
+export { default as MaskedInput } from './MaskedInput.vue';
 export { default as EmailField } from './EmailField.vue';
 export { default as PasswordField } from './PasswordField.vue';
 export { default as SelectField } from './SelectField.vue';

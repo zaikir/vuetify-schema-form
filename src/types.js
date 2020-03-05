@@ -6,7 +6,7 @@ import {
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
   RadioGroupField, DateField, DateTimeField, SlugField,
   HtmlField, HasuraFileField, HasuraFilesField, ApolloRemoteAutocomplete,
-  ArrayField,
+  ArrayField, MaskedInput,
 } from './components';
 
 export default {
@@ -25,6 +25,7 @@ export default {
     postProcessProps: ({ props, item }) => ({ props: { ...props, item } }),
   },
   text: { component: VTextField },
+  mask: { component: MaskedInput },
   sheet: { component: VSheet },
   textArea: { component: VTextarea },
   number: { component: NumberField, postProcess: (val) => parseFloat(val) },
