@@ -33,6 +33,10 @@ export default (h, tree, item, emitInput, {
           : ({ [key]: actualValue });
       }));
 
+    if (totalProps.if === false) {
+      return null;
+    }
+
     const events = Object.keys(props).filter((prop) => prop.startsWith('@'));
     return props.value && scopedSlots[`field.${props.value}`]
       ? scopedSlots[`field.${props.value}`](totalContext)
