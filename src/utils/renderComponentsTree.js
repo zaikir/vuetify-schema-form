@@ -9,7 +9,7 @@ export default (h, tree, item, emitInput, {
     if (typeof node === 'string') return node;
 
     const {
-      component, props, class: _class, style, children, postProcess,
+      component, props = {}, class: _class, style, children = [], postProcess,
       postProcessProps = ({ props: _props }) => ({ props: _props }),
       methods = [],
     } = node;

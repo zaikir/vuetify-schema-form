@@ -28,5 +28,5 @@ export default (root, {
     });
   }
 
-  return buildNode(root);
+  return buildNode(root)[0];
 };

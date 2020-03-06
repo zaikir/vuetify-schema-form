@@ -1,5 +1,5 @@
 import {
-  VRow, VCol, VTextField, VTextarea, VSheet,
+  VRow, VCol, VTextField, VTextarea, VSheet, VTabs, VTab, VTabItem, VIcon,
 } from 'vuetify/lib/components';
 import {
   NumberField, IntegerField, PasswordField, PhoneField, EmailField,
@@ -63,5 +63,27 @@ export default {
   array: {
     component: ArrayField,
     postProcessProps: ({ props, options }) => ({ props: { ...props, $options: options } }),
+  },
+  tabs: {
+    component: VTabs,
+    childResolver: (child) => {
+      const { props = {} } = child;
+      const key = props.key || `${props.label}_${props.icon}`;
+      const { tab = { class: 'pt-3' } } = props;
+
+      return [{
+        component: VTab,
+        props: { key },
+        children: [
+          props.icon && { component: VIcon, class: { 'mr-2': true }, children: [props.icon] },
+          props.label,
+        ].filter((x) => !!x),
+      }, {
+        component: VTabItem,
+        ...tab,
+        props: { key, eager: true, ...tab.props },
+        children: [child],
+      }];
+    },
   },
 };
