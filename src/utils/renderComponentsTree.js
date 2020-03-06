@@ -33,7 +33,8 @@ export default (h, tree, item, emitInput, {
           : ({ [key]: actualValue });
       }));
 
-    if (totalProps.if === false) {
+    const renderedChildren = children.map((child) => renderNode(child));
+    if (totalProps.if === false || (renderedChildren.length && !renderedChildren.some((x) => !!x))) {
       return null;
     }
 
@@ -60,7 +61,7 @@ export default (h, tree, item, emitInput, {
         },
       }, [
         slots[`field.${props.value}`] && slots[`field.${props.value}`].map((func) => func()),
-        ...children.map((child) => renderNode(child)),
+        ...renderedChildren,
       ]);
   }
 
