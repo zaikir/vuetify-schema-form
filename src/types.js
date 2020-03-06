@@ -18,9 +18,9 @@ export default {
       const keys = Object.keys(childProps).filter((key) => allProps.includes(key));
       const props = Object.assign({ cols: 12 }, ...keys.map((key) => ({ [key]: childProps[key] })));
 
-      return {
+      return [{
         component: VCol, type: 'col', props, children: [child],
-      };
+      }];
     },
     postProcessProps: ({ props, item }) => ({ props: { ...props, item } }),
   },

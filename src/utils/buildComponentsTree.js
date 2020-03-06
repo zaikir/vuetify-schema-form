@@ -4,10 +4,14 @@ export default (root, {
   globalProps,
   globalClasses,
 } = {}) => {
-  function buildNode(element, parentChildResolver = (x) => x) {
+  function buildNode(element, parentChildResolver = (x) => [x]) {
     const {
       type = defaultType, class: _class = {}, style, fields = [], ...props
     } = element;
+
+    if (types[type]) {
+      throw new Error(`Component "${type}" is not defined!`);
+    }
 
     const { component, childResolver, ...rest } = types[type];
 
@@ -17,7 +21,7 @@ export default (root, {
       props: { ...globalProps, ...props },
       class: { ...globalClasses, ..._class },
       style,
-      children: fields.map((field) => buildNode(field, childResolver)),
+      children: [].concat(...fields.map((field) => buildNode(field, childResolver))),
       ...rest,
     });
   }
