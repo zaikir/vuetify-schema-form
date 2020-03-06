@@ -9,11 +9,13 @@ export default (root, {
       type = defaultType, class: _class = {}, style, fields = [], ...props
     } = element;
 
-    if (types[type]) {
-      throw new Error(`Component "${type}" is not defined!`);
-    }
+    // if (types[type]) {
+    //   throw new Error(`Component "${type}" is not defined!`);
+    // }
 
-    const { component, childResolver, ...rest } = types[type];
+    const { component, childResolver, ...rest } = types[type] || {
+      component: 'type',
+    };
 
     return parentChildResolver({
       component,
