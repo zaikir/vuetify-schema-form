@@ -6,6 +6,8 @@ export default (h, tree, item, emitInput, {
 } = {}) => {
   const { propsResolver } = options;
   function renderNode(node) {
+    if (typeof node === 'string') return node;
+
     const {
       component, props, class: _class, style, children, postProcess,
       postProcessProps = ({ props: _props }) => ({ props: _props }),
