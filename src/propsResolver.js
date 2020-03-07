@@ -1,10 +1,11 @@
+
 export default {
-  required: (value, props = {}) => ({
+  required: (value, props = {}, { $vuetify }) => ({
     required: value,
     ...value && {
       rules: [
         ...props.rules || [],
-        (x) => !!x || 'Введите значение', // ToDo: add localization support
+        (x) => !!x || $vuetify.lang.t('$vuetify.schemaForm.requiredRule') || 'Введите значение',
       ],
     },
   }),

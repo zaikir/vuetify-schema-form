@@ -99,6 +99,7 @@ export default {
       defaultType: this.defaultType || params.defaultType || 'text',
       globalProps: this.globalProps || params.globalProps || { dense: true },
       globalClasses: this.globalClasses || params.globalClasses || {},
+      $vuetify: this.$vuetify,
     };
 
 

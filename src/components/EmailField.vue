@@ -12,7 +12,7 @@ export default {
         ...data.props || {},
         rules: [
           ...data.props.rules || [],
-          (x) => !x || EmailValidator.validate(x) || 'Неверный формат', // ToDo: localization
+          (x) => !x || EmailValidator.validate(x) || context.parent.$vuetify.lang.t('$vuetify.schemaForm.wrongFormat') || 'Неверный формат',
         ],
       },
     }, context.children);

@@ -72,7 +72,7 @@ export default {
   computed: {
     dropzoneOptions() {
       return {
-        dictDefaultMessage: 'Загрузить', // ToDo: localization
+        dictDefaultMessage: this.$vuetify.lang.t('$vuetify.schemaForm.uploadFile') || 'Загрузить',
         url: this.url,
         thumbnailWidth: 150,
       };

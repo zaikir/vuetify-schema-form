@@ -29,7 +29,7 @@ export default (h, tree, item, emitInput, {
           : value;
 
         return resolver
-          ? { ...resolver(actualValue, props) }
+          ? { ...resolver(actualValue, props, options) }
           : ({ [key]: actualValue });
       }));
 

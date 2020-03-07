@@ -7,7 +7,7 @@ import {
 export default {
   functional: true,
   render(createElement, context) {
-    const slugRule = (x) => !x || x === slugify(x) || 'Неверный формат';// ToDo: localization
+    const slugRule = (x) => !x || x === slugify(x) || (context.parent.$vuetify.lang.t('$vuetify.schemaForm.wrongFormat') || 'Неверный формат');
 
     const { data } = context;
     return createElement(VTextField, {
@@ -35,7 +35,7 @@ export default {
             },
           }, [createElement(VIcon, { large: true }, 'mdi-reply-outline')]),
         },
-      }, 'Сгенерировать'), // ToDo: localization
+      }, context.parent.$vuetify.lang.t('$vuetify.schemaForm.generateSlug') || 'Сгенерировать'),
     ]);
   },
 };
