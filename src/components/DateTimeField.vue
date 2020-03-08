@@ -28,8 +28,8 @@ export default {
     },
     currentValue(val) {
       const actualVal = val && val.length ? val : null;
-      this.$emit('input', actualVal);
-      this.$emit('change', actualVal);
+      // this.$emit('input', actualVal);
+      // this.$emit('change', actualVal);
     },
   },
   mounted() {
@@ -37,6 +37,7 @@ export default {
   },
   render(createElement) {
     const createTextField = (on) => createElement(VTextField, {
+      ref: 'datetime-input',
       props: {
         ...this.$attrs,
         value: this.currentValue && moment(this.currentValue).utcOffset(this.actualTimezone * 60).format('YYYY-MM-DDTHH:mm:00').substr(0, 19),
@@ -89,6 +90,9 @@ export default {
               if (!this.currentValue || !this.currentValue.startsWith(val)) {
                 this.currentValue = (val && (`${val}T00:00:00${this.timezoneString}`)) || null;
               }
+              this.$nextTick(() => {
+                this.$refs['datetime-input'].focus();
+              });
             },
           },
         }),
