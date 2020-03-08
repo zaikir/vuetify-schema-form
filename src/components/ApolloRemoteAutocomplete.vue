@@ -5,51 +5,38 @@ import { createSlots } from '../utils';
 
 export default {
   props: {
-    label: {
-      type: String,
-      default: null,
-    },
     query: {
       type: String,
       required: true,
-    },
-    itemValue: {
-      type: String,
-      default: 'value',
-    },
-    itemText: {
-      type: String,
-      default: 'text',
-    },
-    rules: {
-      type: Array,
-      default: () => [],
-    },
-    outlined: {
-      type: Boolean,
-      default: false,
     },
     onResponse: {
       type: Function,
       default: (items) => items,
     },
+    filter: [Boolean, String, Function],
   },
   data() {
     return {
       items: [],
-      search: '',
-      smartQuery: null,
+      searchValue: '',
     };
   },
   watch: {
     query: {
       handler() {
-        const query = gql(`query { ${this.query} }`);
-        const queryName = query.definitions[0].selectionSet.selections[0].name.value;
+        const queryName = /[^{]*/.exec(this.query)[0].trim();
+        const queryString = !this.filter
+          ? `query { ${this.query} }`
+          : `query Search($query: ${queryName}_bool_exp!) { ${this.query.replace(queryName, `${queryName} (where: $query)`)} }`;
+        console.log(queryString);
+        const query = gql(queryString);
         this.$apollo.addSmartQuery('items', {
           query,
           update(data) {
             return data[queryName];
+          },
+          variables: this.filter && {
+            query: this.getFilter(),
           },
         });
       },
@@ -57,6 +44,21 @@ export default {
     },
   },
   methods: {
+    getFilter() {
+      if (!this.filter) {
+        return null;
+      }
+
+      if (typeof this.filter === 'string') {
+        return { [this.filter]: { _ilike: `%${this.searchValue}%` } };
+      }
+
+      if (typeof this.filter === 'function') {
+        return this.filter(this.searchValue);
+      }
+
+      return { [this.$attrs.itemText || 'text']: { _ilike: `%${this.searchValue}%` } };
+    },
     debounceSearch(newSearch) {
       if (this.timeout) {
         clearTimeout(this.timeout);
@@ -64,7 +66,7 @@ export default {
       }
 
       this.timeout = setTimeout(() => {
-        this.search = newSearch;
+        this.searchValue = newSearch;
       }, 5000);
     },
   },
@@ -79,7 +81,7 @@ export default {
         loading: this.$apollo.loading,
       },
       on: {
-        'update:search-input': (val) => {
+        'update:searchValue-input': (val) => {
           this.debounceSearch(val);
         },
         input: (val) => {
