@@ -3,12 +3,13 @@ import slugify from 'slugify';
 import {
   VTextField, VTooltip, VBtn, VIcon,
 } from 'vuetify/lib/components';
-import { createSlots } from '../utils';
+import { createSlots, translate } from '../utils';
+
 
 export default {
   functional: true,
   render(createElement, context) {
-    const slugRule = (x) => !x || x === slugify(x) || (context.parent.$vuetify.lang.t('$vuetify.schemaForm.wrongFormat') || 'Неверный формат');
+    const slugRule = (x) => !x || x === slugify(x) || translate(context.parent.$vuetify, 'wrongFormat', 'Wrong format');
 
     const { data } = context;
     return createElement(VTextField, {
@@ -36,7 +37,7 @@ export default {
             },
           }, [createElement(VIcon, { large: true }, 'mdi-reply-outline')]),
         },
-      }, context.parent.$vuetify.lang.t('$vuetify.schemaForm.generateSlug') || 'Сгенерировать'),
+      }, translate(context.parent.$vuetify, 'generate', 'Generate')),
     ]);
   },
 };

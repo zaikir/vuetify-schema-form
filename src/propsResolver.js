@@ -1,3 +1,4 @@
+import { translate } from './utils';
 
 export default {
   required: (value, props = {}, { $vuetify }) => ({
@@ -5,7 +6,7 @@ export default {
     ...value && {
       rules: [
         ...props.rules || [],
-        (x) => !!x || $vuetify.lang.t('$vuetify.schemaForm.requiredRule') || 'Введите значение',
+        (x) => !!x || translate($vuetify, 'requiredRule', 'Value required'),
       ],
     },
   }),

@@ -33,6 +33,7 @@
 </template>
 <script>
 import VueDropzone from 'nuxt-dropzone';
+import { translate } from '../utils';
 
 export default {
   components: {
@@ -72,7 +73,7 @@ export default {
   computed: {
     dropzoneOptions() {
       return {
-        dictDefaultMessage: this.$vuetify.lang.t('$vuetify.schemaForm.uploadFile') || 'Загрузить',
+        dictDefaultMessage: translate(this.$vuetify, 'upload', 'Upload'),
         url: this.url,
         thumbnailWidth: 150,
       };

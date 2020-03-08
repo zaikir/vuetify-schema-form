@@ -1,6 +1,7 @@
 <script>
 import { VTextField } from 'vuetify/lib/components';
-import { createSlots } from '../utils';
+import { createSlots, translate } from '../utils';
+
 
 export default {
   functional: true,
@@ -14,7 +15,7 @@ export default {
         step: 0.01,
         rules: [
           ...data.props.rules || [],
-          (x) => !x || parseFloat(x).toString() === x.toString() || (context.parent.$vuetify.lang.t('$vuetify.schemaForm.wrongFormat') || 'Неверный формат'),
+          (x) => !x || parseFloat(x).toString() === x.toString() || translate(context.parent.$vuetify, 'wrongFormat', 'Wrong format'),
         ],
       },
     }, createSlots(createElement, context.slots()));
