@@ -11,63 +11,103 @@ export default {
     },
     onResponse: {
       type: Function,
-      default: (items) => items,
+      default: (item) => item,
+    },
+    debounceTimeout: {
+      type: Number,
+      default: 400,
     },
     filter: [Boolean, String, Function],
+    filterParamName: {
+      type: String,
+      default: 'where',
+    },
+    filterParamType: {
+      type: String,
+    },
+    fetchAll: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
+      isLoading: false,
       items: [],
-      searchValue: '',
+      search: '',
     };
   },
   watch: {
     query: {
       handler() {
+        this.fetchItems();
+      },
+      immediate: true,
+    },
+    search(val) {
+      if (!val) {
+        this.$emit('input', null);
+        this.$emit('change', null);
+      }
+      this.fetchItems(val);
+    },
+  },
+  methods: {
+    fetchItems(val) {
+      if (!this.fetchAll && (!val || !(val || '').length)) {
+        return;
+      }
+
+      if (this.fetchAll && this.items && this.items.length) {
+        return;
+      }
+
+      this.isLoading = true;
+
+      if (this.queryTimer) {
+        clearTimeout(this.queryTimer);
+      }
+
+      this.queryTimer = setTimeout(async () => {
         const queryName = /[^{]*/.exec(this.query)[0].trim();
         const queryString = !this.filter
           ? `query { ${this.query} }`
-          : `query Search($query: ${queryName}_bool_exp!) { ${this.query.replace(queryName, `${queryName} (where: $query)`)} }`;
-        console.log(queryString);
-        const query = gql(queryString);
+          : `query Search($query: ${this.filterParamType ? this.filterParamType : `${queryName}_bool_exp`}) { ${this.query.replace(queryName, `${queryName} (${this.filterParamName}: $query)`)} }`;
+
         this.$apollo.addSmartQuery('items', {
-          query,
-          update(data) {
-            return data[queryName];
-          },
+          query: gql(queryString),
+          update: (data) => data[queryName],
           variables: this.filter && {
             query: this.getFilter(),
           },
         });
-      },
-      immediate: true,
+
+        const { data: { [queryName]: items } } = await this.$apollo.query({
+          query: gql(queryString),
+          variables: this.filter && {
+            query: this.getFilter(),
+          },
+        });
+
+        this.items = items.map(this.onResponse);
+
+        this.isLoading = false;
+      }, this.debounceTimeout);
     },
-  },
-  methods: {
     getFilter() {
-      if (!this.filter) {
+      if (!this.filter || this.fetchAll) {
         return null;
       }
 
       if (typeof this.filter === 'string') {
-        return { [this.filter]: { _ilike: `%${this.searchValue}%` } };
+        return { [this.filter]: { _ilike: `%${this.search}%` } };
       }
 
       if (typeof this.filter === 'function') {
-        return this.filter(this.searchValue);
+        return this.filter(this.search);
       }
 
-      return { [this.$attrs.itemText || 'text']: { _ilike: `%${this.searchValue}%` } };
-    },
-    debounceSearch(newSearch) {
-      if (this.timeout) {
-        clearTimeout(this.timeout);
-        this.timeout = null;
-      }
-
-      this.timeout = setTimeout(() => {
-        this.searchValue = newSearch;
-      }, 5000);
+      return { [this.$attrs.itemText || 'text']: { _ilike: `%${this.search}%` } };
     },
   },
   render(createElement) {
@@ -77,12 +117,19 @@ export default {
       },
       props: {
         ...this.$attrs,
-        items: this.onResponse(this.items),
-        loading: this.$apollo.loading,
+        items: this.items,
+        loading: this.isLoading,
+        filter: undefined,
+        searchInput: this.search,
       },
       on: {
-        'update:searchValue-input': (val) => {
-          this.debounceSearch(val);
+        'update:search-input': (val) => {
+          if (!val) {
+            this.search = null;// this.$emit('change', null);
+          }
+          if (typeof val === 'string') {
+            this.search = val;
+          }
         },
         input: (val) => {
           this.$emit('input', val);
