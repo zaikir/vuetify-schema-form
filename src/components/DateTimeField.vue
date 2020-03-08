@@ -7,7 +7,6 @@ export default {
     value: String,
     timezone: {
       type: Number,
-      required: true,
     },
   },
   data() {
@@ -16,8 +15,11 @@ export default {
     };
   },
   computed: {
+    actualTimezone() {
+      return this.timezone ? this.timezone : -(new Date().getTimezoneOffset() / 60);
+    },
     timezoneString() {
-      return `${this.timezone >= 0 ? '+' : '-'}${Math.abs(this.timezone).toString().padStart(2, 0)}:00`;
+      return `${this.actualTimezone >= 0 ? '+' : '-'}${Math.abs(this.actualTimezone).toString().padStart(2, 0)}:00`;
     },
   },
   watch: {
@@ -37,7 +39,7 @@ export default {
     const createTextField = (on) => createElement(VTextField, {
       props: {
         ...this.$attrs,
-        value: this.currentValue && moment(this.currentValue).utcOffset(this.timezone * 60).format('YYYY-MM-DDTHH:mm:00').substr(0, 19),
+        value: this.currentValue && moment(this.currentValue).utcOffset(this.actualTimezone * 60).format('YYYY-MM-DDTHH:mm:00').substr(0, 19),
         type: 'datetime-local',
       },
       attrs: {
