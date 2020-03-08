@@ -1,7 +1,7 @@
 <script>
 import { VAutocomplete } from 'vuetify/lib/components';
 import gql from 'graphql-tag';
-import { createSlots } from '../utils';
+import { createSlots, translate } from '../utils';
 
 export default {
   props: {
@@ -121,6 +121,7 @@ export default {
         loading: this.isLoading,
         filter: undefined,
         searchInput: this.search,
+        placeholder: this.$attrs.placeholder || (!this.fetchAll ? translate(this.$vuetify, 'enterToSearch', 'Enter query to search') : ''),
       },
       on: {
         ...this.$listeners,
