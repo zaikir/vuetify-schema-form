@@ -17,19 +17,32 @@ export default {
   data() {
     return {
       currentValue: this.value,
+      currentRawValue: this.value,
+      isChangedInitially: false,
       isChanged: false,
     };
   },
   watch: {
     value(val) {
-      this.cleave.setRawValue(val);
+      if (val !== this.currentRawValue) {
+        this.cleave.setRawValue(val);
+      }
     },
   },
   mounted() {
-    this.cleave = new Cleave(this.$el.querySelector('input'), {
+    const input = this.$el.querySelector('input');
+    this.cleave = new Cleave(input, {
       ...this.mask,
       onValueChanged: this.onValueChanged.bind(this),
     });
+
+    input.addEventListener('blur', () => {
+      if (this.isChanged) {
+        this.$emit('change', this.currentRawValue);
+        this.isChanged = false;
+      }
+    }, { passive: true });
+
 
     this.cleave.setRawValue(this.value);
   },
@@ -42,9 +55,7 @@ export default {
       on: {
         ...this.$listeners,
         change: () => {},
-        input: (val) => {
-          this.currentValue = val;
-        },
+        input: () => {},
       },
     });
   },
@@ -52,13 +63,15 @@ export default {
     onValueChanged({ target }) {
       this.$nextTick(() => {
         if (target.value && target.value.length > 0) {
-          this.isChanged = true;
+          this.isChangedInitially = true;
         }
 
-        if (this.isChanged) {
+        this.isChanged = true;
+
+        if (this.isChangedInitially) {
           this.currentValue = target.value;
+          this.currentRawValue = target.rawValue;
           this.$emit('input', target.rawValue);
-          this.$emit('change', target.rawValue);
         }
       });
     },
