@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       currentValue: null,
+      showValidationErrors: true,
     };
   },
   watch: {
@@ -25,9 +26,11 @@ export default {
   },
   render(createElement) {
     const createTextField = (on) => createElement(VTextField, {
+      ref: 'datetime',
       props: {
         ...this.$attrs,
         value: this.currentValue,
+        errorCount: this.showValidationErrors ? 1 : 0,
       },
       attrs: {
         max: '9999-12-31',
@@ -62,6 +65,11 @@ export default {
             ...on,
             ...this.$listeners,
           }),
+        },
+        on: {
+          input: (isOpened) => {
+            this.showValidationErrors = !isOpened;
+          },
         },
       }, [
         !this.$vuetify.breakpoint.xsOnly && createElement(VDatePicker, {

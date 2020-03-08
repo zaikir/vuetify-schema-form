@@ -12,6 +12,7 @@ export default {
   data() {
     return {
       currentValue: null,
+      showValidationErrors: true,
     };
   },
   computed: {
@@ -28,8 +29,8 @@ export default {
     },
     currentValue(val) {
       const actualVal = val && val.length ? val : null;
-      // this.$emit('input', actualVal);
-      // this.$emit('change', actualVal);
+      this.$emit('input', actualVal);
+      this.$emit('change', actualVal);
     },
   },
   mounted() {
@@ -42,6 +43,7 @@ export default {
         ...this.$attrs,
         value: this.currentValue && moment(this.currentValue).utcOffset(this.actualTimezone * 60).format('YYYY-MM-DDTHH:mm:00').substr(0, 19),
         type: 'datetime-local',
+        errorCount: this.showValidationErrors ? 1 : 0,
       },
       attrs: {
         max: '9999-12-31T23:59',
@@ -75,6 +77,11 @@ export default {
             ...on,
             ...this.$listeners,
           }),
+        },
+        on: {
+          input: (isOpened) => {
+            this.showValidationErrors = !isOpened;
+          },
         },
       }, [
         createElement(VDatePicker, {
