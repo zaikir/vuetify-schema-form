@@ -25,7 +25,7 @@ export default {
           ...data.props.rules || [],
         ],
       },
-    }, contextcreateSlots(createElement, context.slots()));
+    }, createSlots(createElement, context.slots()));
   },
 };
 </script>
