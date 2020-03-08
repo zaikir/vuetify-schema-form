@@ -13,7 +13,7 @@ export default {
         type: 'password',
         autocomplete: 'password',
       },
-    }, createSlots(context.slots()));
+    }, createSlots(createElement, context.slots()));
   },
 };
 </script>

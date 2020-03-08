@@ -89,7 +89,7 @@ export default {
           this.$emit('change', val);
         },
       },
-    }, createSlots(this.$slots));
+    }, createSlots(createElement, this.$slots));
   },
 };
 

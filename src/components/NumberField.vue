@@ -17,7 +17,7 @@ export default {
           (x) => !x || parseFloat(x).toString() === x.toString() || (context.parent.$vuetify.lang.t('$vuetify.schemaForm.wrongFormat') || 'Неверный формат'),
         ],
       },
-    }, createSlots(context.slots()));
+    }, createSlots(createElement, context.slots()));
   },
 };
 </script>

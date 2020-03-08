@@ -49,7 +49,7 @@ export default {
           this.currentValue = val;
         },
       },
-    }, createSlots(this.$slots));
+    }, createSlots(createElement, this.$slots));
 
     if (!this.$vuetify.breakpoint.xsOnly) {
       return createElement(VMenu, {

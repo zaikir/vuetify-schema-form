@@ -13,7 +13,7 @@ export default {
         ...data.class || {},
         'vdk-select-field': true,
       },
-    }, createSlots(context.slots()));
+    }, createSlots(createElement, context.slots()));
   },
 };
 </script>

@@ -11,7 +11,7 @@ export default {
         ...context.data.class || {},
         'vdk-autocomplete-field': true,
       },
-    }, createSlots(context.slots()));
+    }, createSlots(createElement, context.slots()));
   },
 };
 </script>

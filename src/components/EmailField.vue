@@ -16,7 +16,7 @@ export default {
           (x) => !x || EmailValidator.validate(x) || context.parent.$vuetify.lang.t('$vuetify.schemaForm.wrongFormat') || 'Неверный формат',
         ],
       },
-    }, createSlots(context.slots()));
+    }, createSlots(createElement, context.slots()));
   },
 };
 </script>

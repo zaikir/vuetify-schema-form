@@ -61,7 +61,7 @@ export default {
           this.currentValue = (val && (val + this.timezoneString));
         },
       },
-    }, createSlots(this.$slots));
+    }, createSlots(createElement, this.$slots));
 
     if (!this.$vuetify.breakpoint.xsOnly) {
       return createElement(VMenu, {

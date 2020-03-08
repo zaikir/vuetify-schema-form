@@ -17,7 +17,7 @@ export default {
           (x) => !x || parseInt(x, 10).toString() === x.toString() || 'Неверный формат', // To do: localization
         ],
       },
-    }, createSlots(context.slots()));
+    }, createSlots(createElement, context.slots()));
   },
 };
 </script>

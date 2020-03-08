@@ -21,7 +21,7 @@ export default {
         props: { ...option },
         key: i,
       })),
-      ...createSlots(this.$slots),
+      ...createSlots(createElement, this.$slots),
     ]);
   },
 };

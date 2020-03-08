@@ -18,7 +18,7 @@ export default {
         rules: [...data.props.rules || [], slugRule],
       },
     }, [
-      ...createSlots(context.slots()),
+      ...createSlots(createElement, context.slots()),
       createElement(VTooltip, {
         props: { bottom: true },
         slot: 'append',

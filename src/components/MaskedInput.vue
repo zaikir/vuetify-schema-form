@@ -58,7 +58,7 @@ export default {
         change: () => {},
         input: () => {},
       },
-    }, createSlots(this.$slots));
+    }, createSlots(createElement, this.$slots));
   },
   methods: {
     onValueChanged({ target }) {

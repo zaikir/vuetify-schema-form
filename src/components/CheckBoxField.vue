@@ -15,7 +15,7 @@ export default {
         'mt-0': true,
         ...context.data.class || {},
       },
-    }, createSlots(context.slots()));
+    }, createSlots(createElement, context.slots()));
   },
 };
 </script>
