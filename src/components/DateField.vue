@@ -1,5 +1,6 @@
 <script>
 import { VDatePicker, VMenu, VTextField } from 'vuetify/lib/components';
+import { createSlots } from '../utils';
 
 export default {
   props: {
@@ -48,7 +49,7 @@ export default {
           this.currentValue = val;
         },
       },
-    });
+    }, createSlots(this.$slots));
 
     if (!this.$vuetify.breakpoint.xsOnly) {
       return createElement(VMenu, {

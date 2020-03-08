@@ -1,5 +1,6 @@
 <script>
 import { VRadioGroup, VRadio } from 'vuetify/lib/components';
+import { createSlots } from '../utils';
 
 export default {
   functional: true,
@@ -15,12 +16,13 @@ export default {
         ...context.data.class || {},
       },
     },
-    ((context.data.props || {}).items || []).map((option, i) => createElement(VRadio, {
-      props: {
-        ...option,
-      },
-      key: i,
-    })));
+    [
+      ...((context.data.props || {}).items || []).map((option, i) => createElement(VRadio, {
+        props: { ...option },
+        key: i,
+      })),
+      ...createSlots(this.$slots),
+    ]);
   },
 };
 </script>

@@ -3,6 +3,7 @@ import slugify from 'slugify';
 import {
   VTextField, VTooltip, VBtn, VIcon,
 } from 'vuetify/lib/components';
+import { createSlots } from '../utils';
 
 export default {
   functional: true,
@@ -17,7 +18,7 @@ export default {
         rules: [...data.props.rules || [], slugRule],
       },
     }, [
-      ...context.children || [],
+      ...createSlots(context.slots()),
       createElement(VTooltip, {
         props: { bottom: true },
         slot: 'append',

@@ -1,5 +1,6 @@
 <script>
 import { VTextField } from 'vuetify/lib/components';
+import { createSlots } from '../utils';
 
 export default {
   functional: true,
@@ -16,7 +17,7 @@ export default {
           (x) => !x || parseInt(x, 10).toString() === x.toString() || 'Неверный формат', // To do: localization
         ],
       },
-    }, context.children);
+    }, createSlots(context.slots()));
   },
 };
 </script>

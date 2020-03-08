@@ -1,5 +1,6 @@
 <script>
 import { VSwitch } from 'vuetify/lib/components';
+import { createSlots } from '../utils';
 
 export default {
   functional: true,
@@ -14,7 +15,7 @@ export default {
         'mt-0': true,
         ...context.data.class || {},
       },
-    }, context.children);
+    }, createSlots(context.slots()));
   },
 };
 </script>

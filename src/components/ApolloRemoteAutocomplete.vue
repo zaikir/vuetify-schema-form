@@ -1,6 +1,7 @@
 <script>
 import { VAutocomplete } from 'vuetify/lib/components';
 import gql from 'graphql-tag';
+import { createSlots } from '../utils';
 
 export default {
   props: {
@@ -88,7 +89,7 @@ export default {
           this.$emit('change', val);
         },
       },
-    });
+    }, createSlots(this.$slots));
   },
 };
 

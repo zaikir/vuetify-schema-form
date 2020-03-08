@@ -1,5 +1,6 @@
 <script>
 import { VAutocomplete } from 'vuetify/lib/components';
+import { createSlots } from '../utils';
 
 export default {
   functional: true,
@@ -10,7 +11,7 @@ export default {
         ...context.data.class || {},
         'vdk-autocomplete-field': true,
       },
-    }, context.children);
+    }, createSlots(context.slots()));
   },
 };
 </script>

@@ -1,6 +1,7 @@
 <script>
 import { VTextField } from 'vuetify/lib/components';
 import EmailValidator from 'email-validator';
+import { createSlots } from '../utils';
 
 export default {
   functional: true,
@@ -15,7 +16,7 @@ export default {
           (x) => !x || EmailValidator.validate(x) || context.parent.$vuetify.lang.t('$vuetify.schemaForm.wrongFormat') || 'Неверный формат',
         ],
       },
-    }, context.children);
+    }, createSlots(context.slots()));
   },
 };
 </script>

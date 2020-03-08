@@ -1,6 +1,7 @@
 <script>
 import Cleave from 'cleave.js';
 import { VTextField } from 'vuetify/lib/components';
+import { createSlots } from '../utils';
 
 export default {
   props: {
@@ -57,7 +58,7 @@ export default {
         change: () => {},
         input: () => {},
       },
-    });
+    }, createSlots(this.$slots));
   },
   methods: {
     onValueChanged({ target }) {

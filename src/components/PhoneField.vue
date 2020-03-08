@@ -1,5 +1,6 @@
 <script>
 import MaskedInput from './MaskedInput.vue';
+import { createSlots } from '../utils';
 
 export default {
   functional: true,
@@ -24,7 +25,7 @@ export default {
           ...data.props.rules || [],
         ],
       },
-    }, context.children);
+    }, contextcreateSlots(context.slots()));
   },
 };
 </script>

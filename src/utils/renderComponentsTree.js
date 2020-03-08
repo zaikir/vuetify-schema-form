@@ -1,7 +1,7 @@
 export default (h, tree, item, emitInput, {
   context = {},
   scopedSlots = {},
-  slots = {},
+  // slots = {},
   ...options
 } = {}) => {
   const { propsResolver } = options;
@@ -38,9 +38,19 @@ export default (h, tree, item, emitInput, {
       return null;
     }
 
+    const slotPrefix = `field.${props.value}`;
     const events = Object.keys(props).filter((prop) => prop.startsWith('@'));
-    return props.value && scopedSlots[`field.${props.value}`]
-      ? scopedSlots[`field.${props.value}`](totalContext)
+
+    // const totalScopedSlots = Object.fromEntries(Object.entries(scopedSlots)
+    //   .filter(([key,value]) => key.startsWith(`${slotPrefix}.`))
+    //   .map(([key,value]) => [key.replace(`${slotPrefix}.`, ''), value]))
+
+    const slots = Object.entries(scopedSlots)
+      .filter(([key]) => key.startsWith(`${slotPrefix}.`))
+      .map(([key, value]) => [key.replace(`${slotPrefix}.`, ''), h('template', { slot: key.replace(`${slotPrefix}.`, '') }, value())]);
+
+    return props.value && scopedSlots[slotPrefix]
+      ? scopedSlots[slotPrefix](totalContext)
       : h(component, {
         ...postProcessProps({ props: totalProps, options, ...totalContext }),
         class: _class,
@@ -59,9 +69,10 @@ export default (h, tree, item, emitInput, {
             },
           },
         },
+        scopedSlots,
       }, [
-        slots[`field.${props.value}`] && slots[`field.${props.value}`].map((func) => func()),
         ...renderedChildren,
+        ...slots,
       ]);
   }
 

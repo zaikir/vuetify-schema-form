@@ -1,5 +1,6 @@
 <script>
 import { VTextField } from 'vuetify/lib/components';
+import { createSlots } from '../utils';
 
 export default {
   functional: true,
@@ -12,7 +13,7 @@ export default {
         type: 'password',
         autocomplete: 'password',
       },
-    }, context.children);
+    }, createSlots(context.slots()));
   },
 };
 </script>
