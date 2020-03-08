@@ -56,7 +56,7 @@ export default {
       on: {
         ...this.$listeners,
         change: () => {},
-        input: () => {},
+        input: (val) => { this.currentValue = val; },
       },
     }, createSlots(h, this.$slots));
   },

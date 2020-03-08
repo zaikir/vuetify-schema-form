@@ -123,6 +123,7 @@ export default {
         searchInput: this.search,
       },
       on: {
+        ...this.$listeners,
         'update:search-input': (val) => {
           if (!val) {
             this.search = null;// this.$emit('change', null);
