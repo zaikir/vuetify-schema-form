@@ -13,7 +13,7 @@
         @uploaded="onUploaded"/>
         <validation-message v-if="required" :value="files && files.length"/>
     </v-col>
-    <v-col cols="12" style="margin-top: -14px;">
+    <v-col cols="12" >
       <draggable
         :list="files"
         group="files"

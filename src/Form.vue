@@ -116,7 +116,8 @@ export default {
       [
         h(VContainer, {
           props: {
-            gridListMd: true,
+            // gridListMd: true,
+            fluid: true,
           },
         }, [renderedTree]),
       ]);
