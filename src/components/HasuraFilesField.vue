@@ -100,7 +100,9 @@ export default {
         }`;
       },
       update(data) {
-        return data[this.source];
+        if (data[this.source]) {
+          return data[this.source];
+        }
       },
       variables() {
         return { foreignKeyValue: this.foreignKeyValue };

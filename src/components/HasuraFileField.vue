@@ -82,7 +82,9 @@ export default {
         }`;
       },
       update(data) {
-        return data[this.source][0];
+        if (data[this.source]) {
+          return data[this.source][0];
+        }
       },
       variables() {
         return { id: this.value };

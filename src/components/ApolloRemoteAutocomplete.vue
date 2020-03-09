@@ -80,8 +80,10 @@ export default {
             query: this.getFilter(),
           },
           update(data) {
-            this.isLoading = false;
-            return data[queryName].map(this.onResponse);
+            if (data[queryName]) {
+              this.isLoading = false;
+              return data[queryName].map(this.onResponse);
+            }
           },
         });
       }, this.debounceTimeout);
