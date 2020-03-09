@@ -27,7 +27,7 @@ export default {
     },
     fetchAll: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   data() {
