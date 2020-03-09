@@ -74,16 +74,16 @@ export default {
           ? `query { ${this.query} }`
           : `query Search($query: ${this.filterParamType ? this.filterParamType : `${queryName}_bool_exp`}) { ${this.query.replace(queryName, `${queryName} (${this.filterParamName}: $query)`)} }`;
 
-        const { data: { [queryName]: items } } = await this.$apollo.query({
+        this.$apollo.addSmartQuery('items', {
           query: gql(queryString),
           variables: this.filter && {
             query: this.getFilter(),
           },
+          update(data) {
+            this.isLoading = false;
+            return data[queryName].map(this.onResponse);
+          },
         });
-
-        this.items = items.map(this.onResponse);
-
-        this.isLoading = false;
       }, this.debounceTimeout);
     },
     getFilter() {
