@@ -16,14 +16,15 @@ export default {
     value(val = null) {
       this.currentValue = val;
     },
-    currentValue(val) {
-      const actualVal = val && val.length ? val : null;
-      this.$emit('input', actualVal);
-      this.$emit('change', actualVal);
-    },
   },
   mounted() {
     this.currentValue = this.value;
+  },
+  methods: {
+    emit(newVal) {
+      this.$emit('input', newVal);
+      this.$emit('change', newVal);
+    },
   },
   render(createElement) {
     const createTextField = (on) => createElement(VTextField, {
@@ -47,6 +48,7 @@ export default {
         ...on,
         input: (val) => {
           this.currentValue = val;
+          this.emit(val);
         },
       },
     }, createSlots(createElement, this.$slots));
@@ -84,6 +86,7 @@ export default {
           on: {
             input: (val) => {
               this.currentValue = val;
+              this.emit(val);
             },
           },
         }),

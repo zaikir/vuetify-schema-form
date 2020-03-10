@@ -28,14 +28,15 @@ export default {
     value(val = null) {
       this.currentValue = val;
     },
-    currentValue(val) {
-      const actualVal = val && val.length ? val : null;
-      this.$emit('input', actualVal);
-      this.$emit('change', actualVal);
-    },
   },
   mounted() {
     this.currentValue = this.value || null;
+  },
+  methods: {
+    emit(newVal) {
+      this.$emit('input', newVal);
+      this.$emit('change', newVal);
+    },
   },
   render(createElement) {
     const createTextField = (on) => createElement(VTextField, {
@@ -59,6 +60,7 @@ export default {
         ...on,
         change: (val) => {
           this.currentValue = (val && (val + this.timezoneString));
+          this.emit(this.currentValue);
         },
       },
     }, createSlots(createElement, this.$slots));
@@ -97,6 +99,7 @@ export default {
             input: (val) => {
               if (!this.currentValue || !this.currentValue.startsWith(val)) {
                 this.currentValue = (val && (`${val}T00:00:00${this.timezoneString}`)) || null;
+                this.emit(this.currentValue);
               }
               this.$nextTick(() => {
                 this.$refs['datetime-input'].focus();

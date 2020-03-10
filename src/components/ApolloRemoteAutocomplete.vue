@@ -5,6 +5,9 @@ import { createSlots, translate } from '../utils';
 
 export default {
   props: {
+    value: {
+      type: null,
+    },
     query: {
       type: String,
       required: true,
@@ -17,7 +20,7 @@ export default {
       type: Number,
       default: 400,
     },
-    filter: [Boolean, String, Function],
+    filter: [Boolean, Function],
     filterParamName: {
       type: String,
       default: 'where',
@@ -25,40 +28,52 @@ export default {
     filterParamType: {
       type: String,
     },
-    fetchAll: {
-      type: Boolean,
-      default: true,
-    },
   },
   data() {
     return {
+      disableFetching: false,
       isLoading: false,
       items: [],
-      search: '',
+      search: null,
     };
   },
   watch: {
+    value() {
+      this.fetchItems();
+    },
     query: {
       handler() {
         this.fetchItems();
       },
       immediate: true,
     },
-    search(val) {
-      if (!val) {
-        this.$emit('input', null);
-        this.$emit('change', null);
-      }
-      this.fetchItems(val);
+    search() {
+      this.fetchItems();
     },
   },
   methods: {
-    fetchItems(val) {
-      if (!this.fetchAll && (!val || !(val || '').length)) {
+    emit(event, val) {
+      this.$emit(event, val === undefined ? null : val);
+    },
+    getQueryString(queryName) {
+      if (!this.filter) {
+        return `query { ${this.query} }`;
+      }
+
+      return `query Search($query: ${this.filterParamType ? this.filterParamType : `${queryName}_bool_exp`}) { ${this.query.replace(queryName, `${queryName} (${this.filterParamName}: $query)`)} }`;
+    },
+    fetchItems() {
+      const hasSearchParams = (this.search || '').length || !!this.value;
+      if (this.filter && !hasSearchParams) {
         return;
       }
 
-      if (this.fetchAll && this.items && this.items.length) {
+      if (!this.filter && this.items.length) {
+        return;
+      }
+
+      if (this.disableFetching) {
+        this.disableFetching = false;
         return;
       }
 
@@ -70,9 +85,7 @@ export default {
 
       this.queryTimer = setTimeout(async () => {
         const queryName = /[^{]*/.exec(this.query)[0].trim();
-        const queryString = !this.filter
-          ? `query { ${this.query} }`
-          : `query Search($query: ${this.filterParamType ? this.filterParamType : `${queryName}_bool_exp`}) { ${this.query.replace(queryName, `${queryName} (${this.filterParamName}: $query)`)} }`;
+        const queryString = this.getQueryString(queryName);
 
         this.$apollo.addSmartQuery('items', {
           query: gql(queryString),
@@ -86,22 +99,34 @@ export default {
             }
           },
         });
+
+        this.queryTimer = null;
       }, this.debounceTimeout);
     },
     getFilter() {
-      if (!this.filter || this.fetchAll) {
+      if (!this.filter) {
         return null;
       }
 
-      if (typeof this.filter === 'string') {
-        return { [this.filter]: { _ilike: `%${this.search}%` } };
+      const searchField = this.$attrs.itemText || 'text';
+      const itemValue = this.$attrs.itemValue || 'value';
+
+      if (!!this.value && !(!!this.search && this.search.length)) {
+        this.disableFetching = true;
       }
+
+      const filter = {
+        _or: [
+          !!this.value && { [itemValue]: { _eq: this.value } },
+          !!this.search && this.search.length && { [searchField]: { _ilike: `%${this.search}%` } },
+        ].filter((x) => !!x),
+      };
 
       if (typeof this.filter === 'function') {
-        return this.filter(this.search);
+        return this.filter({ filter, search: this.search, value: this.$attrs.value });
       }
 
-      return { [this.$attrs.itemText || 'text']: { _ilike: `%${this.search}%` } };
+      return filter;
     },
   },
   render(createElement) {
@@ -115,7 +140,7 @@ export default {
         loading: this.isLoading,
         filter: undefined,
         searchInput: this.search,
-        placeholder: this.$attrs.placeholder || (!this.fetchAll ? translate(this.$vuetify, 'enterToSearch', 'Enter query to search') : ''),
+        placeholder: this.$attrs.placeholder || (this.filter ? translate(this.$vuetify, 'enterToSearch', 'Enter query to search') : ''),
       },
       on: {
         ...this.$listeners,
@@ -128,10 +153,10 @@ export default {
           }
         },
         input: (val) => {
-          this.$emit('input', val);
+          this.emit('input', val);
         },
         change: (val) => {
-          this.$emit('change', val);
+          this.emit('change', val);
         },
       },
     }, createSlots(createElement, this.$slots));

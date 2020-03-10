@@ -27,11 +27,7 @@ export default {
       if (data.on.input) { data.on.input(newVal); }
     };
 
-    if (!data.props.value || !data.props.value.length) {
-      emit([null]);
-    }
-
-    const items = data.props.value || [];
+    const items = data.props.value || [null];
     const root = {
       type: 'row',
       ...data.props.containerProps,
