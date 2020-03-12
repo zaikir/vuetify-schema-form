@@ -57,7 +57,7 @@ export default (h, tree, item, emitInput, {
         style,
         on: {
           ...Object.assign({}, ...events.map((event) => ({
-            [`${event.replace('@', '')}`]: props[event],
+            [`${event.replace('@', '')}`]: (eventArgs) => props[event]({ ...totalContext, eventArgs }),
           }))),
           ...props.value !== undefined && {
             change(event) {
