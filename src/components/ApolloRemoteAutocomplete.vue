@@ -28,6 +28,7 @@ export default {
     filterParamType: {
       type: String,
     },
+    initialFetch: Boolean,
   },
   data() {
     return {
@@ -63,7 +64,7 @@ export default {
       return `query Search($query: ${this.filterParamType ? this.filterParamType : `${queryName}_bool_exp`}) { ${this.query.replace(queryName, `${queryName} (${this.filterParamName}: $query)`)} }`;
     },
     fetchItems() {
-      const hasSearchParams = (this.search || '').length || !!this.value;
+      const hasSearchParams = this.initialFetch || (this.search || '').length || !!this.value;
       if (this.filter && !hasSearchParams) {
         return;
       }
