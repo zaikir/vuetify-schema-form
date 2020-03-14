@@ -16,16 +16,16 @@ export default {
       on: {
         ...data.on,
         input(val) {
-          if(data.on.input) {
-            data.on.input(typeof val === 'object' ? val[data.props.itemValue || 'value'] : val)
+          if (data.on.input) {
+            data.on.input(typeof val === 'object' ? val[data.props.itemValue || 'value'] : val);
           }
         },
         change(val) {
-          if(data.on.change) {
-            data.on.change(typeof val === 'object' ? val[data.props.itemValue || 'value'] : val)
+          if (data.on.change) {
+            data.on.change(typeof val === 'object' ? val[data.props.itemValue || 'value'] : val);
           }
-        }
-      }
+        },
+      },
     }, createSlots(createElement, context.slots()));
   },
 };
