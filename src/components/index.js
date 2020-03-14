@@ -17,3 +17,4 @@ export { default as ArrayField } from './ArrayField.vue';
 export { default as HasuraFileField } from './HasuraFileField.vue';
 export { default as HasuraFilesField } from './HasuraFilesField.vue';
 export { default as ApolloRemoteAutocomplete } from './ApolloRemoteAutocomplete.vue';
+export { default as ComboboxField } from './ComboboxField.vue';

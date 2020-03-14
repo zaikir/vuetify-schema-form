@@ -1,6 +1,7 @@
 <script>
-import { VAutocomplete } from 'vuetify/lib/components';
+import { VAutocomplete, VCombobox } from 'vuetify/lib/components';
 import gql from 'graphql-tag';
+import equal from 'deep-equal';
 import { createSlots, translate } from '../utils';
 
 export default {
@@ -29,6 +30,7 @@ export default {
       type: String,
     },
     initialFetch: Boolean,
+    combobox: Boolean,
   },
   data() {
     return {
@@ -36,6 +38,7 @@ export default {
       isLoading: false,
       items: [],
       search: null,
+      currentFilter: null,
     };
   },
   watch: {
@@ -88,10 +91,11 @@ export default {
         const queryName = /[^{]*/.exec(this.query)[0].trim();
         const queryString = this.getQueryString(queryName);
 
+        this.currentFilter = this.filter && this.getFilter();
         this.$apollo.addSmartQuery('items', {
           query: gql(queryString),
           variables: this.filter && {
-            query: this.getFilter(),
+            query: this.currentFilter,
           },
           update(data) {
             if (data[queryName]) {
@@ -131,7 +135,13 @@ export default {
     },
   },
   render(createElement) {
-    return createElement(VAutocomplete, {
+    const newFilter = this.filter && typeof this.filter === 'function' && this.getFilter();
+    if (newFilter && equal(newFilter, this.currentFilter)) {
+      this.currentFilter = newFilter;
+      console.log(this.currentFilter);
+    }
+
+    return createElement(this.combobox ? VCombobox : VAutocomplete, {
       class: {
         'vdk-autocomplete-field': true,
       },

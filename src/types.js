@@ -6,7 +6,7 @@ import {
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
   RadioGroupField, DateField, DateTimeField, SlugField,
   HtmlField, HasuraFileField, HasuraFilesField, ApolloRemoteAutocomplete,
-  ArrayField, MaskedInput,
+  ArrayField, MaskedInput, ComboboxField,
 } from './components';
 
 export default {
@@ -42,6 +42,7 @@ export default {
   },
   email: { component: EmailField },
   select: { component: SelectField },
+  combobox: { component: ComboboxField },
   autocomplete: { component: AutocompleteField },
   switch: { component: SwitchField },
   checkbox: { component: CheckBoxField },
