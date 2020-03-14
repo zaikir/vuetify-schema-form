@@ -2,7 +2,7 @@
 import { VAutocomplete, VCombobox } from 'vuetify/lib/components';
 import gql from 'graphql-tag';
 import equal from 'lodash.isequal';
-import { createSlots, translate } from '../utils';
+import { createSlots } from '../utils';
 
 export default {
   props: {
@@ -87,6 +87,7 @@ export default {
         clearTimeout(this.queryTimer);
       }
 
+
       this.queryTimer = setTimeout(async () => {
         const queryName = /[^{]*/.exec(this.query)[0].trim();
         const queryString = this.getQueryString(queryName);
@@ -95,13 +96,13 @@ export default {
           this.lastSmartQuery.stop();
         }
 
+        this.currentFilter = this.getFilter();
         this.lastSmartQuery = this.$apollo.addSmartQuery('items', {
           query: gql(queryString),
-          variables: () => {
-            this.currentFilter = this.filter && this.getFilter();
-            return this.filter && {
+          ...this.filter && {
+            variables: {
               query: this.currentFilter,
-            };
+            },
           },
           update(data) {
             if (data[queryName]) {
@@ -149,7 +150,7 @@ export default {
 
     return createElement(this.combobox ? VCombobox : VAutocomplete, {
       class: {
-        'vdk-autocomplete-field': true,
+        ...this.combobox ? { 'vdk-autocomplete-field': true } : { 'vdk-combobox-field': true },
       },
       props: {
         loaderHeight: 1,
@@ -175,10 +176,10 @@ export default {
           }
         },
         input: (val) => {
-          this.emit('input', val);
+          this.emit('input', typeof val === 'object' ? val[this.$attrs.itemValue || 'value'] : val);
         },
         change: (val) => {
-          this.emit('change', val);
+          this.emit('change', typeof val === 'object' ? val[this.$attrs.itemValue || 'value'] : val);
         },
       },
     }, createSlots(createElement, this.$slots));
@@ -187,6 +188,9 @@ export default {
 
 </script>
 <style>
+.vdk-combobox-field.v-input--dense .v-select__slot {
+  margin-top: -2px !important;
+}
 .vdk-autocomplete-field.v-input--dense .v-select__slot {
   margin-top: -2px !important;
 }
