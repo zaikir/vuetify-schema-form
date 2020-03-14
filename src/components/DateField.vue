@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       currentValue: null,
-      showValidationErrors: true,
+      showValidationErrors: false,
     };
   },
   watch: {
@@ -19,6 +19,7 @@ export default {
   },
   mounted() {
     this.currentValue = this.value;
+    setTimeout(() => { this.showValidationErrors = true; }, 1000);
   },
   methods: {
     emit(newVal) {
@@ -32,7 +33,7 @@ export default {
       props: {
         ...this.$attrs,
         value: this.currentValue,
-        errorCount: this.showValidationErrors ? 1 : 0,
+        ...!this.showValidationErrors && { error: false },
       },
       attrs: {
         max: '9999-12-31',

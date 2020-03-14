@@ -46,7 +46,7 @@ export default {
         ...this.$attrs,
         value: this.currentValue && moment(this.currentValue).utcOffset(this.actualTimezone * 60).format('YYYY-MM-DDTHH:mm:00').substr(0, 19),
         type: 'datetime-local',
-        errorCount: this.showValidationErrors ? 1 : 0,
+        ...!this.showValidationErrors && { error: false },
       },
       attrs: {
         max: '9999-12-31T23:59',
