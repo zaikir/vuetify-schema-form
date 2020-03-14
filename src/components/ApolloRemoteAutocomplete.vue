@@ -2,7 +2,7 @@
 import { VAutocomplete, VCombobox } from 'vuetify/lib/components';
 import gql from 'graphql-tag';
 import equal from 'lodash.isequal';
-import { createSlots } from '../utils';
+import { createSlots, translate } from '../utils';
 
 export default {
   props: {
@@ -42,9 +42,9 @@ export default {
     };
   },
   watch: {
-    // value() {
-    //   this.fetchItems();
-    // },
+    value(val) {
+      this.search = val;
+    },
     query: {
       handler() {
         this.fetchItems();
@@ -87,7 +87,6 @@ export default {
         clearTimeout(this.queryTimer);
       }
 
-
       this.queryTimer = setTimeout(async () => {
         const queryName = /[^{]*/.exec(this.query)[0].trim();
         const queryString = this.getQueryString(queryName);
@@ -96,13 +95,13 @@ export default {
           this.lastSmartQuery.stop();
         }
 
-        this.currentFilter = this.getFilter();
         this.lastSmartQuery = this.$apollo.addSmartQuery('items', {
           query: gql(queryString),
-          ...this.filter && {
-            variables: {
+          variables: () => {
+            this.currentFilter = this.filter && this.getFilter();
+            return this.filter && {
               query: this.currentFilter,
-            },
+            };
           },
           update(data) {
             if (data[queryName]) {
@@ -150,7 +149,7 @@ export default {
 
     return createElement(this.combobox ? VCombobox : VAutocomplete, {
       class: {
-        ...this.combobox ? { 'vdk-autocomplete-field': true } : { 'vdk-combobox-field': true },
+        'vdk-autocomplete-field': true,
       },
       props: {
         loaderHeight: 1,
@@ -176,10 +175,10 @@ export default {
           }
         },
         input: (val) => {
-          this.emit('input', typeof val === 'object' ? val[this.$attrs.itemValue || 'value'] : val);
+          this.emit('input', val);
         },
         change: (val) => {
-          this.emit('change', typeof val === 'object' ? val[this.$attrs.itemValue || 'value'] : val);
+          this.emit('change', val);
         },
       },
     }, createSlots(createElement, this.$slots));
@@ -188,9 +187,6 @@ export default {
 
 </script>
 <style>
-.vdk-combobox-field.v-input--dense .v-select__slot {
-  margin-top: -2px !important;
-}
 .vdk-autocomplete-field.v-input--dense .v-select__slot {
   margin-top: -2px !important;
 }

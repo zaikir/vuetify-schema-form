@@ -33,7 +33,7 @@ export default {
       props: {
         ...this.$attrs,
         value: this.currentValue,
-        ...!this.showValidationErrors && { error: false },
+        errorCount: this.showValidationErrors ? 1 : 0,
       },
       attrs: {
         max: '9999-12-31',
