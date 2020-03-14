@@ -29,22 +29,22 @@ export default {
     filterParamType: {
       type: String,
     },
-    initialFetch: Boolean,
+    fetchAll: Boolean,
     combobox: Boolean,
   },
   data() {
     return {
-      disableFetching: false,
+      // disableFetching: false,
       isLoading: false,
       items: [],
       search: null,
-      currentFilter: null,
+      // currentFilter: null,
     };
   },
   watch: {
-    value() {
-      this.fetchItems();
-    },
+    // value() {
+    //   this.fetchItems();
+    // },
     query: {
       handler() {
         this.fetchItems();
@@ -67,7 +67,7 @@ export default {
       return `query Search($query: ${this.filterParamType ? this.filterParamType : `${queryName}_bool_exp`}) { ${this.query.replace(queryName, `${queryName} (${this.filterParamName}: $query)`)} }`;
     },
     fetchItems() {
-      const hasSearchParams = this.initialFetch || (this.search || '').length || !!this.value;
+      const hasSearchParams = this.fetchAll || (this.search || '').length || !!this.value;
       if (this.filter && !hasSearchParams) {
         return;
       }
@@ -76,10 +76,10 @@ export default {
         return;
       }
 
-      if (this.disableFetching) {
-        this.disableFetching = false;
-        return;
-      }
+      // if (this.disableFetching) {
+      //   this.disableFetching = false;
+      //   return;
+      // }
 
       this.isLoading = true;
 
@@ -91,11 +91,17 @@ export default {
         const queryName = /[^{]*/.exec(this.query)[0].trim();
         const queryString = this.getQueryString(queryName);
 
-        this.currentFilter = this.filter && this.getFilter();
-        this.$apollo.addSmartQuery('items', {
+        if (this.lastSmartQuery) {
+          this.lastSmartQuery.stop();
+        }
+
+        this.lastSmartQuery = this.$apollo.addSmartQuery('items', {
           query: gql(queryString),
-          variables: this.filter && {
-            query: this.currentFilter,
+          variables: () => {
+            this.currentFilter = this.filter && this.getFilter();
+            return this.filter && {
+              query: this.currentFilter,
+            };
           },
           update(data) {
             if (data[queryName]) {
@@ -116,9 +122,9 @@ export default {
       const searchField = this.$attrs.itemText || 'text';
       const itemValue = this.$attrs.itemValue || 'value';
 
-      if (!!this.value && !(!!this.search && this.search.length)) {
-        this.disableFetching = true;
-      }
+      // if (!!this.value && !(!!this.search && this.search.length)) {
+      //   this.disableFetching = true;
+      // }
 
       const filter = {
         _or: [
@@ -136,9 +142,9 @@ export default {
   },
   render(createElement) {
     const newFilter = this.filter && typeof this.filter === 'function' && this.getFilter();
-    if (newFilter && equal(newFilter, this.currentFilter)) {
+    if (newFilter && !equal(newFilter, this.currentFilter)) {
       this.currentFilter = newFilter;
-      console.log(this.currentFilter);
+      this.fetchItems();
     }
 
     return createElement(this.combobox ? VCombobox : VAutocomplete, {
@@ -146,16 +152,21 @@ export default {
         'vdk-autocomplete-field': true,
       },
       props: {
+        loaderHeight: 1,
         ...this.$attrs,
         items: this.items,
         loading: this.isLoading,
         filter: undefined,
         searchInput: this.search,
-        placeholder: this.$attrs.placeholder || (this.filter ? translate(this.$vuetify, 'enterToSearch', 'Enter query to search') : ''),
+        // placeholder: this.$attrs.placeholder || (this.filter ? translate(this.$vuetify, 'enterToSearch', 'Enter query to search') : ''),
       },
       on: {
         ...this.$listeners,
         'update:search-input': (val) => {
+          if (this.fetchAll) {
+            return;
+          }
+
           if (!val) {
             this.search = null;
           }
