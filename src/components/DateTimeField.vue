@@ -1,10 +1,14 @@
 <script>
 import { VDatePicker, VMenu, VTextField } from 'vuetify/lib/components';
+import moment from 'moment';
 import { createSlots } from '../utils';
 
 export default {
   props: {
     value: String,
+    timezone: {
+      type: Number,
+    },
   },
   data() {
     return {
@@ -12,13 +16,21 @@ export default {
       showValidationErrors: false,
     };
   },
+  computed: {
+    actualTimezone() {
+      return this.timezone ? this.timezone : -(new Date().getTimezoneOffset() / 60);
+    },
+    timezoneString() {
+      return `${this.actualTimezone >= 0 ? '+' : '-'}${Math.abs(this.actualTimezone).toString().padStart(2, 0)}:00`;
+    },
+  },
   watch: {
     value(val = null) {
       this.currentValue = val;
     },
   },
   mounted() {
-    this.currentValue = this.value;
+    this.currentValue = this.value || null;
     setTimeout(() => { this.showValidationErrors = true; }, 1000);
   },
   methods: {
@@ -29,27 +41,27 @@ export default {
   },
   render(createElement) {
     const createTextField = (on) => createElement(VTextField, {
-      ref: 'datetime',
+      ref: 'datetime-input',
       props: {
         ...this.$attrs,
-        value: this.currentValue,
+        value: this.currentValue && moment(this.currentValue).utcOffset(this.actualTimezone * 60).format('YYYY-MM-DDTHH:mm:00').substr(0, 19),
+        type: 'datetime-local',
         errorCount: this.showValidationErrors ? 1 : 0,
       },
       attrs: {
-        max: '9999-12-31',
+        max: '9999-12-31T23:59',
         maxlength: '4',
         required: !!this.$attrs.required,
-        type: 'date',
       },
       class: {
         ...this.class || {},
-        'vdk-date-field': true,
+        'vdk-datetime-field': true,
       },
       on: {
         ...on,
-        input: (val) => {
-          this.currentValue = val;
-          this.emit(val);
+        change: (val) => {
+          this.currentValue = (val && (val + this.timezoneString));
+          this.emit(this.currentValue);
         },
       },
     }, createSlots(createElement, this.$slots));
@@ -76,18 +88,23 @@ export default {
           },
         },
       }, [
-        !this.$vuetify.breakpoint.xsOnly && createElement(VDatePicker, {
+        createElement(VDatePicker, {
           props: {
             noTitle: true,
             firstDayOfWeek: 1,
             dense: true,
             ...this.$attrs.datePickerProps || {},
-            value: this.currentValue,
+            value: this.currentValue && this.currentValue.substr(0, 10),
           },
           on: {
             input: (val) => {
-              this.currentValue = val;
-              this.emit(val);
+              if (!this.currentValue || !this.currentValue.startsWith(val)) {
+                this.currentValue = (val && (`${val}T00:00:00${this.timezoneString}`)) || null;
+                this.emit(this.currentValue);
+              }
+              this.$nextTick(() => {
+                this.$refs['datetime-input'].focus();
+              });
             },
           },
         }),
@@ -98,15 +115,15 @@ export default {
 };
 </script>
 <style>
-.vdk-date-field input[type="date"]::-webkit-inner-spin-button,
-.vdk-date-field input[type="date"]::-webkit-calendar-picker-indicator {
+.vdk-datetime-field input::-webkit-inner-spin-button,
+.vdk-datetime-field input::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
 }
 
-.vdk-date-field.v-input--dense input {
+
+.vdk-datetime-field.v-input--dense input {
   padding-top: 3px !important;
   padding-bottom: 1px !important;
 }
-
 </style>
