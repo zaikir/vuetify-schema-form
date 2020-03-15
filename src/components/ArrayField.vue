@@ -27,7 +27,7 @@ export default {
       if (data.on.input) { data.on.input(newVal); }
     };
 
-    const items = data.props.value || [null];
+    const items = data.props.value && data.props.value.length ? data.props.value : [null];
     const root = {
       type: 'row',
       ...data.props.containerProps,

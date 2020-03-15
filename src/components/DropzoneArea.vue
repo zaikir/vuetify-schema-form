@@ -116,10 +116,14 @@ export default {
     justify-content: center;
   }
 
-  .dropzone-custom-content:hover {
+  .v-application:not(.theme--dark) .dropzone-custom-content:hover {
     background: rgb(245, 245, 245);
     border: thin solid rgb(155, 155, 155);
     /* border: thin dashed #1976d2; */
+  }
+
+  .v-application.theme--dark .dropzone-custom-content:hover {
+    border: thin solid rgb(155, 155, 155);
   }
 
   .dropzone-custom-content .dropzone-custom-title {
