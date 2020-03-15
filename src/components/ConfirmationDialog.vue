@@ -9,12 +9,12 @@
           {{ icon }}
         </v-icon>
         <v-toolbar-title class="headline font-weight-medium">
-          {{ title }}
+          {{ translate('confirmationTitle', 'Warning') }}
         </v-toolbar-title>
       </v-toolbar>
-      <v-card-text v-if="text" class="pt-4">
+      <v-card-text class="pt-4">
         <span class="body-1 font-weight-black">
-          {{ text }}
+          {{ translate('confirmationText', 'Are you sure?') }}
         </span>
       </v-card-text>
       <v-card-actions>
@@ -25,7 +25,7 @@
           color="secondary"
           @click="decline"
         >
-          <span>{{ declineLabel }}</span>
+          <span>{{ translate('confirmationDeclineLabel', 'No') }}</span>
         </v-btn>
         <v-btn
           text
@@ -33,7 +33,7 @@
           color="primary"
           @click="confirm"
         >
-          <span>{{ confirmLabel }}</span>
+          <span>{{ translate('confirmationLabel', 'Yes') }}</span>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { translate } from '../utils';
 
 export default {
   props: {
@@ -48,33 +49,18 @@ export default {
       type: Boolean,
       required: true,
     },
-    title: {
-      type: String,
-      required: false,
-      default: 'Внимание!',
-    },
     color: {
       type: String,
       default: 'primary',
     },
     icon: {
       type: String,
-      default: 'mdi-alert',
+      default: 'warning',
     },
-    text: {
-      type: String,
-      default: 'Вы уверены?',
-    },
-    confirmLabel: {
-      type: String,
-      required: false,
-      default: 'Да',
-    },
-    declineLabel: {
-      type: String,
-      required: false,
-      default: 'Нет',
-    },
+    title: String,
+    text: String,
+    confirmLabel: String,
+    declineLabel: String,
   },
   data() {
     return {
@@ -93,6 +79,9 @@ export default {
     this.valueCopy = this.value;
   },
   methods: {
+    translate(key, defaultValue) {
+      return translate(this.$vuetify, key, defaultValue);
+    },
     confirm() {
       this.$emit('confirm');
     },
