@@ -175,10 +175,10 @@ export default {
           }
         },
         input: (val) => {
-          this.emit('input', val);
+          this.emit('input', typeof val === 'object' ? val[this.$attrs.itemValue || 'value'] : val);
         },
         change: (val) => {
-          this.emit('change', val);
+          this.emit('change', typeof val === 'object' ? val[this.$attrs.itemValue || 'value'] : val);
         },
       },
     }, createSlots(createElement, this.$slots));
