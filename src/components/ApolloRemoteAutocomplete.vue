@@ -2,7 +2,7 @@
 import { VAutocomplete, VCombobox } from 'vuetify/lib/components';
 import gql from 'graphql-tag';
 import equal from 'lodash.isequal';
-import { createSlots, translate } from '../utils';
+import { createSlots } from '../utils';
 
 export default {
   props: {

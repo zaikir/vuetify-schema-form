@@ -41,6 +41,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    skeletonLoading: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -108,6 +112,7 @@ export default {
       (item) => this.$emit('input', item), {
         context: this.context,
         scopedSlots: this.$scopedSlots,
+        skeletonLoading: this.skeletonLoading,
         ...options,
       });
 
