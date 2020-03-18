@@ -131,6 +131,6 @@ export default {
 </script>
 <style>
 .vsf-skeleton-loading .v-skeleton-loader__bone {
-  height: 100%;
+  height: 70%;
 }
 </style>

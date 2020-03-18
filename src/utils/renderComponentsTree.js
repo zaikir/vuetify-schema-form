@@ -54,7 +54,7 @@ export default (h, tree, item, emitInput, {
     if (props.value && skeletonLoading) {
       return h(VSkeletonLoader, {
         props: {
-          loading: skeletonLoading, type: 'text', width: '70%', height: '24px', ...props.skeleton,
+          loading: skeletonLoading, type: 'text', width: '70%', height: '44px', ...props.skeleton,
         },
         class: 'vsf-skeleton-loading',
       });
