@@ -1,10 +1,12 @@
+import { VSkeletonLoader } from 'vuetify/lib/components';
+
 export default (h, tree, item, emitInput, {
   context = {},
   scopedSlots = {},
   // slots = {},
   ...options
 } = {}) => {
-  const { propsResolver } = options;
+  const { propsResolver, skeletonLoading } = options;
   function renderNode(node) {
     if (typeof node === 'string') return node;
 
@@ -48,6 +50,15 @@ export default (h, tree, item, emitInput, {
     const slots = Object.entries(scopedSlots)
       .filter(([key]) => key.startsWith(`${slotPrefix}.`))
       .map(([key, value]) => [key.replace(`${slotPrefix}.`, ''), h('template', { slot: key.replace(`${slotPrefix}.`, '') }, value())]);
+
+    if (props.value && skeletonLoading) {
+      return h(VSkeletonLoader, {
+        props: {
+          loading: skeletonLoading, type: 'text', width: '70%', height: '24px', ...props.skeleton,
+        },
+        class: 'vsf-skeleton-loading',
+      });
+    }
 
     return props.value && scopedSlots[slotPrefix]
       ? scopedSlots[slotPrefix](totalContext)
