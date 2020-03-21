@@ -51,7 +51,7 @@ export default (h, tree, item, emitInput, {
       .filter(([key]) => key.startsWith(`${slotPrefix}.`))
       .map(([key, value]) => [key.replace(`${slotPrefix}.`, ''), h('template', { slot: key.replace(`${slotPrefix}.`, '') }, value())]);
 
-    if (props.value && skeletonLoading) {
+    if (props.value && skeletonLoading && props.skeleton !== false) {
       return h(VSkeletonLoader, {
         props: {
           loading: skeletonLoading, type: 'text', width: '80%', height: '44px', ...props.skeleton,
