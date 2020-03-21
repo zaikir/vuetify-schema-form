@@ -132,5 +132,6 @@ export default {
 <style>
 .vsf-skeleton-loading .v-skeleton-loader__bone {
   height: 70%;
+  opacity: 0.6;
 }
 </style>
