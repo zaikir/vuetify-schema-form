@@ -45,6 +45,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    noGutters: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -106,7 +110,6 @@ export default {
       $vuetify: this.$vuetify,
     };
 
-
     const tree = buildComponentsTree(this.root, options);
     const renderedTree = renderComponentsTree(h, tree, this.clone,
       (item) => this.$emit('input', item), {
@@ -120,6 +123,9 @@ export default {
       { props: { lazyValidation: true }, ref: 'editForm' },
       [
         h(VContainer, {
+          class: {
+            'pa-0': true,
+          },
           props: {
             // gridListMd: true,
             fluid: true,
