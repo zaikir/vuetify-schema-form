@@ -26,7 +26,7 @@ export default {
   margin-top: -6px !important;
 }
 
-.vdk-select-field .v-select__selection .v-select__selection--comma {
+.vdk-select-field .v-select__selections .v-select__selection--comma {
   margin-top: 10px !important;
   margin-bottom: 4px !important;
 }
