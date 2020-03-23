@@ -60,7 +60,7 @@ export default {
   files: { component: HasuraFilesField },
   remote: {
     component: ApolloRemoteAutocomplete,
-    methods: ['onResponse', 'filter'],
+    methods: ['onResponse'], // , 'filter'
     postProcessProps: ({ props }) => ({ props, attrs: props }),
   },
   array: {

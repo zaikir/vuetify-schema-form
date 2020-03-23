@@ -21,7 +21,7 @@ export default {
       type: Number,
       default: 400,
     },
-    filter: [Boolean, Function],
+    filter: [Boolean, Object, Function],
     filterParamName: {
       type: String,
       default: 'where',
@@ -134,14 +134,20 @@ export default {
       };
 
       if (typeof this.filter === 'function') {
-        return this.filter({ filter, search: this.search, value: this.$attrs.value });
+        return this.filter({
+          filter, search: this.search, value: this.$attrs.value, ...this.$attrs.$options,
+        });
+      }
+
+      if (typeof this.filter === 'object') {
+        return this.filter;
       }
 
       return filter;
     },
   },
   render(createElement) {
-    const newFilter = this.filter && typeof this.filter === 'function' && this.getFilter();
+    const newFilter = this.filter && (typeof this.filter === 'function' || typeof this.filter === 'object') && this.getFilter();
     if (newFilter && !equal(newFilter, this.currentFilter)) {
       this.currentFilter = newFilter;
       this.fetchItems();
