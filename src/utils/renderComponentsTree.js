@@ -16,7 +16,14 @@ export default (h, tree, item, emitInput, {
       methods = [],
     } = node;
 
-    const totalContext = { item, ...context };
+    const totalContext = {
+      item,
+      $input: (key, newValue) => {
+        item[key] = postProcess ? postProcess(newValue) : newValue;
+        emitInput(item);
+      },
+      ...context,
+    };
     const totalProps = Object.assign({}, ...Object.entries(props)
       .filter(([key]) => !key.startsWith('@') && !key.startsWith('$'))
       .map(([key, value]) => {
