@@ -103,10 +103,14 @@ export default {
               query: this.currentFilter,
             };
           },
-          update(data) {
+          update: (data) => {
             if (data[queryName]) {
               this.isLoading = false;
-              return data[queryName].map(this.onResponse);
+              const items = data[queryName].map(this.onResponse);
+
+              this.$emit('fetched', items);
+
+              return items;
             }
           },
         });
