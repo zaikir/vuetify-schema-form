@@ -141,13 +141,12 @@ export default {
       });
     },
     async refreshQuery() {
-      // ToDo: optimize it
       const apollo = this.$apollo.provider.defaultClient;
       Object.keys(apollo.cache.data.data).forEach((key) => {
         apollo.cache.data.delete(key);
       });
 
-      await apollo.reFetchObservableQueries();
+      this.$apollo.queries.files.refetch();
     },
     async onUploaded() {
       await this.refreshQuery();
