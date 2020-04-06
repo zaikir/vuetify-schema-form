@@ -56,7 +56,7 @@ export default (h, tree, item, emitInput, {
 
     const slots = Object.entries(scopedSlots)
       .filter(([key]) => key.startsWith(`${slotPrefix}.`))
-      .map(([key, value]) => [key.replace(`${slotPrefix}.`, ''), h('template', { slot: key.replace(`${slotPrefix}.`, '') }, value())]);
+      .map(([key, value]) => [key.replace(`${slotPrefix}.`, ''), h('template', { slot: key.replace(`${slotPrefix}.`, '') }, value(totalContext))]);
 
     if (props.value && skeletonLoading && props.skeleton !== false) {
       return h(VSkeletonLoader, {
