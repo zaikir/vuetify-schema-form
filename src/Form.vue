@@ -49,6 +49,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    nestedKeys: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -83,7 +87,8 @@ export default {
         return;
       }
 
-      this.$emit('submit', this.clone);
+      const data = this.nestedKeys ? this.processNestedKeys(this.clone) : this.clone;
+      this.$emit('submit', data);
     },
     reset() {
       if (this.$refs.editForm) {
@@ -96,6 +101,22 @@ export default {
         ...Object.assign({}, ...this.objectFields.map((field) => ({ [field.value]: null }))),
         ...clone(initial),
       };
+    },
+    processNestedKeys(data) {
+      const cloned = clone(data);
+      Object.keys(cloned).forEach((key) => {
+        if (!key.includes('__')) {
+          return;
+        }
+        const [parentKey, childKey] = key.split('__');
+        if (!(parentKey in cloned)) {
+          cloned[parentKey] = {};
+        }
+        cloned[parentKey][childKey] = cloned[key];
+        delete cloned[key];
+      });
+
+      return cloned;
     },
   },
   render(h) {
