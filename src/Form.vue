@@ -141,7 +141,16 @@ export default {
       });
 
     return h(VForm,
-      { props: { lazyValidation: true }, ref: 'editForm' },
+      {
+        props: { lazyValidation: true },
+        on: {
+          submit: (event) => {
+            this.submit();
+            event.preventDefault();
+          },
+        },
+        ref: 'editForm',
+      },
       [
         h(VContainer, {
           class: {
