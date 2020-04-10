@@ -8,8 +8,9 @@
     <v-col v-if="!file && !disabled" cols="12" style="margin-top: -2px;">
       <dropzone-area
         :height="height"
-        :accepted-files="acceptedFiles"
+        :accept="accept"
         :additional-params="params"
+        @error="$emit('error', $event)"
         @uploaded="onUploaded"/>
         <validation-message v-if="required" :value="(file || {}).id"/>
     </v-col>
@@ -48,9 +49,8 @@ export default {
       required: false,
       default: 100,
     },
-    acceptedFiles: {
+    accept: {
       type: String,
-      required: false,
       default: '*',
     },
     label: {

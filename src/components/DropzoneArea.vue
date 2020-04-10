@@ -4,7 +4,6 @@
     :options="dropzoneOptions"
     :use-custom-slot="true"
     :include-styling="false"
-    :accepted-files="acceptedFiles"
     @vdropzone-file-added="startUploading"
     @vdropzone-success="successfullyUploaded"
     @vdropzone-sending="onSending"
@@ -49,9 +48,8 @@ export default {
       required: false,
       default: 100,
     },
-    acceptedFiles: {
+    accept: {
       type: String,
-      required: false,
       default: '*',
     },
     additionalParams: {
@@ -75,7 +73,17 @@ export default {
       return {
         dictDefaultMessage: translate(this.$vuetify, 'upload', 'Upload'),
         url: this.url,
-        thumbnailWidth: 150,
+        thumbnailWidth: 100,
+        accept: (file, done) => {
+          if (file && file.type && (this.accept === '*' || new RegExp(this.accept).test(file.type))) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.isLoading = true;
+            return done();
+          }
+
+          this.$emit('error', translate(this.$vuetify, 'wrongFileType', 'Wrong file type'));
+          return done('Wrong file type');
+        },
       };
     },
   },
@@ -97,8 +105,8 @@ export default {
         formData.append(key, value);
       });
     },
-    startUploading() {
-      this.isLoading = true;
+    startUploading(obj) {
+      // this.isLoading = true;
     },
     successfullyUploaded(file, response) {
       this.isLoading = false;

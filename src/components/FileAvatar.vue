@@ -85,11 +85,11 @@ export default {
     },
     width: {
       type: Number,
-      default: 150,
+      default: 120,
     },
     height: {
       type: Number,
-      default: 100,
+      default: 80,
     },
     elevation: {
       type: Number,

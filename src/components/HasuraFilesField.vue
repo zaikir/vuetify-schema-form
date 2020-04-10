@@ -8,7 +8,7 @@
     <v-col v-if="!disabled" cols="12" style="margin-top: -2px;">
       <dropzone-area
         :height="height"
-        :accepted-files="acceptedFiles"
+        :accept="accept"
         :additional-params="{[foreignKey]:foreignKeyValue,...params}"
         @uploaded="onUploaded"/>
         <validation-message v-if="required" :value="files && files.length"/>
@@ -66,9 +66,8 @@ export default {
       required: false,
       default: 100,
     },
-    acceptedFiles: {
+    accept: {
       type: String,
-      required: false,
       default: '*',
     },
     label: {
