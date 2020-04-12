@@ -9,6 +9,7 @@
       <dropzone-area
         :height="height"
         :accept="accept"
+        :url="uploadUrl"
         :additional-params="params"
         @error="$emit('error', $event)"
         @uploaded="onUploaded"/>
@@ -70,6 +71,10 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    uploadUrl: {
+      type: String,
+      default: '/api/uploads',
     },
   },
   apollo: {

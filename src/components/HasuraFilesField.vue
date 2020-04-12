@@ -9,6 +9,7 @@
       <dropzone-area
         :height="height"
         :accept="accept"
+        :url="uploadUrl"
         :additional-params="{[foreignKey]:foreignKeyValue,...params}"
         @uploaded="onUploaded"/>
         <validation-message v-if="required" :value="files && files.length"/>
@@ -87,6 +88,10 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    uploadUrl: {
+      type: String,
+      default: '/api/uploads',
     },
   },
   apollo: {
