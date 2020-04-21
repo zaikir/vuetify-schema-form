@@ -87,8 +87,17 @@ export default {
         return;
       }
 
-      const data = this.nestedKeys ? this.processNestedKeys(this.clone) : this.clone;
-      this.$emit('submit', data);
+      this.$refs.editForm.$el.querySelectorAll('input')
+        .forEach((input) => {
+          if (input.blur) {
+            input.blur();
+          }
+        });
+
+      this.$nextTick(() => {
+        const data = this.nestedKeys ? this.processNestedKeys(this.clone) : this.clone;
+        this.$emit('submit', data);
+      });
     },
     reset() {
       if (this.$refs.editForm) {
