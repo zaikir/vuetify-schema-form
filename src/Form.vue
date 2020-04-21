@@ -53,6 +53,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    submitOnEnter: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -80,6 +84,17 @@ export default {
     objectFields() {
       this.initialize(this.value);
     },
+  },
+  mounted() {
+    if (this.submitOnEnter) {
+      window.addEventListener('keyup', (event) => {
+        if (event.keyCode === 13) {
+          this.submit();
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      });
+    }
   },
   methods: {
     submit() {
@@ -154,8 +169,11 @@ export default {
         props: { lazyValidation: true },
         on: {
           submit: (event) => {
-            this.submit();
+            if (!this.submitOnEnter) {
+              this.submit();
+            }
             event.preventDefault();
+            event.stopPropagation();
           },
         },
         ref: 'editForm',
