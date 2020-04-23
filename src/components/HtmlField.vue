@@ -89,7 +89,7 @@ export default {
         content_css: [],
         images_upload_url: this.uploadUrl,
         automatic_uploads: false,
-        file_picker_callback: (cb) => {
+        file_picker_callback: function (cb) {
           const input = document.createElement('input');
           input.setAttribute('type', 'file');
 
