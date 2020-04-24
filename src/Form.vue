@@ -181,7 +181,8 @@ export default {
       [
         h(VContainer, {
           class: {
-            'pa-0': true,
+            'px-0': true,
+            'py-1': true,
           },
           props: {
             // gridListMd: true,

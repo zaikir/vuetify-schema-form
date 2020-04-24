@@ -9,6 +9,8 @@ export default {
       ...context.data,
       props: {
         ...context.data.props || {},
+        falseValue: false,
+        trueValue: true,
         inputValue: context.data.props.value,
       },
       class: {
