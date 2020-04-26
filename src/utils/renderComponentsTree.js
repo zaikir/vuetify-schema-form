@@ -24,11 +24,17 @@ export default (h, tree, item, emitInput, {
       },
       ...context,
     };
+
+    const systemKeys = ['resolveValue', 'postProcess'];
     const totalProps = Object.assign({}, ...Object.entries(props)
-      .filter(([key]) => !key.startsWith('@') && !key.startsWith('$'))
+      .filter(([key]) => !key.startsWith('@') && !key.startsWith('$') && !systemKeys.includes(key))
       .map(([key, value]) => {
         if (key === 'value') {
-          return { value: item[value] };
+          return {
+            value: props.resolveValue
+              ? props.resolveValue(item[value])
+              : item[value],
+          };
         }
 
         const resolver = propsResolver[key];
@@ -82,6 +88,9 @@ export default (h, tree, item, emitInput, {
               if (event !== undefined && (!event || !event.target)) {
                 // eslint-disable-next-line no-param-reassign
                 item[props.value] = postProcess ? postProcess(event) : event;
+                // eslint-disable-next-line no-param-reassign
+                item[props.value] = props.postProcess ? props.postProcess(item[props.value]) : item[props.value];
+
                 emitInput(item);
               }
             },

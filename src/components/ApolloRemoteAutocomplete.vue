@@ -34,16 +34,16 @@ export default {
   },
   data() {
     return {
-      // disableFetching: false,
       isLoading: false,
       items: [],
       search: null,
-      // currentFilter: null,
     };
   },
   watch: {
     value(val) {
-      this.search = val;
+      if (typeof val !== 'object') {
+        this.search = val;
+      }
     },
     query: {
       handler() {
@@ -185,10 +185,10 @@ export default {
           }
         },
         input: (val) => {
-          this.emit('input', typeof val === 'object' ? val[this.$attrs.itemValue || 'value'] : val);
+          this.emit('input', typeof val === 'object' && !this.$attrs.multiple ? val[this.$attrs.itemValue || 'value'] : val);
         },
         change: (val) => {
-          this.emit('change', typeof val === 'object' ? val[this.$attrs.itemValue || 'value'] : val);
+          this.emit('change', typeof val === 'object' && !this.$attrs.multiple ? val[this.$attrs.itemValue || 'value'] : val);
         },
       },
     }, createSlots(createElement, this.$slots));
