@@ -22,6 +22,7 @@ export default (h, tree, item, emitInput, {
         item[key] = postProcess ? postProcess(newValue) : newValue;
         emitInput(item);
       },
+      isNew: !item.id,
       ...context,
     };
 
