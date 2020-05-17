@@ -12,8 +12,8 @@ export default {
         value: data.props.value,
         mask: {
           numericOnly: true,
-          blocks: [0, 3, 0, 3, 4],
-          delimiters: ['(', ')', ' ', '-'],
+          blocks: data.props.countryCodeLead ? [1, 0, 3, 0, 3, 4] : [0, 3, 0, 3, 4],
+          delimiters: data.props.countryCodeLead ? [' ', '(', ')', ' ', '-'] : ['(', ')', ' ', '-'],
         },
       },
       attrs: {
