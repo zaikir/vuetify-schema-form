@@ -12,6 +12,7 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue';
+import Vue from 'vue';
 import ValidationMessage from './ValidationMessage.vue';
 
 export default {
@@ -59,6 +60,14 @@ export default {
       required: false,
       default: false,
     },
+    verifyHtml: {
+      type: Boolean,
+      default: true,
+    },
+    styles: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -86,10 +95,15 @@ export default {
         autosave_restore_when_empty: false,
         autosave_retention: '2m',
         image_advtab: true,
-        content_css: [],
+        verify_html: this.verifyHtml,
+        forced_root_block: '',
+        content_css: [
+          ...((Vue.$schemaForm || {}).html || {}).styles || [],
+          ...this.styles,
+        ],
         images_upload_url: this.uploadUrl,
         automatic_uploads: false,
-        file_picker_callback: function (cb) {
+        file_picker_callback(cb) {
           const input = document.createElement('input');
           input.setAttribute('type', 'file');
 
