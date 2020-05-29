@@ -96,7 +96,7 @@ export default {
         autosave_retention: '2m',
         image_advtab: true,
         verify_html: this.verifyHtml,
-        forced_root_block: '',
+        // forced_root_block: '',
         content_css: [
           ...((Vue.$schemaForm || {}).html || {}).styles || [],
           ...this.styles,
