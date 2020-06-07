@@ -31,7 +31,10 @@ export default {
 };
 </script>
 <style>
-.vdk-combobox-field.v-input--dense .v-select__slot {
-  margin-top: -2px !important;
+.vdk-autocomplete-field.v-input--dense .v-select__slot {
+  margin-top: -1px !important;
+}
+.vdk-autocomplete-field .v-input__slot {
+  padding-bottom: 1px;
 }
 </style>
