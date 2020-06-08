@@ -74,9 +74,10 @@ export default {
       const key = props.key || `${props.label}_${props.icon}`;
       const { tab = { class: 'pt-3' } } = props;
 
+
       return [{
         component: VTab,
-        props: { key },
+        props: { key, ...props },
         children: [
           props.icon && { component: VIcon, class: { 'mr-2': true }, children: [props.icon] },
           props.label,

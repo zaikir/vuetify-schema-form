@@ -1,6 +1,6 @@
 {
   "name": "vuetify-schema-form",
-  "version": "0.1.82",
+  "version": "0.1.83",
   "description": "A schema-based form generator component for Vue.js.",
   "main": "src/index.js",
   "scripts": {
