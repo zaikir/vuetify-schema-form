@@ -17,17 +17,3 @@ export default {
   },
 };
 </script>
-<style>
-.vdk-select-field.v-input--dense .v-select__slot {
-  margin-top: -2px !important;
-}
-
-.vdk-select-field.v-input--dense.v-input--is-label-active .v-select__slot {
-  margin-top: -6px !important;
-}
-
-.vdk-select-field .v-select__selections .v-select__selection--comma {
-  margin-top: 10px !important;
-  margin-bottom: 4px !important;
-}
-</style>

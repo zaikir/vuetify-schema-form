@@ -31,8 +31,8 @@ export default {
 };
 </script>
 <style>
-.vdk-combobox-field.v-input--dense .v-select__slot {
+/* .vdk-combobox-field.v-input--dense .v-select__slot {
   margin-top: -2px !important;
   padding-bottom: 2px;
-}
+} */
 </style>
