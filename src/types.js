@@ -85,7 +85,7 @@ export default {
       }, {
         component: VTabItem,
         ...tab,
-        props: { key, eager: true, ...tab.props },
+        props: { key, ...tab.props },
         children: [child],
       }];
     },
