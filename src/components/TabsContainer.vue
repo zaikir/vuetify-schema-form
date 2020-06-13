@@ -6,10 +6,9 @@
       small
       v-model="selectedTab"
       app
-      :shift="tabs.find(x => x.label)"
     >
       <v-btn v-for="(tab, i) in tabs" :key="i">
-        <span>{{tab.label}}</span>
+        <span></span>
         <v-icon>{{tab.icon}}</v-icon>
       </v-btn>
     </v-bottom-navigation>
