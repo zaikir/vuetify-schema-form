@@ -1,26 +1,8 @@
-<template>
-  <div class="vsh-tabs-container">
-    <v-bottom-navigation
-      grow
-      mandatory
-      small
-      v-model="selectedTab"
-      app
-    >
-      <v-btn v-for="(tab, i) in tabs" :key="i">
-        <span></span>
-        <v-icon>{{tab.icon}}</v-icon>
-      </v-btn>
-    </v-bottom-navigation>
-    <v-window v-model="selectedTab">
-      <slot v-for="(_, name) in $slots" :name="name" :slot="name" />
-      <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData"><slot :name="name" v-bind="slotData" /></template>
-    </v-window>
-  </div>
-</template>
+
 <script>
-import { VTabs } from 'vuetify/lib/components';
-import TasksTableVue from '../../../../old/components/TasksTable.vue';
+import {
+  VWindow, VBtn, VIcon, VBottomNavigation,
+} from 'vuetify/lib/components';
 import { createSlots } from '../utils';
 
 export default {
@@ -36,6 +18,32 @@ export default {
       currentValue: null,
       showValidationErrors: false,
     };
+  },
+  render(h) {
+    return h('div', { class: 'vsh-tabs-container' }, [
+      h(VBottomNavigation, {
+        props: {
+          grow: true,
+          mandatory: true,
+          small: true,
+          value: this.selectedTab,
+          app: true,
+        },
+        on: {
+          change: (val) => {
+            this.selectedTab = val;
+          },
+        },
+      }, this.tabs.map((tab) => h(VBtn, [h(VIcon, [tab.icon])]))),
+      h(VWindow, {
+        props: { value: this.selectedTab },
+        on: {
+          change: (val) => {
+            this.selectedTab = val;
+          },
+        },
+      }, createSlots(h, this.$slots)),
+    ]);
   },
 };
 </script>
