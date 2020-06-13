@@ -6,7 +6,7 @@ import {
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
   RadioGroupField, DateField, DateTimeField, SlugField,
   HtmlField, HasuraFileField, HasuraFilesField, ApolloRemoteAutocomplete,
-  ArrayField, MaskedInput, ComboboxField,
+  ArrayField, MaskedInput, ComboboxField, BottomNavigation,
 } from './components';
 
 export default {
@@ -58,6 +58,7 @@ export default {
   html: { component: HtmlField },
   file: { component: HasuraFileField },
   files: { component: HasuraFilesField },
+  'bottom-navigation': { component: BottomNavigation },
   remote: {
     component: ApolloRemoteAutocomplete,
     methods: ['onResponse'], // , 'filter'
