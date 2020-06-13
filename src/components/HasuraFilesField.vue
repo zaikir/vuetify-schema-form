@@ -24,7 +24,7 @@
         @change="onReordered"
       >
         <v-col v-for="(file, i) in files" :key="i" cols="auto">
-          <file-avatar :file="file" :disabled="disabled" @remove="removeFile"/>
+          <file-avatar :file="file" :disabled="disabled" @remove="removeFile" @click.prevent.stop="openLink(file)" @click.middle.prevent.stop="openLink(file, true)"/>
         </v-col>
       </draggable>
     </v-col>
@@ -34,6 +34,8 @@
 
 import gql from 'graphql-tag';
 import Draggable from 'vuedraggable';
+import 'viewerjs/dist/viewer.css';
+import Viewer from 'v-viewer/src/component.vue';
 import DropzoneArea from './DropzoneArea.vue';
 import FileAvatar from './FileAvatar.vue';
 import ValidationMessage from './ValidationMessage.vue';
@@ -44,6 +46,7 @@ export default {
     FileAvatar,
     ValidationMessage,
     Draggable,
+    Viewer,
   },
   props: {
     foreignKey: {
@@ -121,9 +124,29 @@ export default {
       files: [],
       loadingIds: [],
       loading: false,
+      processedItem: null,
+      isFileModalOpened: false,
     };
   },
+  computed: {
+    images() {
+      return this.files.filter((x) => this.isImage(x.type)).map((x) => x.url);
+    },
+  },
   methods: {
+    inited(viewer) {
+      this.$viewer = viewer;
+    },
+    openLink(file) {
+      if (this.isImage(file.type)) {
+        this.$viewer.show();
+      } else {
+        window.open(file.url, '_blank');
+      }
+    },
+    isImage(type) {
+      return type === '.png' || type === '.jpg' || type === '.jpeg' || type === '.gif';
+    },
     onReordered(event = {}) {
       const { moved } = event;
       if (!moved) {
