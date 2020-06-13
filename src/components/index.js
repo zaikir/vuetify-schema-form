@@ -18,4 +18,4 @@ export { default as HasuraFileField } from './HasuraFileField.vue';
 export { default as HasuraFilesField } from './HasuraFilesField.vue';
 export { default as ApolloRemoteAutocomplete } from './ApolloRemoteAutocomplete.vue';
 export { default as ComboboxField } from './ComboboxField.vue';
-export { default as BottomNavigation } from './BottomNavigation.vue';
+export { default as TabsContainer } from './TabsContainer.vue';

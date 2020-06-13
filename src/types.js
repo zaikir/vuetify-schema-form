@@ -6,7 +6,7 @@ import {
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
   RadioGroupField, DateField, DateTimeField, SlugField,
   HtmlField, HasuraFileField, HasuraFilesField, ApolloRemoteAutocomplete,
-  ArrayField, MaskedInput, ComboboxField, BottomNavigation,
+  ArrayField, MaskedInput, ComboboxField, TabsContainer,
 } from './components';
 
 export default {
@@ -58,7 +58,6 @@ export default {
   html: { component: HtmlField },
   file: { component: HasuraFileField },
   files: { component: HasuraFilesField },
-  'bottom-navigation': { component: BottomNavigation },
   remote: {
     component: ApolloRemoteAutocomplete,
     methods: ['onResponse'], // , 'filter'
@@ -69,7 +68,7 @@ export default {
     postProcessProps: ({ props, options }) => ({ props: { ...props, $options: options } }),
   },
   tabs: {
-    component: VTabs,
+    component: TabsContainer,
     childResolver: (child) => {
       const { props = {} } = child;
       const key = props.key || `${props.label}_${props.icon}`;
