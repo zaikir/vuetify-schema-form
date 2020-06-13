@@ -77,7 +77,7 @@ export default (h, tree, item, emitInput, {
     return props.value && scopedSlots[slotPrefix]
       ? scopedSlots[slotPrefix](totalContext)
       : h(component, {
-        ...postProcessProps({ props: totalProps, options, ...totalContext }),
+        ...postProcessProps({ props: totalProps, options, ...totalContext }, { children, renderedChildren }),
         class: _class,
         style,
         on: {

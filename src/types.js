@@ -1,5 +1,6 @@
 import {
   VRow, VCol, VTextField, VTextarea, VSheet, VTabs, VTab, VTabItem, VIcon,
+  VWindowItem,
 } from 'vuetify/lib/components';
 import {
   NumberField, IntegerField, PasswordField, PhoneField, EmailField,
@@ -68,7 +69,38 @@ export default {
     postProcessProps: ({ props, options }) => ({ props: { ...props, $options: options } }),
   },
   tabs: {
+    component: VTabs,
+    childResolver: (child) => {
+      const { props = {} } = child;
+      const key = props.key || `${props.label}_${props.icon}`;
+      const { tab = { class: 'pt-3' } } = props;
+
+
+      return [
+        {
+          component: VTab,
+          props: { key, ...props },
+          children: [
+            props.icon && { component: VIcon, class: { 'mr-2': true }, children: [props.icon] },
+            props.label,
+          ].filter((x) => !!x),
+        },
+        {
+          component: VTabItem,
+          ...tab,
+          props: { key, ...tab.props },
+          children: [child],
+        }];
+    },
+  },
+  bottomTabs: {
     component: TabsContainer,
+    postProcessProps: ({ props }, { renderedChildren, children }) => ({
+      props: {
+        ...props,
+        tabs: renderedChildren.map((x, i) => !!x && children[i].children[0].props).filter((x) => !!x),
+      },
+    }),
     childResolver: (child) => {
       const { props = {} } = child;
       const key = props.key || `${props.label}_${props.icon}`;
@@ -76,14 +108,7 @@ export default {
 
 
       return [{
-        component: VTab,
-        props: { key, ...props },
-        children: [
-          props.icon && { component: VIcon, class: { 'mr-2': true }, children: [props.icon] },
-          props.label,
-        ].filter((x) => !!x),
-      }, {
-        component: VTabItem,
+        component: VWindowItem,
         ...tab,
         props: { key, ...tab.props },
         children: [child],

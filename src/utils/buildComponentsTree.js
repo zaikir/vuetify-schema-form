@@ -13,14 +13,16 @@ export default (root, {
     //   throw new Error(`Component "${type}" is not defined!`);
     // }
 
-    const { component, childResolver, ...rest } = types[type] || {
+    const {
+      component, childResolver, postBuild, ...rest
+    } = types[type] || {
       component: 'type',
     };
 
     return parentChildResolver({
       component,
       type,
-      props: { ...globalProps, ...props },
+      props: postBuild ? postBuild({ props: { ...globalProps, ...props }, element }) : { ...globalProps, ...props },
       class: { ...globalClasses, ..._class },
       style,
       children: [].concat(...fields.map((field) => buildNode(field, childResolver))),
