@@ -56,6 +56,14 @@
         />
         <div class="pt-2 px-2" :style="`max-width: ${width}px;`">
           <span class="subtitle-2">{{ file.name }}</span>
+          <v-tooltip bottom>
+            <template #activator="{on}">
+              <v-btn class="ml-auto" icon small v-on="on" @click.prevent.stop="downloadFile(file)">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+            </template>
+            Скачать
+          </v-tooltip>
         </div>
       </v-card-text>
       <confirmation-dialog
@@ -67,6 +75,7 @@
   </v-hover>
 </template>
 <script>
+import fileDownload from 'js-file-download';
 import ConfirmationDialog from './ConfirmationDialog.vue';
 
 export default {
@@ -134,6 +143,10 @@ export default {
     },
     openLink(file) {
       window.open(file.url, '_blank');
+    },
+    async downloadFile(file) {
+      const blob = await this.$axios.$get(file.url, { responseType: 'blob' });
+      fileDownload(blob, file.name);
     },
   },
 };
