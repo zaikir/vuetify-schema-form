@@ -31,6 +31,7 @@ export default {
     const createTextField = (on) => createElement(VTextField, {
       ref: 'datetime',
       props: {
+        'prepend-icon': 'mdi-calendar',
         ...this.$attrs,
         value: this.currentValue,
         errorCount: this.showValidationErrors ? 1 : 0,
