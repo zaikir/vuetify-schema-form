@@ -23,11 +23,21 @@
         :disabled="loading || disabled || $vuetify.breakpoint.smAndDown"
         @change="onReordered"
       >
-        <v-col v-for="(file, i) in files" :key="i" cols="auto">
-          <file-avatar :file="file" :disabled="disabled" @remove="removeFile" @click.prevent.stop="openLink(file)" @click.middle.prevent.stop="openLink(file, true)"/>
+        <v-col v-for="(file, i) in files" :key="i" cols="auto" @click.prevent.stop="openLink(file)" @click.middle.prevent.stop="openLink(file, true)">
+          <file-avatar :file="file" :disabled="disabled" @remove="removeFile" :click="false"/>
         </v-col>
       </draggable>
     </v-col>
+    <viewer
+      v-if="images.length"
+      ref="viewer"
+      :images="images"
+      class="viewer"
+      :options="{}"
+      @inited="inited"
+    >
+      <img v-for="src in images" :key="src" :src="src" style="display:none;">
+    </viewer>
   </v-row>
 </template>
 <script>

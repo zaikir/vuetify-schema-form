@@ -108,6 +108,10 @@ export default {
       type: Number,
       default: 3,
     },
+    click: {
+      type: Boolean,
+      default: true,
+    },
   },
   components: {
     ConfirmationDialog,
@@ -142,7 +146,9 @@ export default {
       this.$emit('remove', this.selectedFile);
     },
     openLink(file) {
-      window.open(file.url, '_blank');
+      if (this.click) {
+        window.open(file.url, '_blank');
+      }
     },
     async downloadFile(file) {
       const blob = await this.$axios.$get(file.url, { responseType: 'blob' });
