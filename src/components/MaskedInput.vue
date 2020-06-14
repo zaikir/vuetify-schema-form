@@ -14,6 +14,10 @@ export default {
       type: Object,
       required: true,
     },
+    restrict: {
+      type: Function,
+      default: null,
+    },
   },
   data() {
     return {
@@ -62,7 +66,10 @@ export default {
   },
   methods: {
     onValueChanged({ target }) {
-      this.$nextTick(() => {
+      const restrictedValue = this.restrict && this.restrict(target.rawValue);
+      if (target.rawValue && restrictedValue && restrictedValue.check) {
+        this.cleave.setRawValue(restrictedValue.value);
+      } else {
         if (target.value && target.value.length > 0) {
           this.isChangedInitially = true;
         }
@@ -74,7 +81,7 @@ export default {
           this.currentRawValue = target.rawValue;
           this.$emit('input', target.rawValue);
         }
-      });
+      }
     },
   },
 };
