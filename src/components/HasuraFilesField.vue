@@ -191,7 +191,7 @@ export default {
     async removeFile(file) {
       await this.$apollo.mutate({
         mutation: gql`mutation RemoveFile($id: uuid) {
-          update_File(where: {id: {_eq: $id}}, _set: {isRemoved: true}) {
+          update_${this.source}(where: {id: {_eq: $id}}, _set: {isRemoved: true}) {
             affected_rows
           }
         }`,
