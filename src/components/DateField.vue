@@ -48,10 +48,11 @@ export default {
       },
       on: {
         ...on,
-        click: () => {
+        click: (e) => {
           if (!this.currentValue || !this.currentValue.length) {
             document.activeElement.blur();
           }
+          on.click && on.click(e);
         },
         input: (val) => {
           if (val === '') {
