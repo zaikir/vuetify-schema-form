@@ -48,6 +48,11 @@ export default {
       },
       on: {
         ...on,
+        click: () => {
+          if (!this.currentValue || !this.currentValue.length) {
+            document.activeElement.blur();
+          }
+        },
         input: (val) => {
           this.currentValue = val;
           this.emit(val);
@@ -87,6 +92,9 @@ export default {
           },
           on: {
             input: (val) => {
+              if (val === '') {
+                val = null;
+              }
               this.currentValue = val;
               this.emit(val);
             },

@@ -59,6 +59,11 @@ export default {
       },
       on: {
         ...on,
+        click: () => {
+          if (!this.currentValue || !this.currentValue.length) {
+            document.activeElement.blur();
+          }
+        },
         change: (val) => {
           this.currentValue = (val && (val + this.timezoneString));
           this.emit(this.currentValue);
@@ -98,6 +103,10 @@ export default {
           },
           on: {
             input: (val) => {
+              if (val === '') {
+                val = null;
+              }
+
               if (!this.currentValue || !this.currentValue.startsWith(val)) {
                 this.currentValue = (val && (`${val}T00:00:00${this.timezoneString}`)) || null;
                 this.emit(this.currentValue);
