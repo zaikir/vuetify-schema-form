@@ -49,10 +49,14 @@ export default {
       on: {
         ...on,
         click: (e) => {
+          on.click && on.click(e);
           if (!this.currentValue || !this.currentValue.length) {
             document.activeElement.blur();
+            const input = this.$refs.datetime.$el.querySelector('input:not([type=hidden]),textarea:not([type=hidden])');
+            if (input) {
+              setTimeout(() => { input.focus(); }, 0);
+            }
           }
-          on.click && on.click(e);
         },
         input: (val) => {
           if (val === '') {
