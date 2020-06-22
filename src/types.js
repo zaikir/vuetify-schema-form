@@ -70,6 +70,7 @@ export default {
   },
   tabs: {
     component: TabsContainer,
+    postProcessProps: ({ props }) => ({ props, attrs: props }),
     childResolver: (child) => {
       const { props = {} } = child;
       const key = props.key || `${props.label}_${props.icon}`;
