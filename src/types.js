@@ -1,5 +1,5 @@
 import {
-  VRow, VCol, VTextField, VTextarea, VSheet, VTabs, VTab, VTabItem, VIcon,
+  VRow, VCol, VTextField, VTextarea, VSheet, VTab, VTabItem, VIcon,
   VWindowItem,
 } from 'vuetify/lib/components';
 import {
@@ -7,7 +7,7 @@ import {
   SelectField, AutocompleteField, SwitchField, CheckBoxField,
   RadioGroupField, DateField, DateTimeField, SlugField,
   HtmlField, HasuraFileField, HasuraFilesField, ApolloRemoteAutocomplete,
-  ArrayField, MaskedInput, ComboboxField, TabsContainer,
+  ArrayField, MaskedInput, ComboboxField, BottomNavigation, TabsContainer,
 } from './components';
 
 export default {
@@ -69,12 +69,11 @@ export default {
     postProcessProps: ({ props, options }) => ({ props: { ...props, $options: options } }),
   },
   tabs: {
-    component: VTabs,
+    component: TabsContainer,
     childResolver: (child) => {
       const { props = {} } = child;
       const key = props.key || `${props.label}_${props.icon}`;
       const { tab = { class: 'pt-3' } } = props;
-
 
       return [
         {
@@ -94,7 +93,7 @@ export default {
     },
   },
   bottomTabs: {
-    component: TabsContainer,
+    component: BottomNavigation,
     postProcessProps: ({ props }, { renderedChildren, children }) => ({
       props: {
         ...props,
@@ -105,7 +104,6 @@ export default {
       const { props = {} } = child;
       const key = props.key || `${props.label}_${props.icon}`;
       const { tab = { class: 'pt-3' } } = props;
-
 
       return [{
         component: VWindowItem,
