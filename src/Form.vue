@@ -100,10 +100,10 @@ export default {
   methods: {
     submit() {
       if (!this.$refs.editForm.validate()) {
-        const error = this.$refs.editForm.inputs.filter((x) => x.hasError)[0] || {};
-        if (error) {
-          this.validateionFailedEvent.dispatchEvent(error);
-        }
+        // const error = this.$refs.editForm.inputs.filter((x) => x.hasError)[0] || {};
+        // if (error) {
+        //   this.validateionFailedEvent.dispatchEvent(error);
+        // }
         return;
       }
 
