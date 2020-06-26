@@ -18,6 +18,9 @@ export default {
           (x) => !x || parseFloat(x).toString() === x.toString() || translate(context.parent.$vuetify, 'wrongFormat', 'Wrong format'),
         ],
       },
+      attrs: {
+        autocomplete: 'off',
+      },
     }, createSlots(createElement, context.slots()));
   },
 };
