@@ -149,6 +149,11 @@ export default {
     },
     openLink(file) {
       if (this.isImage(file.type)) {
+        const imageId = this.images.findIndex((x) => x === file.url);
+        for (let i = 0; i < imageId; i += 1) {
+          this.$viewer.next();
+        }
+
         this.$viewer.show();
       } else {
         window.open(file.url, '_blank');
