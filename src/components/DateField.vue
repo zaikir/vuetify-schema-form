@@ -1,6 +1,7 @@
 <script>
 import { VDatePicker, VMenu, VTextField } from 'vuetify/lib/components';
 import { createSlots } from '../utils';
+import moment from 'moment'
 
 export default {
   props: {
@@ -66,6 +67,47 @@ export default {
           this.currentValue = val;
           this.emit(val);
         },
+        'paste': e => {
+          const text = e.clipboardData.getData('text')
+          const val = moment(text, 'L')
+
+          this.currentValue = val.format('YYYY-MM-DD');
+          this.emit(val.format('YYYY-MM-DD'));
+        },
+        'keydown': e => {
+          if ((event.metaKey || event.ctrlKey) && event.keyCode === 67) {
+            const input = this.$refs.datetime.$el.querySelector('input:not([type=hidden]),textarea:not([type=hidden])');
+
+            var tempInput = document.createElement("input");
+            tempInput.value = moment(input.value).format('L');
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            return
+          }
+
+          if ((event.metaKey || event.ctrlKey) && event.keyCode === 86) {
+            const input = this.$refs.datetime.$el.querySelector('input:not([type=hidden]),textarea:not([type=hidden])');
+
+            input.type = 'text'
+            setTimeout(() => {
+                input.type = 'date'
+            })
+            // navigator.clipboard.readText().then(text => {
+            //   const input = this.$refs.datetime.$el.querySelector('input:not([type=hidden]),textarea:not([type=hidden])');
+
+            //   const val = moment(text, 'L')
+            //   this.currentValue = val.format('YYYY-MM-DD');
+            //   this.emit(val.format('YYYY-MM-DD'));
+              
+            //   console.log('Pasted content: ', text);
+            // })
+
+            return
+          }
+      }
       },
     }, createSlots(createElement, this.$slots));
 
