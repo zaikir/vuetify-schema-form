@@ -150,6 +150,9 @@ export default {
     openLink(file) {
       if (this.isImage(file.type)) {
         const imageId = this.images.findIndex((x) => x === file.url);
+        for (let i = 0; i < this.$viewer.index+1; i += 1) {
+          this.$viewer.prev();
+        }
         for (let i = 0; i < imageId; i += 1) {
           this.$viewer.next();
         }
