@@ -17,6 +17,10 @@ export default {
       type: Function,
       default: (item) => item,
     },
+    onFetched: {
+      type: Function,
+      default: (items) => items,
+    },
     debounceTimeout: {
       type: Number,
       default: 400,
@@ -106,7 +110,7 @@ export default {
           update: (data) => {
             if (data[queryName]) {
               this.isLoading = false;
-              const items = data[queryName].map(this.onResponse);
+              const items = this.onFetched(data[queryName].map(this.onResponse));
 
               this.$emit('fetched', items);
 
