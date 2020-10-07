@@ -138,7 +138,7 @@ export default {
             noTitle: true,
             firstDayOfWeek: 1,
             dense: true,
-            ...this.$attrs.datePickerProps || {},
+            ...this.$attrs.datePickerProps || this.$attrs['date-picker-props'] || {},
             value: this.currentValue,
           },
           on: {
