@@ -17,6 +17,11 @@ export default {
       selectedTab: 0,
     };
   },
+  mounted() {
+    // window.addEventListener('validation-failed', (e) => { 
+    //   console.log(e)
+    //  }, false);
+  },
   render(h) {
     return h(VTabs, {
       class: 'vsh-tabs',

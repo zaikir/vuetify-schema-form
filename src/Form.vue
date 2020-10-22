@@ -1,7 +1,7 @@
 <script>
 import Vue from 'vue';
 import clone from 'clone';
-import { VForm, VContainer } from 'vuetify/lib/components';
+import { VForm, VContainer, VSnackbar } from 'vuetify/lib/components';
 import types from './types';
 import propsResolver from './propsResolver';
 import { buildComponentsTree, renderComponentsTree } from './utils';
@@ -60,8 +60,9 @@ export default {
   },
   data() {
     return {
-      clone: {},
-      validateionFailedEvent: new Event('validation-failed'),
+      showSnackbar: false,
+      snackbarText: '',
+      clone: {}
     };
   },
   computed: {
@@ -100,10 +101,14 @@ export default {
   methods: {
     submit() {
       if (!this.$refs.editForm.validate()) {
-        // const error = this.$refs.editForm.inputs.filter((x) => x.hasError)[0] || {};
-        // if (error) {
-        //   this.validateionFailedEvent.dispatchEvent(error);
-        // }
+        const error = this.$refs.editForm.inputs.filter((x) => x.hasError)[0] || {};
+
+        if (error) {
+          
+          this.showSnackbar = true
+          this.snackbarText = `Не заполнено поле "${(error.$el.querySelector('label') || {}).textContent}"`
+          window.dispatchEvent(new CustomEvent('validation-failed', { detail: {tab: 0} }))
+        }
         return;
       }
 
@@ -184,6 +189,17 @@ export default {
         ref: 'editForm',
       },
       [
+        h(VSnackbar, {
+          props: {
+            timeout: 1000,
+            value: this.showSnackbar
+          },
+          on: {
+            input:(val) => {
+              this.showSnackbar = val
+            }
+          }
+        }, [this.snackbarText]),
         h(VContainer, {
           class: {
             'px-0': true,
