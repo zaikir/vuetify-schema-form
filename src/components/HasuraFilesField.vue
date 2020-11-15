@@ -24,7 +24,7 @@
         @change="onReordered"
       >
         <v-col v-for="(file, i) in files" :key="i" cols="auto" @click.prevent.stop="openLink(file)" @click.middle.prevent.stop="openLink(file, true)">
-          <file-avatar :file="file" :disabled="disabled" @remove="removeFile" :click="false"/>
+          <file-avatar :file="file" :disabled="disabled" @remove="removeFile" :click="false" v-bind="avatarParams"/>
         </v-col>
       </draggable>
     </v-col>
@@ -94,6 +94,10 @@ export default {
       default: false,
     },
     params: {
+      type: Object,
+      default: () => ({}),
+    },
+    avatarParams: {
       type: Object,
       default: () => ({}),
     },

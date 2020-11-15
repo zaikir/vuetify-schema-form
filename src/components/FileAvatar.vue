@@ -8,7 +8,7 @@
         <div v-if="!loading" class="d-flex justify-center align-center" style="position:relative;">
           <v-img
             v-if="fileType === 'image'"
-            :src="file.url"
+            :src="transformation ? file.url.replace('/uploads/', `/uploads/${transformation}/`) : file.url"
             class="white--text align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
             :width="width"
@@ -95,6 +95,10 @@ export default {
     width: {
       type: Number,
       default: 120,
+    },
+    transformation: {
+      type: String,
+      default: null,
     },
     height: {
       type: Number,

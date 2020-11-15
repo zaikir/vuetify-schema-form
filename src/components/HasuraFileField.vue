@@ -18,7 +18,7 @@
     <v-col cols="12" style="margin-top: -14px;">
       <v-row v-if="file">
         <v-col cols="auto">
-          <file-avatar :file="file" @remove="removeFile" :disabled="disabled"/>
+          <file-avatar :file="file" @remove="removeFile" :disabled="disabled" v-bind="avatarParams"/>
         </v-col>
       </v-row>
     </v-col>
@@ -64,6 +64,10 @@ export default {
       default: false,
     },
     params: {
+      type: Object,
+      default: () => ({}),
+    },
+    avatarParams: {
       type: Object,
       default: () => ({}),
     },
