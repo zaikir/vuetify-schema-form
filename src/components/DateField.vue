@@ -111,7 +111,6 @@ export default {
       },
     }, createSlots(createElement, this.$slots));
 
-    if (!this.$vuetify.breakpoint.xsOnly) {
       return createElement(VMenu, {
         props: {
           transition: 'scale-transition',
@@ -133,7 +132,7 @@ export default {
           },
         },
       }, [
-        !this.$vuetify.breakpoint.xsOnly && createElement(VDatePicker, {
+        createElement(VDatePicker, {
           props: {
             noTitle: true,
             firstDayOfWeek: 1,
@@ -149,7 +148,6 @@ export default {
           },
         }),
       ]);
-    }
     return createTextField(this.$listeners);
   },
 };
