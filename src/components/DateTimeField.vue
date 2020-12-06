@@ -9,6 +9,7 @@ export default {
     timezone: {
       type: Number,
     },
+    step: { type: Number},
   },
   data() {
     return {
@@ -52,6 +53,7 @@ export default {
         max: '9999-12-31T23:59',
         maxlength: '4',
         required: !!this.$attrs.required,
+        step: this.step
       },
       class: {
         ...this.class || {},
