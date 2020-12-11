@@ -4,7 +4,7 @@ import clone from 'clone';
 import { VForm, VContainer, VSnackbar } from 'vuetify/lib/components';
 import types from './types';
 import propsResolver from './propsResolver';
-import { buildComponentsTree, renderComponentsTree } from './utils';
+import { translate, buildComponentsTree, renderComponentsTree } from './utils';
 
 function getFields(node) {
   return node.fields ? node.fields.map((field) => getFields(field)) : node;
@@ -106,7 +106,7 @@ export default {
         if (error) {
           
           this.showSnackbar = true
-          this.snackbarText = `Не заполнено поле "${(error.$el.querySelector('label') || {}).textContent}"`
+          this.snackbarText = `${translate(this.$vuetify, 'fieldRequired', 'Field required:')} "${(error.$el.querySelector('label') || {}).textContent}"`
           window.dispatchEvent(new CustomEvent('validation-failed', { detail: {tab: 0} }))
         }
         return;
