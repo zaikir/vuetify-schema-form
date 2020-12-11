@@ -16,13 +16,11 @@
         <validation-message v-if="required" :value="(file || {}).id"/>
     </v-col>
     <v-col cols="12" style="margin-top: -14px;">
-      <slot name="uploadArea" :file="file" v-if="file">
-        <v-row>
-          <v-col cols="auto">
-            <file-avatar :file="file" @remove="removeFile" :disabled="disabled" v-bind="avatarParams"/>
-          </v-col>
-        </v-row>
-      </slot>
+      <v-row v-if="file">
+        <v-col cols="12" class="d-flex justify-center">
+          <file-avatar :file="file" @remove="removeFile" :disabled="disabled" v-bind="avatarParams"/>
+        </v-col>
+      </v-row>
     </v-col>
   </v-row>
 </template>

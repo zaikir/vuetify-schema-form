@@ -1,6 +1,7 @@
 <template>
   <v-hover v-slot:default="{ hover }">
     <v-card
+      :style="block ? `width: 100%`: ``"
       :class="'pa-1 file-card elevation-' + (!hover ? elevation : elevationOnHover)"
       @click="openLink(file)"
       :ripple="false">
@@ -17,6 +18,22 @@
           <v-img
             v-else-if="fileType === 'pdf'"
             src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+            class="white--text align-end"
+            contain
+            :width="width"
+            :height="height"
+          />
+          <v-img
+            v-else-if="fileType === 'mp3'"
+            src="https://www.svgrepo.com/show/255824/mp3.svg"
+            class="white--text align-end"
+            contain
+            :width="width"
+            :height="height"
+          />
+           <v-img
+            v-else-if="fileType === 'wav'"
+            src="https://www.svgrepo.com/show/255824/mp3.svg"
             class="white--text align-end"
             contain
             :width="width"
@@ -54,9 +71,9 @@
           color="primary"
           indeterminate
         />
-        <div class="pt-2 px-2" :style="`max-width: ${width}px;`">
+        <div class="pt-2 px-2" :class="{'text-center': block}" :style="`max-width: ${block ? `${100}%` : `${width}px`};`">
           <span class="subtitle-2">{{ file.name }}</span>
-          <v-tooltip bottom>
+          <v-tooltip bottom v-if="download">
             <template #activator="{on}">
               <v-btn class="ml-auto" icon small v-on="on" @click.prevent.stop="downloadFile(file)">
                 <v-icon>mdi-download</v-icon>
@@ -112,9 +129,17 @@ export default {
       type: Number,
       default: 3,
     },
+    download: {
+      type: Boolean,
+      default: true,
+    },
     click: {
       type: Boolean,
       default: true,
+    },
+    block: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {
@@ -139,6 +164,9 @@ export default {
         case '.doc':
         case '.docx':
           return 'word';
+        case '.mp3':
+        case '.wav':
+          return 'mp3';
         default:
           return 'file';
       }
