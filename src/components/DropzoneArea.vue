@@ -8,25 +8,27 @@
     @vdropzone-success="successfullyUploaded"
     @vdropzone-sending="onSending"
   >
-    <div class="dropzone-custom-content" :style="`height: ${height}px;`">
-      <template v-if="!isLoading">
-        <div class="d-flex align-center justify-center">
-          <v-icon large class="icon mr-4" style="margin-top:-2px;">
-            mdi-cloud-upload-outline
-          </v-icon>
-          <h3 class="dropzone-custom-title">
-            {{ dropzoneOptions.dictDefaultMessage }}
-          </h3>
-        </div>
-      </template>
-      <template v-else>
-        <v-progress-circular
-          :size="30"
-          :width="3"
-          color="primary"
-          indeterminate
-        />
-      </template>
+    <div class="dropzone-custom-content" :style="`height: ${height}px; position: relative;`">
+      <div class="d-flex align-center justify-center" style="position: absolute; width: 100%; height: 100%;">
+        <template v-if="loadingCount === 0">
+          <div class="d-flex align-center justify-center">
+            <v-icon large class="icon mr-4" style="margin-top:-2px;">
+              mdi-cloud-upload-outline
+            </v-icon>
+            <h3 class="dropzone-custom-title">
+              {{ dropzoneOptions.dictDefaultMessage }}
+            </h3>
+          </div>
+        </template>
+        <template v-else>
+          <v-progress-circular
+            :size="30"
+            :width="3"
+            color="primary"
+            indeterminate
+          />
+        </template>
+      </div>
     </div>
   </vue-dropzone>
 </template>
@@ -59,6 +61,7 @@ export default {
   },
   data() {
     return {
+      loadingCount: 0,
       isLoading: false,
       isConfirmationDialogOpened: false,
       processedItem: null,
@@ -106,10 +109,11 @@ export default {
       });
     },
     startUploading(obj) {
-      // this.isLoading = true;
+      this.loadingCount += 1
     },
     successfullyUploaded(file, response) {
-      this.isLoading = false;
+      this.loadingCount = 0
+      // console.log(response)
       this.$emit('uploaded', response);
     },
   },
@@ -125,8 +129,8 @@ export default {
   }
 
   .v-application:not(.theme--dark) .dropzone-custom-content:hover {
-    background: rgb(245, 245, 245);
-    border: thin solid rgb(155, 155, 155);
+    /* background: rgb(245, 245, 245); */
+    border: thin dashed #1976d2;;
     /* border: thin dashed #1976d2; */
   }
 

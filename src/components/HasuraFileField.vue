@@ -109,9 +109,12 @@ export default {
     };
   },
   methods: {
-    onUploaded({ id }) {
+    onUploaded(file) {
+      const { id } = file
+
       this.$emit('change', id);
       this.$emit('input', id);
+      this.$emit('uploaded', file);
     },
     async removeFile(file) {
       await this.$apollo.mutate({

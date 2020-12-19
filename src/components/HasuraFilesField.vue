@@ -197,7 +197,9 @@ export default {
 
       this.$apollo.queries.files.refetch();
     },
-    async onUploaded() {
+    async onUploaded(file) {
+      this.$emit('uploaded', file);
+
       await this.refreshQuery();
     },
     async removeFile(file) {
