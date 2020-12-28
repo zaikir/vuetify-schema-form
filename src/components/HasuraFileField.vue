@@ -11,6 +11,7 @@
         :accept="accept"
         :url="uploadUrl"
         :additional-params="params"
+        :post-upload="postUpload"
         @error="$emit('error', $event)"
         @uploaded="onUploaded"/>
         <validation-message v-if="required" :value="(file || {}).id"/>
@@ -79,6 +80,10 @@ export default {
     uploadUrl: {
       type: String,
       default: '/api/uploads',
+    },
+    postUpload: {
+      type: Function,
+      default: () => {},
     },
   },
   apollo: {

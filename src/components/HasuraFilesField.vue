@@ -10,6 +10,7 @@
         :height="height"
         :accept="accept"
         :url="uploadUrl"
+        :post-upload="postUpload"
         :additional-params="{[foreignKey]:foreignKeyValue,...params}"
         @uploaded="onUploaded"/>
         <validation-message v-if="required" :value="files && files.length"/>
@@ -109,6 +110,10 @@ export default {
     uploadUrl: {
       type: String,
       default: '/api/uploads',
+    },
+    postUpload: {
+      type: Function,
+      default: () => {},
     },
   },
   apollo: {

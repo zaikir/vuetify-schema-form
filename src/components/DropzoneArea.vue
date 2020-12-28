@@ -58,6 +58,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    postUpload: {
+      type: Function,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -111,10 +115,11 @@ export default {
     startUploading(obj) {
       this.loadingCount += 1
     },
-    successfullyUploaded(file, response) {
-      this.loadingCount = 0
-      // console.log(response)
+    async successfullyUploaded(file, response) {
+      await this.postUpload(response)
+
       this.$emit('uploaded', response);
+      this.loadingCount = 0
     },
   },
 };
