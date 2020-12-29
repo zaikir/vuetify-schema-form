@@ -23,7 +23,7 @@
         </template>
         <template v-else>
           <v-progress-circular
-            :size="58"
+            :size="63"
             :width="3"
             color="primary"
             indeterminate
