@@ -23,7 +23,7 @@
         </template>
         <template v-else>
           <v-progress-circular
-            :size="36"
+            :size="58"
             :width="3"
             color="primary"
             indeterminate
@@ -113,8 +113,7 @@ export default {
   },
   methods: {
     onProgressUpdated(file, progress, bytesSent) {
-      this.currentSentSize = prettySize(bytesSent)
-      console.log(file, progress, bytesSent)
+      this.currentSentSize = prettySize(bytesSent, true)
     },
     onSending(file, xhr, formData) {
       Object.entries(this.additionalParams).forEach(([key, value]) => {
@@ -122,6 +121,7 @@ export default {
       });
     },
     startUploading(obj) {
+      this.currentSentSize = ''
       this.loadingCount += 1
     },
     async successfullyUploaded(file, response) {
