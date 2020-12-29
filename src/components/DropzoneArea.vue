@@ -7,9 +7,10 @@
     @vdropzone-file-added="startUploading"
     @vdropzone-success="successfullyUploaded"
     @vdropzone-sending="onSending"
+    @vdropzone-upload-progress="onProgressUpdated"
   >
     <div class="dropzone-custom-content" :style="`height: ${height}px; position: relative;`">
-      <div class="d-flex align-center justify-center" style="position: absolute; width: 100%; height: 100%;">
+      <div class="d-flex align-center justify-center" style="position: absolute; width: 100%; height: 100%; padding: 20px;">
         <template v-if="loadingCount === 0">
           <div class="d-flex align-center justify-center">
             <v-icon large class="icon mr-4" style="margin-top:-2px;">
@@ -22,11 +23,13 @@
         </template>
         <template v-else>
           <v-progress-circular
-            :size="30"
+            :size="36"
             :width="3"
             color="primary"
             indeterminate
-          />
+          >
+            <span class="caption">{{currentSentSize}}</span>
+          </v-progress-circular>
         </template>
       </div>
     </div>
@@ -35,6 +38,7 @@
 <script>
 import VueDropzone from 'nuxt-dropzone';
 import { translate } from '../utils';
+import { prettySize } from 'pretty-size';
 
 export default {
   components: {
@@ -65,6 +69,7 @@ export default {
   },
   data() {
     return {
+      currentSentSize: '',
       loadingCount: 0,
       isLoading: false,
       isConfirmationDialogOpened: false,
@@ -107,6 +112,10 @@ export default {
     }
   },
   methods: {
+    onProgressUpdated(file, progress, bytesSent) {
+      this.currentSentSize = prettySize(bytesSent)
+      console.log(file, progress, bytesSent)
+    },
     onSending(file, xhr, formData) {
       Object.entries(this.additionalParams).forEach(([key, value]) => {
         formData.append(key, value);
