@@ -27,7 +27,10 @@ export default {
     },
     postProcessProps: ({ props, item }) => ({ props: { ...props, item } }),
   },
-  text: { component: VTextField },
+  text: { 
+    component: VTextField,
+    postProcessProps: ({ props }) => ({ props, attrs: props })
+  },
   mask: {
     component: MaskedInput,
     postProcessProps: ({ props }) => ({ props, attrs: props }),

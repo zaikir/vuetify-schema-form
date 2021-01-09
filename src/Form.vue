@@ -57,6 +57,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    autocomplete: {
+      type: String,
+      default: null,
+    },
+    lazyValidation: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -176,7 +184,12 @@ export default {
 
     return h(VForm,
       {
-        props: { lazyValidation: true },
+        props: { lazyValidation: this.lazyValidation },
+        attrs: {
+          ...this.autocomplete && {
+            autocomplete: this.autocomplete
+          }
+        },
         on: {
           submit: (event) => {
             if (!this.submitOnEnter) {
