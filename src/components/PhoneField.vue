@@ -21,7 +21,7 @@ export default {
         placeholder: '(###) ###-##-##',
         restrict: (x) => x && ({ check: x.startsWith('7'), value: x.replace('7', '') }),
         ...data.props || {},
-        type: 'tel',
+        type: data.props.inputType || 'tel',
         rules: [
           ...data.props.rules || [],
         ],

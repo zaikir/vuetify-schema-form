@@ -8,6 +8,7 @@ import {
   RadioGroupField, DateField, DateTimeField, SlugField,
   HtmlField, HasuraFileField, HasuraFilesField, ApolloRemoteAutocomplete,
   ArrayField, MaskedInput, ComboboxField, BottomNavigation, TabsContainer,
+  SearchField,
 } from './components';
 
 export default {
@@ -30,6 +31,9 @@ export default {
   text: { 
     component: VTextField,
     postProcessProps: ({ props }) => ({ props, attrs: props })
+  },
+  search: { 
+    component: SearchField,
   },
   mask: {
     component: MaskedInput,
