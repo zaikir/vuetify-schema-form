@@ -22,6 +22,7 @@ export default {
         restrict: (x) => x && ({ check: x.startsWith('7'), value: x.replace('7', '') }),
         ...data.props || {},
         type: data.props.inputType || 'tel',
+        autocomplete: data.props.autocomplete || 'off',
         rules: [
           ...data.props.rules || [],
         ],

@@ -12,11 +12,15 @@ export default {
       ...data,
       props: {
         ...data.props || {},
+        type: data.props.inputType || 'email',
         rules: [
           ...data.props.rules || [],
           (x) => !x || EmailValidator.validate(x) || translate(context.parent.$vuetify, 'wrongFormat', 'Wrong format'),
         ],
       },
+      attrs: {
+        autocomplete: data.props.autocomplete || 'off',
+      }
     }, createSlots(createElement, context.slots()));
   },
 };

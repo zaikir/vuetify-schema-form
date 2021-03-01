@@ -13,6 +13,9 @@ export default {
         type: 'password',
         autocomplete: 'password',
       },
+      attrs: {
+        autocomplete: data.props.autocomplete,
+      },
     }, createSlots(createElement, context.slots()));
   },
 };

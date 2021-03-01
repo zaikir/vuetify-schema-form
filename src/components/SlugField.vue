@@ -17,7 +17,11 @@ export default {
       props: {
         ...data.props || {},
         rules: [...data.props.rules || [], slugRule],
-      },
+      }, 
+      attrs: {
+        type: data.props.inputType,
+        autocomplete: data.props.autocomplete || 'off',
+      }
     }, [
       ...createSlots(createElement, context.slots()),
       createElement(VTooltip, {

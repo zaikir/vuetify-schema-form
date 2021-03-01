@@ -11,7 +11,7 @@ export default {
       ...data,
       props: {
         ...data.props || {},
-        type: 'number',
+        type: data.props.inputType || 'number',
         step: 0.01,
         rules: [
           ...data.props.rules || [],
@@ -19,7 +19,7 @@ export default {
         ],
       },
       attrs: {
-        autocomplete: 'off',
+        autocomplete: data.props.autocomplete || 'off',
       },
     }, createSlots(createElement, context.slots()));
   },

@@ -57,6 +57,10 @@ export default {
         ...this.$attrs,
         value: this.currentValue,
       },
+      attrs: {
+        autocomplete: (this.$attrs || {}).autocomplete || 'off',
+        type: (this.$attrs || {}).inputType || 'search',
+      },
       on: {
         ...this.$listeners,
         change: () => {},
