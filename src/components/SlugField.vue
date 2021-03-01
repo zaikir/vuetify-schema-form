@@ -20,7 +20,7 @@ export default {
       }, 
       attrs: {
         type: data.props.inputType,
-        autocomplete: data.props.autocomplete || 'off',
+        autocomplete: data.props.autocomplete || 'nope',
       }
     }, [
       ...createSlots(createElement, context.slots()),

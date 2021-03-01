@@ -58,7 +58,7 @@ export default {
         value: this.currentValue,
       },
       attrs: {
-        autocomplete: (this.$attrs || {}).autocomplete || 'off',
+        autocomplete: (this.$attrs || {}).autocomplete || 'nope',
         type: (this.$attrs || {}).inputType || 'search',
       },
       on: {

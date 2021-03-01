@@ -18,7 +18,7 @@ export default {
         ],
       },
       attrs: {
-        autocomplete: 'off',
+        autocomplete: 'nope',
       },
     }, createSlots(createElement, context.slots()));
   },

@@ -19,7 +19,7 @@ export default {
         ],
       },
       attrs: {
-        autocomplete: data.props.autocomplete || 'off',
+        autocomplete: data.props.autocomplete || 'nope',
       }
     }, createSlots(createElement, context.slots()));
   },

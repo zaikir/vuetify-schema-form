@@ -10,11 +10,11 @@ export default {
       ...data,
       props: {
         ...data.props || {},
-        type: 'search',
-        autocomplete: 'off',
+        type: 'text',
+        autocomplete: 'nope',
       },
       attrs: {
-        autocomplete: 'off'
+        autocomplete: 'nope'
       }
     }, createSlots(createElement, context.slots()));
   },

@@ -11,11 +11,11 @@ module.exports = {
     parser: 'babel-eslint',
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'max-len': 'off',
-    'consistent-return': 'off'
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'nope',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'nope',
+    'import/no-extraneous-dependencies': 'nope',
+    'max-len': 'nope',
+    'consistent-return': 'nope'
   },
   overrides: [
     {
