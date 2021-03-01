@@ -65,6 +65,12 @@ export default (h, tree, item, emitInput, {
       .filter(([key]) => key.startsWith(`${slotPrefix}.`))
       .map(([key, value]) => [key.replace(`${slotPrefix}.`, ''), h('template', { slot: key.replace(`${slotPrefix}.`, '') }, value(totalContext))]);
 
+    const resultScopedSlots = Object.assign({}, ...Object.entries(scopedSlots)
+      .filter(([key]) => key.startsWith(`${slotPrefix}.`))
+      .map(([key, value]) => ({
+        [key.replace(`${slotPrefix}.`, '')]: value
+      })))
+
     if (props.value && skeletonLoading && props.skeleton !== false) {
       return h(VSkeletonLoader, {
         props: {
@@ -97,7 +103,7 @@ export default (h, tree, item, emitInput, {
             },
           },
         },
-        scopedSlots,
+        scopedSlots: resultScopedSlots,
       }, [
         ...renderedChildren,
         ...slots,
