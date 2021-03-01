@@ -30,7 +30,10 @@ export default {
   },
   text: { 
     component: VTextField,
-    postProcessProps: ({ props }) => ({ props, attrs: props })
+    postProcessProps: ({ props }) => ({ props, attrs: {
+      ...props,
+      autocomplete: props.autocomplete || 'nope'
+     } })
   },
   search: { 
     component: SearchField,
