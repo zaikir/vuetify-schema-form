@@ -24,7 +24,7 @@
         :disabled="loading || disabled || $vuetify.breakpoint.smAndDown"
         @change="onReordered"
       >
-        <v-col v-for="(file, i) in files" :key="i" cols="auto" @click.prevent.stop="openLink(file)" @click.middle.prevent.stop="openLink(file, true)">
+        <v-col v-for="(file, i) in files" :key="i" cols="auto" @click.prevent.stop="openLink(file, $event)" @click.middle.prevent.stop="openLink(file, $event)">
           <file-avatar :file="file" :disabled="disabled" @remove="removeFile" :click="false" v-bind="avatarParams"/>
         </v-col>
       </draggable>
@@ -50,6 +50,7 @@ import Viewer from 'v-viewer/src/component.vue';
 import DropzoneArea from './DropzoneArea.vue';
 import FileAvatar from './FileAvatar.vue';
 import ValidationMessage from './ValidationMessage.vue';
+import fileDownload from 'js-file-download';
 
 export default {
   components: {
@@ -156,7 +157,7 @@ export default {
     inited(viewer) {
       this.$viewer = viewer;
     },
-    openLink(file) {
+    async openLink(file) {
       if (this.isImage(file.type)) {
         const imageId = this.images.findIndex((x) => x === file.url);
         for (let i = 0; i < this.$viewer.index+1; i += 1) {
@@ -167,12 +168,18 @@ export default {
         }
 
         this.$viewer.show();
+      } else if (this.isDoc(file.type)) {
+        const blob = await this.$axios.$get(file.url, { responseType: 'blob' });
+        fileDownload(blob, file.name);
       } else {
         window.open(file.url, '_blank');
       }
     },
     isImage(type) {
       return type === '.png' || type === '.jpg' || type === '.jpeg' || type === '.gif';
+    },
+    isDoc(type) {
+      return type === '.doc' || type === '.docx' || type === '.xls' || type === '.xlxs';
     },
     onReordered(event = {}) {
       const { moved } = event;
