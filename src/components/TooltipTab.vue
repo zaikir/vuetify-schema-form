@@ -1,8 +1,8 @@
 <template>
-  <v-tab :key="key">
-    <v-tooltip :disabled="!tooltip">
+  <v-tab>
+    <v-tooltip :disabled="!tooltip || (label && label.length) ? true : false" bottom>
       <template #activator="{on, attrs}">
-        <div v-on="on" v-bind="attrs">
+        <div v-on="on" v-bind="attrs" style="width: 100%;height:100%;" class="d-flex align-center justify-center">
           <v-icon v-if="icon" class="mr-2">
             {{ icon }}
           </v-icon>
@@ -16,10 +16,6 @@
 <script>
 export default {
   props: {
-    key: {
-      type: String,
-      required: true
-    },
     tooltip: {
       type: String,
       default: null
