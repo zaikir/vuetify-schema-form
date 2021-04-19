@@ -21,3 +21,4 @@ export { default as ComboboxField } from './ComboboxField.vue';
 export { default as TabsContainer } from './TabsContainer.vue';
 export { default as BottomNavigation } from './BottomNavigation.vue';
 export { default as SearchField } from './SearchField.vue';
+export { default as TooltipTab } from './TooltipTab.vue';

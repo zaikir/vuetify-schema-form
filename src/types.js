@@ -8,7 +8,7 @@ import {
   RadioGroupField, DateField, DateTimeField, SlugField,
   HtmlField, HasuraFileField, HasuraFilesField, ApolloRemoteAutocomplete,
   ArrayField, MaskedInput, ComboboxField, BottomNavigation, TabsContainer,
-  SearchField,
+  SearchField, TooltipTab
 } from './components';
 
 export default {
@@ -88,7 +88,7 @@ export default {
 
       return [
         {
-          component: VTab,
+          component: TooltipTab,
           props: { key, ...props },
           children: [
             props.icon && { component: VIcon, class: { 'mr-2': true }, children: [props.icon] },
