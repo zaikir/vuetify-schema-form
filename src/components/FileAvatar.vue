@@ -79,7 +79,7 @@
                 <v-icon>mdi-download</v-icon>
               </v-btn>
             </template>
-            Скачать
+            {{ translate('fileAvatar', 'Download') }}
           </v-tooltip>
         </div>
       </v-card-text>
@@ -94,6 +94,7 @@
 <script>
 import fileDownload from 'js-file-download';
 import ConfirmationDialog from './ConfirmationDialog.vue';
+import { translate } from '../utils';
 
 export default {
   props: {
@@ -173,6 +174,9 @@ export default {
     },
   },
   methods: {
+    translate(key, defaultValue) {
+      return translate(this.$vuetify, key, defaultValue);
+    },
     removeFile() {
       this.isConfirmationDialogOpened = false;
       this.$emit('remove', this.selectedFile);
