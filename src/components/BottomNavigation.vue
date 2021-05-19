@@ -25,7 +25,7 @@ export default {
         props: {
           grow: true,
           mandatory: true,
-          small: true,
+          small: false,
           value: this.selectedTab,
           app: true,
         },
@@ -54,5 +54,9 @@ export default {
 
 .vsh-bottom-navigation .v-bottom-navigation button {
   padding: 0px !important;
+}
+
+.vsh-bottom-navigation .v-bottom-navigation {
+  height: 74px !important;
 }
 </style>
