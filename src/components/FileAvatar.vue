@@ -75,7 +75,7 @@
           <span class="subtitle-2">{{ file.name }}</span>
           <v-tooltip bottom v-if="download">
             <template #activator="{on}">
-              <v-btn class="ml-auto" icon small v-on="on" :href="`${file.url}?type=${fileType}`" target="_blank">
+              <v-btn class="ml-auto" icon small v-on="on" :href="`${file.url}?type=${fileType}`" target="_blank" @click.prevent.stop="()=>{}">
                 <v-icon>mdi-download</v-icon>
               </v-btn>
             </template>
