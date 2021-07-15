@@ -46,7 +46,7 @@
 import gql from 'graphql-tag';
 import Draggable from 'vuedraggable';
 import 'viewerjs/dist/viewer.css';
-import Viewer from 'v-viewer/src/component.vue';
+import { component as Viewer } from "v-viewer"
 import DropzoneArea from './DropzoneArea.vue';
 import FileAvatar from './FileAvatar.vue';
 import ValidationMessage from './ValidationMessage.vue';
