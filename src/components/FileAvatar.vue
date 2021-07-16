@@ -183,7 +183,7 @@ export default {
     },
     openLink(file) {
       if (this.click) {
-        window.open(file.url, '_blank');
+        window.open(`${file.url}?type=${fileType}`, '_blank');
       }
     },
     async downloadFile(file) {
