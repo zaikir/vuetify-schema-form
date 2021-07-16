@@ -172,7 +172,7 @@ export default {
         const blob = await this.$axios.$get(file.url, { responseType: 'blob' });
         fileDownload(blob, file.name);
       } else {
-        window.open(file.url, '_blank');
+        window.open(`${file.url}?type=${file.type}`, '_blank');
       }
     },
     isImage(type) {
