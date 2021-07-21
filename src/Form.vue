@@ -65,6 +65,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    enableValidationErrorSnackbar: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -111,8 +115,7 @@ export default {
       if (!this.$refs.editForm.validate()) {
         const error = this.$refs.editForm.inputs.filter((x) => x.hasError)[0] || {};
 
-        if (error) {
-          
+        if (error && this.enableValidationErrorSnackbar) {
           this.showSnackbar = true
           this.snackbarText = `${translate(this.$vuetify, 'fieldRequired', 'Field required:')} "${(error.$el.querySelector('label') || {}).textContent}"`
           window.dispatchEvent(new CustomEvent('validation-failed', { detail: {tab: 0} }))
