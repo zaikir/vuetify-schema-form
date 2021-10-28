@@ -64,7 +64,16 @@ export default {
       on: {
         ...this.$listeners,
         change: () => {},
-        input: (val) => { this.currentValue = val; },
+        input: (val) => { 
+          const restrictedValue = this.restrict && this.restrict(val);
+          if (restrictedValue.check) {
+            this.cleave.setRawValue(restrictedValue.value);
+            this.currentValue = restrictedValue.value
+            return
+          }
+          
+          this.currentValue = val
+        },
       },
     }, createSlots(h, this.$slots));
   },

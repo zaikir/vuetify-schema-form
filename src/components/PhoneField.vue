@@ -19,7 +19,10 @@ export default {
       attrs: {
         prefix: '+7',
         placeholder: '(###) ###-##-##',
-        restrict: (x) => x && ({ check: x.startsWith('7'), value: x.replace('7', '') }),
+        restrict: (x) => x && ({ 
+          check: (x.startsWith('7')) || (x.startsWith('+7')), 
+          value: x.startsWith('7') ? x.replace('7', '') : x.replace('+7', '')
+        }),
         ...data.props || {},
         type: data.props.inputType || 'tel',
         autocomplete: data.props.autocomplete || 'nope',
