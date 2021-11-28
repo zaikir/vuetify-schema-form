@@ -4,6 +4,7 @@
       <v-subheader :class="'subtitle-2 pl-0'" style="height: 30px;">
         {{ label }}
       </v-subheader>
+      <div v-if="caption" class="caption" v-html="caption"></div>
     </v-col>
     <v-col v-if="!disabled" cols="12" style="margin-top: -2px;">
       <dropzone-area
@@ -87,6 +88,11 @@ export default {
       default: '*',
     },
     label: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    caption: {
       type: String,
       required: false,
       default: null,
@@ -246,5 +252,11 @@ export default {
 
   .file-card {
     cursor: pointer;
+  }
+
+  .drag-and-drop-editor .caption {
+    font-size: 10px; 
+    line-height: 1.2; 
+    margin-bottom: 7px;
   }
 </style>
