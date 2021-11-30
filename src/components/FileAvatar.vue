@@ -159,6 +159,10 @@ export default {
         case '.jpg':
         case '.jpeg':
         case '.gif':
+        case '.ico':
+        case '.tiff':
+        case '.avif':
+        case '.webp':
           return 'image';
         case '.pdf':
           return 'pdf';
