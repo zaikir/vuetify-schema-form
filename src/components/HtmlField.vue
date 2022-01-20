@@ -4,7 +4,7 @@
     <v-subheader :class="'subtitle-2 pl-0'" style="height: 30px;">
       {{ label }}
     </v-subheader>
-    <editor v-if="!disabled" ref="editor" v-model="content" class="html-editor" :init="preInit({...options})" />
+    <editor v-if="!disabled && isMounted" ref="editor" v-model="content" class="html-editor" :init="preInit({...options})" />
     <div v-else class="html-editor" v-html="content"></div>
     <validation-message v-if="required && isMounted" :value="content && content.replace(emptyString, '').length"/>
   </div>
