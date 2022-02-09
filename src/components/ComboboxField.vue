@@ -9,12 +9,23 @@ export default {
 
     return createElement(VCombobox, {
       ...data,
+      props: {
+        ...data.props,
+        type: data.props.inputType,
+      },
       class: {
         ...data.class || {},
         'vdk-combobox-field': true,
       },
       on: {
         ...data.on,
+        change: (e) => {
+          if (data.on.change && data.props.inputType === 'number') {
+            data.on.change(parseFloat(e))
+          } else {
+            data.on.change(e)
+          }
+        }
       },
     }, createSlots(createElement, context.slots()));
   },
