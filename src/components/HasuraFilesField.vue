@@ -64,7 +64,7 @@ export default {
   props: {
     foreignKey: {
       type: String,
-      required: true,
+      required: false,
     },
     foreignKeyType: {
       type: String,
@@ -72,7 +72,7 @@ export default {
     },
     foreignKeyValue: {
       type: null,
-      required: true,
+      required: false,
     },
     source: {
       type: String,
@@ -140,14 +140,18 @@ export default {
       variables() {
         if (this.foreignKeyValue) {
           return {
-            [this.foreignKey]: {
-              _eq: this.foreignKeyValue
+            where: {
+              [this.foreignKey]: {
+                _eq: this.foreignKeyValue
+              }
             }
           }
         }
 
         return {
-          id: { _in: this.uploadedFiles.map(x => x.id) }
+          where: {
+            id: { _in: this.uploadedFiles.map(x => x.id) }
+          }
         }
       },
     },
@@ -230,7 +234,7 @@ export default {
         file
       ]
       console.log(this.uploadedFiles)
-      
+
       await this.refreshQuery();
     },
     async removeFile(file) {
