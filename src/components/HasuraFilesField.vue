@@ -12,7 +12,7 @@
         :accept="accept"
         :url="uploadUrl"
         :post-upload="postUpload"
-        :additional-params="{[foreignKey]:foreignKeyValue,...params}"
+        :additional-params="foreignKey ? {[foreignKey]:foreignKeyValue,...params} : params"
         @uploaded="onUploaded"/>
         <validation-message v-if="required" :value="files && files.length"/>
     </v-col>
@@ -121,13 +121,13 @@ export default {
     postUpload: {
       type: Function,
       default: () => {},
-    },
+    }
   },
   apollo: {
     files: {
       query() {
-        return gql`query GetFiles ($foreignKeyValue: ${this.foreignKeyType}) { 
-          ${this.source} (where: { ${this.foreignKey}: {_eq: $foreignKeyValue} }, order_by: {sort: asc} ) { 
+        return gql`query GetFiles ($where: ${this.source}_bool_exp) { 
+          ${this.source} (where: $where, order_by: {sort: asc} ) { 
             id name type created_at url
           } 
         }`;
@@ -138,10 +138,17 @@ export default {
         }
       },
       variables() {
-        return { foreignKeyValue: this.foreignKeyValue };
-      },
-      skip() {
-        return !this.foreignKeyValue;
+        if (this.foreignKeyValue) {
+          return {
+            [this.foreignKey]: {
+              _eq: this.foreignKeyValue
+            }
+          }
+        }
+
+        return {
+          id: { _in: this.uploadedFiles.map(x => x.id) }
+        }
       },
     },
   },
@@ -152,6 +159,7 @@ export default {
       loading: false,
       processedItem: null,
       isFileModalOpened: false,
+      uploadedFiles: []
     };
   },
   computed: {
@@ -217,7 +225,12 @@ export default {
     },
     async onUploaded(file) {
       this.$emit('uploaded', file);
-
+      this.uploadedFiles = [
+        ...this.uploadedFiles,
+        file
+      ]
+      console.log(this.uploadedFiles)
+      
       await this.refreshQuery();
     },
     async removeFile(file) {
