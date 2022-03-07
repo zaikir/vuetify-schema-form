@@ -233,7 +233,6 @@ export default {
         ...this.uploadedFiles,
         file
       ]
-      console.log(this.uploadedFiles)
 
       await this.refreshQuery();
     },
@@ -252,6 +251,14 @@ export default {
       await this.refreshQuery();
     },
   },
+  watch: {
+    files(val) {
+      const ids = val.map(x => x.id)
+
+      this.$emit('input', ids)
+      this.$emit('change', ids)
+    }
+  }
 };
 </script>
 <style>
