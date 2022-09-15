@@ -9,12 +9,12 @@
           {{ icon }}
         </v-icon>
         <v-toolbar-title class="headline font-weight-medium">
-          {{ translate('confirmationTitle', 'Warning') }}
+          {{ translate('confirmationTitle', title || 'Warning') }}
         </v-toolbar-title>
       </v-toolbar>
       <v-card-text class="pt-4">
         <span class="body-1 font-weight-black">
-          {{ translate('confirmationText', 'Are you sure?') }}
+          {{ translate('confirmationText', text || 'Are you sure?') }}
         </span>
       </v-card-text>
       <v-card-actions>
