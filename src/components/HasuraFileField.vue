@@ -128,16 +128,16 @@ export default {
       this.$emit('uploaded', file);
     },
     async removeFile(file) {
-      await this.$apollo.mutate({
-        mutation: gql`mutation RemoveFile($id: uuid) {
-          update_${this.source}(where: {id: {_eq: $id}}, _set: {isRemoved: true}) {
-            affected_rows
-          }
-        }`,
-        variables: {
-          id: file.id,
-        },
-      });
+      // await this.$apollo.mutate({
+      //   mutation: gql`mutation RemoveFile($id: uuid) {
+      //     update_${this.source}(where: {id: {_eq: $id}}, _set: {isRemoved: true}) {
+      //       affected_rows
+      //     }
+      //   }`,
+      //   variables: {
+      //     id: file.id,
+      //   },
+      // });
 
       this.file = null;
       this.$emit('input', null);
