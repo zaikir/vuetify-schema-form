@@ -8,7 +8,7 @@ import {
   RadioGroupField, DateField, DateTimeField, SlugField,
   HtmlField, HasuraFileField, HasuraFilesField, ApolloRemoteAutocomplete,
   ArrayField, MaskedInput, ComboboxField, BottomNavigation, TabsContainer,
-  SearchField, TooltipTab
+  SearchField, TooltipTab, Subheader
 } from './components';
 
 export default {
@@ -40,6 +40,10 @@ export default {
   },
   mask: {
     component: MaskedInput,
+    postProcessProps: ({ props }) => ({ props, attrs: props }),
+  },
+  subheader: {
+    component: Subheader,
     postProcessProps: ({ props }) => ({ props, attrs: props }),
   },
   sheet: { component: VSheet },
