@@ -47,14 +47,20 @@
             :width="width"
             :height="height"
           />
-          <v-img
-            v-else-if="fileType === 'file'"
-            src="https://www.svgrepo.com/show/94277/blank-file.svg"
-            class="white--text align-end"
-            contain
-            :width="width"
-            :height="height"
-          />
+          <div v-else-if="fileType === 'file'" style="position: relative">
+            <v-img
+              src="https://www.svgrepo.com/show/94277/blank-file.svg"
+              class="white--text align-end"
+              contain
+              :width="width"
+              :height="height"
+            />
+            <div style="position: absolute;width: 100%;height: 100%;display: flex;justify-content: center;align-items: center;font-size: 28px;top: 0;left: 0;">
+              <div style="background: white; padding: 4px; border: thin solid gray; border-radius: 5px;">
+                {{(file.type || '').replace('.', '')}}
+              </div>
+            </div>
+          </div>
           <v-btn
             v-if="!disabled"
             style="position:absolute; top:-22px; right:-22px;"
